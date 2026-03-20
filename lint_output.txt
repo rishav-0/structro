@@ -1,0 +1,35 @@
+
+> structro@0.0.1 lint /home/pappa69/programe/structro
+> eslint
+
+
+/home/pappa69/programe/structro/app/about/page.tsx
+  2:56  warning  'Users' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/pappa69/programe/structro/app/contact/contact-client.tsx
+   5:10  warning  'ArrowUpRight' is defined but never used                         @typescript-eslint/no-unused-vars
+  53:16  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+/home/pappa69/programe/structro/app/contact/page.tsx
+  2:10  warning  'Container' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/pappa69/programe/structro/app/projects/page.tsx
+  2:10  warning  'Container' is defined but never used  @typescript-eslint/no-unused-vars
+  3:8   warning  'Image' is defined but never used      @typescript-eslint/no-unused-vars
+
+/home/pappa69/programe/structro/app/projects/projects-client.tsx
+  295:16  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+/home/pappa69/programe/structro/components/hero.tsx
+  3:8  warning  'Image' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/pappa69/programe/structro/components/ui/header-3.tsx
+   23:2   warning  'Users' is defined but never used                                                                                                                      @typescript-eslint/no-unused-vars
+   24:2   warning  'Award' is defined but never used                                                                                                                      @typescript-eslint/no-unused-vars
+   27:2   warning  'Shield' is defined but never used                                                                                                                     @typescript-eslint/no-unused-vars
+   62:6   error    Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+  173:53  warning  'props' is defined but never used                                                                                                                      @typescript-eslint/no-unused-vars
+
+✖ 13 problems (3 errors, 10 warnings)
+
+ ELIFECYCLE  Command failed with exit code 1.
