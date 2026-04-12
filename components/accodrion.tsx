@@ -5,19 +5,19 @@ import { useState, useEffect } from "react";
 
 const images = [
   {
-    src: "https://img.freepik.com/free-photo/observation-urban-building-business-steel_1127-2397.jpg",
-    alt: "Building One",
-    label: "Urban Steel",
+    src: "/images/hero/a.png",
+    alt: "PEB Structure",
+    label: "PEB Buildings",
   },
   {
-    src: "https://img.freepik.com/free-photo/observation-urban-building-business-steel_1127-2397.jpg",
-    alt: "Building Two",
-    label: "City Heights",
+    src: "/images/hero/b.png",
+    alt: "Industrial Shed",
+    label: "Industrial Sheds",
   },
   {
-    src: "https://img.freepik.com/free-photo/observation-urban-building-business-steel_1127-2397.jpg",
-    alt: "Building Three",
-    label: "Glass Tower",
+    src: "/images/hero/c.png",
+    alt: "Bridge Infrastructure",
+    label: "Bridge Engineering",
   },
 ];
 
@@ -78,7 +78,7 @@ export default function AccordionCarousel() {
             />
 
             {/* Label — only visible when active */}
-            <div
+            {/* <div
               className="absolute bottom-5 left-5 right-5"
               style={{
                 opacity: isActive ? 1 : 0,
@@ -90,10 +90,10 @@ export default function AccordionCarousel() {
               <h3 className="text-white text-2xl font-bold tracking-tight leading-tight">
                 {img.label}
               </h3>
-            </div>
+            </div> */}
 
             {/* Collapsed state — vertical label */}
-            <div
+            {/* <div
               className="absolute inset-0 flex items-center justify-center"
               style={{
                 opacity: isActive ? 0 : 1,
@@ -110,7 +110,7 @@ export default function AccordionCarousel() {
               >
                 {img.label}
               </span>
-            </div>
+            </div> */}
 
             {/* Active indicator dot */}
             <div

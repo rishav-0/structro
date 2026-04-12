@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Header } from "@/components/ui/header-3";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import Chatbot from "@/components/Chatbot";
 import type { Metadata } from 'next';
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'})
@@ -70,6 +71,7 @@ export default function RootLayout({
           {children}
           <Footer />
           <WhatsAppButton />
+          <Chatbot />
       </body>
     </html>
   )
