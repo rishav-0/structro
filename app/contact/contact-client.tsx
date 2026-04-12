@@ -46,13 +46,14 @@ export function ContactClient() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/50" />
         <Container className="relative h-full flex flex-col justify-center">
-          <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4">
+          <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4 drop-shadow-sm">
             Contact Us
           </p>
-          <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">
-            Let&apos;s Build Something<br/>Great Together
+          <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground leading-tight">
+            Let&apos;s Build Something<br/>
+            <span className="drop-shadow-sm">Great Together</span>
           </h1>
-          <p className="text-gray-200 text-lg mt-6 max-w-2xl">
+          <p className="text-primary-foreground/80 text-lg mt-6 max-w-2xl font-medium">
             Get in touch with our team for a technical consultation on your next project.
           </p>
         </Container>
@@ -234,7 +235,7 @@ export function ContactClient() {
 
                 <Button 
                   type="submit" 
-                  className="bg-primary text-white hover:bg-primary/90 font-semibold px-8 py-4 rounded-sm w-full md:w-auto"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-8 py-4 rounded-sm w-full md:w-auto"
                 >
                   Submit Request
                   <Send className="ml-2 w-4 h-4" />
@@ -277,13 +278,13 @@ export function ContactClient() {
             </div>
 
             {/* Quick Contact CTA */}
-            <div className="bg-primary rounded-lg p-8 text-white">
+            <div className="bg-primary rounded-lg p-8 text-primary-foreground">
               <h3 className="font-bold text-xl mb-4">Prefer to Talk Directly?</h3>
-              <p className="text-gray-200 mb-6">
+              <p className="text-primary-foreground/80 mb-6 font-medium">
                 Call us now to discuss your project requirements with our technical team.
               </p>
               <a href="tel:+919678027684">
-                <Button className="bg-accent text-gray-900 hover:bg-yellow-400 font-semibold w-full">
+                <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
                   <Phone className="mr-2 w-4 h-4" />
                   Call +91-9678027684
                 </Button>
@@ -301,8 +302,16 @@ export function ContactClient() {
             <p className="text-gray-600 mt-2">Visit our head office in Guwahati, Assam</p>
           </div>
           <div className="bg-white rounded-lg p-4 border border-gray-200">
-            <div className="bg-gray-200 rounded-lg h-[400px] flex items-center justify-center">
-              <p className="text-gray-500">Map integration would go here</p>
+            <div className="bg-gray-200 rounded-lg h-[400px] overflow-hidden">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4509.166628943781!2d91.7755516!3d26.1569559!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a59003ad2c8c3%3A0x45df74d231f0e84c!2sStructro%20Infra%20Tech!5e1!3m2!1sen!2sin!4v1776015415897!5m2!1sen!2sin" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
           </div>
         </Container>

@@ -5,97 +5,12 @@ import { Button } from "@/components/ui/button"
 import { ArrowUpRight, Play } from "lucide-react";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
+import { projectsData } from "@/lib/data";
 
 export function ProjectsClient() {
   const [activeTab, setActiveTab] = useState<"ongoing" | "completed">("completed");
 
-  const projects = {
-    ongoing: [
-      {
-        id: 1,
-        title: "Railway Bridge Construction",
-        location: "Guwahati, Assam",
-        category: "Bridge Engineering",
-        src: "/images/gallery/image.png",
-        alt: "Railway Bridge Construction Guwahati",
-        isVideo: false
-      },
-      {
-        id: 2,
-        title: "Industrial PEB Warehouse",
-        location: "Assam",
-        category: "PEB Buildings",
-        src: "/images/gallery/image copy 2.png",
-        alt: "PEB Warehouse Construction Assam",
-        isVideo: true
-      },
-      {
-        id: 3,
-        title: "Highway Overpass",
-        location: "Northeast India",
-        category: "Bridge Engineering",
-        src: "/images/gallery/image copy 3.png",
-        alt: "Highway Bridge Construction Northeast India",
-        isVideo: false
-      }
-    ],
-    completed: [
-      {
-        id: 4,
-        title: "Steel Structure Warehouse",
-        location: "Guwahati, Assam",
-        category: "Steel Structures",
-        src: "/images/gallery/image copy 4.png",
-        alt: "Steel Warehouse Guwahati Assam",
-        isVideo: false
-      },
-      {
-        id: 5,
-        title: "Composite Bridge",
-        location: "Assam",
-        category: "Bridge Engineering",
-        src: "/images/gallery/image copy 5.png",
-        alt: "Composite Bridge Construction Assam",
-        isVideo: false
-      },
-      {
-        id: 6,
-        title: "Foot Over Bridge",
-        location: "Guwahati",
-        category: "Bridge Engineering",
-        src: "/images/gallery/image.png",
-        alt: "Foot Over Bridge Guwahati",
-        isVideo: false
-      },
-      {
-        id: 7,
-        title: "Industrial Shed",
-        location: "Assam",
-        category: "Steel Structures",
-        src: "/images/gallery/image copy.png",
-        alt: "Industrial Steel Shed Assam",
-        isVideo: false
-      },
-      {
-        id: 8,
-        title: "Water Staging Facility",
-        location: "Northeast India",
-        category: "Water Staging",
-        src: "/images/gallery/image copy 3.png",
-        alt: "Water Staging Infrastructure Northeast India",
-        isVideo: false
-      },
-      {
-        id: 9,
-        title: "PEB Manufacturing Unit",
-        location: "Guwahati, Assam",
-        category: "PEB Buildings",
-        src: "/images/gallery/image copy 4.png",
-        alt: "PEB Building Guwahati",
-        isVideo: false
-      }
-    ]
-  };
+  const projects = projectsData;
 
   return (
     <div className="">
@@ -113,13 +28,14 @@ export function ProjectsClient() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/50" />
         <Container className="relative h-full flex flex-col justify-center">
-          <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4">
+          <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4 drop-shadow-sm">
             Our Projects
           </p>
-          <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">
-            Building the Future<br/>Across Northeast India
+          <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground leading-tight">
+            Building the Future<br/>
+            <span className="drop-shadow-sm">Across Northeast India</span>
           </h1>
-          <p className="text-gray-200 text-lg mt-6 max-w-2xl">
+          <p className="text-primary-foreground/80 text-lg mt-6 max-w-2xl font-medium">
             Explore our portfolio of successful projects spanning bridge engineering, 
             PEB buildings, and industrial infrastructure.
           </p>
@@ -157,8 +73,8 @@ export function ProjectsClient() {
               onClick={() => setActiveTab("ongoing")}
               className={`px-8 py-3 font-semibold rounded-sm transition-all ${
                 activeTab === "ongoing"
-                  ? "bg-primary text-white"
-                  : "bg-white text-gray-600 border border-gray-200 hover:border-primary"
+                  ? "bg-primary text-primary-foreground shadow-md"
+                  : "bg-white text-gray-600 border border-gray-200 hover:border-primary/50"
               }`}
             >
               Ongoing Projects
@@ -167,8 +83,8 @@ export function ProjectsClient() {
               onClick={() => setActiveTab("completed")}
               className={`px-8 py-3 font-semibold rounded-sm transition-all ${
                 activeTab === "completed"
-                  ? "bg-primary text-white"
-                  : "bg-white text-gray-600 border border-gray-200 hover:border-primary"
+                  ? "bg-primary text-primary-foreground shadow-md"
+                  : "bg-white text-gray-600 border border-gray-200 hover:border-primary/50"
               }`}
             >
               Completed Projects
@@ -198,7 +114,7 @@ export function ProjectsClient() {
                 
                 {/* Category Badge */}
                 <div className="absolute top-4 left-4">
-                  <span className="bg-primary text-white text-xs font-bold px-3 py-1 rounded-sm">
+                  <span className="bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-sm shadow-sm">
                     {project.category}
                   </span>
                 </div>
@@ -218,7 +134,7 @@ export function ProjectsClient() {
                 {/* Hover Content */}
                 <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                   <a href="/contact">
-                    <Button className="bg-accent text-gray-900 hover:bg-yellow-400 font-semibold w-full">
+                    <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
                       View Details
                       <ArrowUpRight className="ml-2 w-4 h-4" />
                     </Button>
@@ -271,13 +187,13 @@ export function ProjectsClient() {
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-primary p-6 rounded-lg text-center">
-                  <h3 className="text-3xl font-bold text-white mb-2">Regional</h3>
-                  <p className="text-gray-200 text-sm">Projects across Assam</p>
+                <div className="bg-primary p-6 rounded-lg text-center shadow-inner">
+                  <h3 className="text-3xl font-bold text-primary-foreground mb-2">Regional</h3>
+                  <p className="text-primary-foreground/70 text-sm font-medium">Projects across Assam</p>
                 </div>
-                <div className="bg-accent p-6 rounded-lg text-center">
-                  <h3 className="text-3xl font-bold text-gray-900 mb-2">National</h3>
-                  <p className="text-gray-700 text-sm">Pan-India Presence</p>
+                <div className="bg-accent p-6 rounded-lg text-center shadow-inner">
+                  <h3 className="text-3xl font-bold text-accent-foreground mb-2">National</h3>
+                  <p className="text-accent-foreground/70 text-sm font-medium">Pan-India Presence</p>
                 </div>
               </div>
             </div>
@@ -287,23 +203,23 @@ export function ProjectsClient() {
 
       {/* CTA Section */}
       <Container className="py-16">
-        <div className="bg-primary rounded-lg p-12 md:p-16 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+        <div className="bg-primary rounded-lg p-12 md:p-16 text-center shadow-xl">
+          <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
             Have a Project in Mind?
           </h2>
-          <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
+          <p className="text-primary-foreground/80 mb-8 max-w-2xl mx-auto font-medium">
             Let&apos;s discuss how we can bring your vision to life. Our team is ready to provide 
             expert consultation for your next infrastructure project.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/contact">
-              <Button className="bg-accent text-gray-900 hover:bg-yellow-400 font-semibold px-8 py-3 rounded-sm">
+              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 py-3 rounded-sm shadow-md">
                 Request Technical Consultation
                 <ArrowUpRight className="ml-2 w-4 h-4" />
               </Button>
             </a>
             <a href="/services">
-              <Button variant="outline" className="border-white text-white hover:bg-white hover:text-gray-900 font-semibold px-8 py-3 rounded-sm">
+              <Button variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground hover:text-primary font-semibold px-8 py-3 rounded-sm">
                 Explore Our Services
               </Button>
             </a>

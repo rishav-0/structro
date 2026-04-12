@@ -1,10 +1,12 @@
 
 
 import { Button } from "@/components/ui/button"
-import { ArrowUpRight, Waypoints, Building2, HardHat, Waves, CheckCircle, Clock, Shield, Award } from "lucide-react";
+import { ArrowUpRight, Waypoints, Building2, HardHat, Waves, CheckCircle, Clock, Shield, Award, PenTool } from "lucide-react";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import type { Metadata } from 'next';
+
+import { servicesData } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: 'Services | Structro Infratech - Bridge Engineering, PEB Buildings, Steel Structures',
@@ -14,78 +16,7 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   
-  const services = [
-    {
-      id: "bridge",
-      title: "Bridge Engineering",
-      subtitle: "Excellence in Bridge Construction",
-      description: "We specialize in designing and constructing various types of bridges with precision engineering and modern technology. Our expertise spans across multiple bridge categories to meet diverse infrastructure needs.",
-      icon: <Waypoints className="w-8 h-8" />,
-      features: [
-        "Open Web Bridges",
-        "Railway Bridges",
-        "Highway Bridges",
-        "Foot Over Bridges",
-        "Composite Bridges",
-        "Arch Bridges",
-        "Baily Bridges",
-        "Cable-Stayed Bridges"
-      ],
-      image: "https://images.unsplash.com/photo-1545558014-8692077e9b5c?q=80&w=2070&auto=format&fit=crop",
-      alt: "Railway Bridge Construction Guwahati Assam"
-    },
-    {
-      id: "peb",
-      title: "PEB Buildings",
-      subtitle: "Pre-Engineered Building Solutions",
-      description: "Our Pre-Engineered Buildings (PEB) represent the future of industrial construction. We deliver efficient, cost-effective, and technologically advanced building solutions tailored to your specific requirements.",
-      icon: <Building2 className="w-8 h-8" />,
-      features: [
-        "Custom Design Solutions",
-        "Quick Installation",
-        "Cost-Effective Construction",
-        "Flexible Expansion Options",
-        "Energy Efficient Design",
-        "Quality Certified Materials"
-      ],
-      image: "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?q=80&w=2070&auto=format&fit=crop",
-      alt: "PEB Building Construction Assam"
-    },
-    {
-      id: "steel",
-      title: "Steel Structures & Sheds",
-      subtitle: "Industrial Warehousing Solutions",
-      description: "We provide robust steel structures and industrial sheds designed for durability and functionality. Our solutions cater to warehousing, manufacturing, and commercial applications.",
-      icon: <HardHat className="w-8 h-8" />,
-      features: [
-        "Industrial Warehousing",
-        "Factory Buildings",
-        "Commercial Complexes",
-        "Aircraft Hangars",
-        "Agricultural Structures",
-        "Custom Steel Fabrication"
-      ],
-      image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=2070&auto=format&fit=crop",
-      alt: "Steel Structure Warehouse Guwahati"
-    },
-    {
-      id: "water",
-      title: "Water Staging",
-      subtitle: "Specialized Water Infrastructure",
-      description: "We construct specialized water staging infrastructure for industrial and municipal water management needs. Our engineering expertise ensures reliable water solutions.",
-      icon: <Waves className="w-8 h-8" />,
-      features: [
-        "Water Treatment Plants",
-        "Water Storage Tanks",
-        "Pumping Stations",
-        "Irrigation Structures",
-        "Marine & Coastal Infrastructure",
-        "Hydro Power Structures"
-      ],
-      image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2070&auto=format&fit=crop",
-      alt: "Water Staging Infrastructure Assam"
-    }
-  ];
+  const services = servicesData;
 
   const benefits = [
     {
@@ -121,13 +52,14 @@ export default function ServicesPage() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/50" />
         <Container className="relative h-full flex flex-col justify-center">
-          <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4">
+          <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4 drop-shadow-sm">
             Our Services
           </p>
-          <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">
-            Comprehensive<br/>Steel Engineering Solutions
+          <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground leading-tight">
+            Comprehensive<br/>
+            <span className="drop-shadow-sm">Steel Engineering Solutions</span>
           </h1>
-          <p className="text-gray-200 text-lg mt-6 max-w-2xl">
+          <p className="text-primary-foreground/80 text-lg mt-6 max-w-2xl font-medium">
             From bridge engineering to PEB buildings—delivering excellence in every project 
             across Northeast India.
           </p>
@@ -162,7 +94,7 @@ export default function ServicesPage() {
               {/* Content */}
               <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-primary p-3 rounded-sm text-white">
+                  <div className="bg-primary p-3 rounded-sm text-primary-foreground">
                     {service.icon}
                   </div>
                   <span className="text-accent text-sm font-bold uppercase tracking-[0.2em]">
@@ -187,16 +119,21 @@ export default function ServicesPage() {
                   ))}
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <a href="/contact">
-                    <Button className="bg-primary text-white hover:bg-primary/90 font-semibold px-6 py-3 rounded-sm">
-                      Request Technical Consultation
+                <div className="flex flex-col sm:flex-row flex-wrap gap-4">
+                  <a href={`/services/${service.id}`}>
+                    <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-6 py-3 rounded-sm">
+                      Full Details
                       <ArrowUpRight className="ml-2 w-4 h-4" />
                     </Button>
                   </a>
                   <a href="/projects">
                     <Button variant="outline" className="border-gray-300 text-gray-700 hover:bg-gray-100 font-semibold px-6 py-3 rounded-sm">
-                      View Related Projects
+                      View Projects
+                    </Button>
+                  </a>
+                  <a href="/contact">
+                    <Button variant="ghost" className="text-primary font-semibold px-6 py-3 rounded-sm">
+                      Consultation
                     </Button>
                   </a>
                 </div>
@@ -226,7 +163,7 @@ export default function ServicesPage() {
             <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4">
               Our Process
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-white">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground">
               How We Deliver Excellence
             </h2>
           </div>
@@ -239,11 +176,11 @@ export default function ServicesPage() {
               { step: "04", title: "Delivery", desc: "On-time project handover" }
             ].map((item, index) => (
               <div key={index} className="text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-accent rounded-full mb-4">
-                  <span className="text-gray-900 font-bold text-xl">{item.step}</span>
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-accent rounded-full mb-4 shadow-lg">
+                  <span className="text-accent-foreground font-bold text-xl">{item.step}</span>
                 </div>
-                <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
-                <p className="text-gray-400 text-sm">{item.desc}</p>
+                <h3 className="text-primary-foreground font-bold text-lg mb-2">{item.title}</h3>
+                <p className="text-primary-foreground/70 text-sm font-medium">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -262,16 +199,23 @@ export default function ServicesPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/contact">
-              <Button className="bg-accent text-gray-900 hover:bg-yellow-400 font-semibold px-8 py-3 rounded-sm">
+              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 py-3 rounded-sm shadow-md">
                 Request Technical Consultation
                 <ArrowUpRight className="ml-2 w-4 h-4" />
               </Button>
             </a>
-            <a href="tel:+919678027684">
-              <Button variant="outline" className="border-white text-white hover:bg-white hover:text-gray-900 font-semibold px-8 py-3 rounded-sm">
-                Call Us Now
-              </Button>
-            </a>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a href="tel:+919678027684">
+                <Button variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground font-semibold px-8 py-3 rounded-sm">
+                  Call: +91 96780 27684
+                </Button>
+              </a>
+              <a href="tel:+917002245491">
+                <Button variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground font-semibold px-8 py-3 rounded-sm">
+                  Call: +91 70022 45491
+                </Button>
+              </a>
+            </div>
           </div>
         </div>
       </Container>

@@ -23,25 +23,25 @@ export default function AboutPage() {
     {
       title: "Integrity",
       description: "We uphold the highest ethical standards in all our dealings. No hidden costs, no broken promises—just honest communication and transparent contracts.",
-      icon: <Shield className="w-6 h-6 text-white" />,
+      icon: <Shield className="w-6 h-6 text-primary-foreground" />,
       color: "bg-primary"
     },
     {
       title: "Quality",
       description: "Zero compromise on quality. Every project undergoes rigorous quality checks to ensure durability, safety, and excellence in execution.",
-      icon: <Award className="w-6 h-6 text-white" />,
+      icon: <Award className="w-6 h-6 text-primary-foreground" />,
       color: "bg-primary"
     },
     {
       title: "Sustainability",
       description: "Building for the future with eco-conscious materials, efficient methods, and long-term thinking to reduce environmental impact.",
-      icon: <Leaf className="w-6 h-6 text-white" />,
+      icon: <Leaf className="w-6 h-6 text-primary-foreground" />,
       color: "bg-primary"
     },
     {
       title: "Innovation",
       description: "Embracing cutting-edge technology and modern engineering techniques to deliver future-ready infrastructure solutions.",
-      icon: <Lightbulb className="w-6 h-6 text-white" />,
+      icon: <Lightbulb className="w-6 h-6 text-primary-foreground" />,
       color: "bg-primary"
     },
   ];
@@ -85,14 +85,14 @@ export default function AboutPage() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/50" />
         <Container className="relative h-full flex flex-col justify-center">
-          <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4">
+          <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4 drop-shadow-sm">
             About Us
           </p>
-          <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight max-w-3xl">
+          <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground leading-tight max-w-3xl">
             Building Infrastructure<br/>
-            <span className="text-accent">Since 2000</span>
+            <span className="text-accent drop-shadow-sm">Since 2000</span>
           </h1>
-          <p className="text-gray-200 text-lg mt-6 max-w-2xl">
+          <p className="text-primary-foreground/80 text-lg mt-6 max-w-2xl font-medium">
             Structro Infratech is a leading steel engineering company in Northeast India, 
             specializing in bridge construction, PEB buildings, and industrial infrastructure.
           </p>
@@ -198,7 +198,7 @@ export default function AboutPage() {
                   <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-primary/20 -translate-x-4" />
                 )}
                 <div className="bg-white p-6 rounded-lg border border-gray-200 h-full">
-                  <span className="inline-block px-3 py-1 bg-primary text-white text-xs font-bold rounded-full mb-4">
+                  <span className="inline-block px-3 py-1 bg-primary text-primary-foreground text-xs font-bold rounded-full mb-4">
                     {item.year}
                   </span>
                   <h3 className="font-bold text-gray-900 text-lg mb-2">{item.title}</h3>
@@ -268,7 +268,7 @@ export default function AboutPage() {
               
               <div className="mt-10">
                 <a href="/contact">
-                  <Button className="bg-accent text-gray-900 hover:bg-yellow-400 font-semibold px-8 py-3 rounded-sm">
+                  <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 py-3 rounded-sm">
                     Request a Technical Consultation
                     <ArrowUpRight className="ml-2 w-4 h-4" />
                   </Button>
@@ -303,12 +303,12 @@ export default function AboutPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/contact">
-              <Button className="bg-accent text-gray-900 hover:bg-yellow-400 font-semibold px-8 py-3 rounded-sm w-full sm:w-auto">
+              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 py-3 rounded-sm w-full sm:w-auto">
                 Get a Quote
               </Button>
             </a>
             <a href="/projects">
-              <Button variant="outline" className="border-white text-white hover:bg-white hover:text-gray-900 font-semibold px-8 py-3 rounded-sm w-full sm:w-auto">
+              <Button variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground font-semibold px-8 py-3 rounded-sm w-full sm:w-auto">
                 View Our Projects
               </Button>
             </a>

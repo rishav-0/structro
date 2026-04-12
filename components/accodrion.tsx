@@ -114,7 +114,7 @@ export default function AccordionCarousel() {
 
             {/* Active indicator dot */}
             <div
-              className="absolute top-4 right-4 w-2 h-2 rounded-full bg-white"
+              className="absolute top-4 right-4 w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(var(--primary),0.5)]"
               style={{
                 opacity: isActive ? 1 : 0,
                 transform: isActive ? "scale(1)" : "scale(0)",

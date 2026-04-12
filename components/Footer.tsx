@@ -1,4 +1,6 @@
 import React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import { Mail, Facebook, Instagram, Twitter, Phone, MapPin, Award } from 'lucide-react';
 import { Container } from './ui/container';
 
@@ -10,14 +12,16 @@ const Footer = () => {
           
           {/* Brand and Contact */}
           <div className="flex flex-col gap-6">
-            <div className="flex items-center gap-2">
-              <div className="bg-primary p-1.5 rounded-lg">
-                <div className="w-5 h-5 bg-white rounded-sm transform rotate-45 flex items-center justify-center">
-                  <div className="w-2 h-2 bg-primary rounded-full"></div>
-                </div>
+            <Link href="/" className="inline-block">
+              <div className="relative w-40 h-10">
+                <Image 
+                  src="/images/transparantLogo.png" 
+                  alt="Structro Logo" 
+                  fill
+                  className="object-contain"
+                />
               </div>
-              <span className="text-2xl font-bold tracking-tight text-white uppercase">Structro</span>
-            </div>
+            </Link>
             
             {/* ISO Certification Badge */}
             <div className="flex items-center gap-3 bg-white/5 p-3 rounded-lg border border-white/10">
@@ -107,13 +111,41 @@ const Footer = () => {
                 </div>
               </div>
             </div>
-            
-            {/* CTA Button */}
-            <a href="/contact" className="inline-block mt-6">
-              <button className="bg-accent text-gray-900 font-semibold px-6 py-3 rounded hover:bg-yellow-400 transition-colors w-full">
-                Request a Technical Consultation
-              </button>
-            </a>
+          </div>
+        </div>
+
+        {/* Stakeholder and Business Connectivity Sections */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 pt-12 border-t border-gray-800">
+          {/* Stakeholder Portal */}
+          <div>
+            <h4 className="font-semibold text-lg mb-6 uppercase tracking-wide">Stakeholder Portal</h4>
+            <ul className="space-y-4 text-gray-400 text-sm">
+              <li><a href="#" className="hover:text-primary transition-colors flex items-center gap-2">Contractors <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded">Form</span></a></li>
+              <li><a href="#" className="hover:text-primary transition-colors flex items-center gap-2">Vendors <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded">Form</span></a></li>
+              <li><a href="#" className="hover:text-primary transition-colors flex items-center gap-2">Job Seekers <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded">Apply</span></a></li>
+            </ul>
+          </div>
+
+          {/* Business Connectivity */}
+          <div>
+            <h4 className="font-semibold text-lg mb-6 uppercase tracking-wide">Business Links</h4>
+            <ul className="space-y-4 text-gray-400 text-sm">
+              <li><a href="https://gem.gov.in" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">GeM (Govt. e-Marketplace)</a></li>
+              <li><a href="https://www.indiamart.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">IndiaMART</a></li>
+              <li><a href="https://www.justdial.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">JustDial</a></li>
+            </ul>
+          </div>
+
+          <div className="lg:col-span-2">
+            <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-8 rounded-lg border border-white/5 h-full flex flex-col justify-center">
+              <h4 className="font-bold text-xl text-white mb-2">Ready to Build Something Great?</h4>
+              <p className="text-gray-400 text-sm mb-6">Request a technical consultation for your bridge, PEB, or steel infrastructure project.</p>
+              <a href="/contact">
+                <button className="bg-primary text-primary-foreground font-semibold px-8 py-3 rounded hover:bg-primary/90 transition-all w-fit">
+                  Get Technical Quote
+                </button>
+              </a>
+            </div>
           </div>
         </div>
 

@@ -6,6 +6,8 @@ import { MenuToggleIcon } from '@/components/ui/menu-toggle-icon';
 import { Container } from '@/components/ui/container';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
+import Image from 'next/image';
+import { servicesData } from '@/lib/data';
 import {
 	NavigationMenu,
 	NavigationMenuContent,
@@ -14,16 +16,17 @@ import {
 	NavigationMenuList,
 	NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
-import { LucideIcon } from 'lucide-react';
+import { FolderOpen, LucideIcon } from 'lucide-react';
 import {
 	Waypoints,
 	Building2,
 	HardHat,
 	Waves,
 	Info,
-	FolderOpen,
 	Mail,
 	Calendar,
+	Shield,
+	PenTool,
 } from 'lucide-react';
 
 type LinkItem = {
@@ -57,13 +60,25 @@ export function Header() {
 		>
 			<Container className="h-16 flex items-center justify-between">
 				<div className="flex items-center gap-5">
-					<Link href="/" className="flex items-center gap-2">
-						<div className="bg-primary p-1.5 rounded-lg">
-							<div className="w-5 h-5 bg-white rounded-sm transform rotate-45 flex items-center justify-center">
-								<div className="w-2 h-2 bg-primary rounded-full"></div>
-							</div>
+					<Link href="/" className="flex items-center gap-2 group">
+						<div className="relative w-40 h-10 transition-all duration-300">
+							<Image 
+								src="/images/transparantLogo.png" 
+								alt="Structro Logo" 
+								fill
+								className={cn("object-contain transition-opacity duration-300", 
+									scrolled ? "opacity-0" : "opacity-100"
+								)}
+							/>
+							<Image 
+								src="/images/logo.png" 
+								alt="Structro Logo" 
+								fill
+								className={cn("object-contain transition-opacity duration-300", 
+									scrolled ? "opacity-100" : "opacity-0"
+								)}
+							/>
 						</div>
-						<span className="text-xl font-bold tracking-tight text-primary">STRUCTRO</span>
 					</Link>
 					<NavigationMenu className="hidden md:flex">
 						<NavigationMenuList>
@@ -119,22 +134,24 @@ export function Header() {
 					</NavigationMenu>
 				</div>
 				<div className="hidden items-center gap-2 md:flex">
-					<Button variant="outline" className="rounded-sm text-sm">Get a Quote</Button>
-					<Button className="rounded-sm bg-accent text-gray-900 hover:bg-yellow-400 text-sm font-semibold">
+					<Button variant="outline" className="rounded-sm text-sm border-secondary text-secondary-foreground hover:bg-secondary hover:text-secondary-foreground">Get a Quote</Button>
+					<Button className="rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-semibold">
 						Request Consultation
 					</Button>
 				</div>
-				<Button
-					size="icon"
-					variant="outline"
-					onClick={() => setOpen(!open)}
-					className="md:hidden rounded-sm"
-					aria-expanded={open}
-					aria-controls="mobile-menu"
-					aria-label="Toggle menu"
-				>
-					<MenuToggleIcon open={open} className="size-5" duration={300} />
-				</Button>
+				<div className="flex md:hidden items-center gap-2">
+					<Button
+						size="icon"
+						variant="outline"
+						onClick={() => setOpen(!open)}
+						className="rounded-sm"
+						aria-expanded={open}
+						aria-controls="mobile-menu"
+						aria-label="Toggle menu"
+					>
+						<MenuToggleIcon open={open} className="size-5" duration={300} />
+					</Button>
+				</div>
 			</Container>
 			<MobileMenu open={open} className="flex flex-col justify-between gap-2 overflow-y-auto">
 				<NavigationMenu className="max-w-full">
@@ -152,10 +169,10 @@ export function Header() {
 					</div>
 				</NavigationMenu>
 				<div className="flex flex-col gap-2 mt-4">
-					<Button variant="outline" className="w-full rounded-sm bg-transparent">
+					<Button variant="outline" className="w-full rounded-sm border-secondary text-secondary-foreground hover:bg-secondary">
 						Get a Quote
 					</Button>
-					<Button className="w-full rounded-sm bg-accent text-gray-900 hover:bg-yellow-400 font-semibold">
+					<Button className="w-full rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
 						Request Consultation
 					</Button>
 				</div>
@@ -218,32 +235,12 @@ function ListItem({
 }
 
 // Structro Infra Tech - Services Links
-const servicesLinks: LinkItem[] = [
-	{
-		title: 'Bridge Engineering',
-		href: '/services#bridge',
-		description: 'Open Web, Railway, Highway, Foot Over',
-		icon: Waypoints,
-	},
-	{
-		title: 'PEB Buildings',
-		href: '/services#peb',
-		description: 'Pre-Engineered Building Solutions',
-		icon: Building2,
-	},
-	{
-		title: 'Steel Structures',
-		href: '/services#steel',
-		description: 'Industrial Warehousing & Sheds',
-		icon: HardHat,
-	},
-	{
-		title: 'Water Staging',
-		href: '/services#water',
-		description: 'Specialized Water Infrastructure',
-		icon: Waves,
-	},
-];
+const servicesLinks: LinkItem[] = servicesData.map(s => ({
+	title: s.id === 'design' ? 'Design Services' : s.id === 'special-metal' ? 'Special Metal Structures' : s.title.replace(' (Pre-Engineered Buildings)', ''),
+	href: `/services#${s.id}`,
+	description: s.navDescription || s.homeDescription,
+	icon: s.navIcon || Info,
+}));
 
 // Structro Infra Tech - Projects Links
 const projectsLinks: LinkItem[] = [
