@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Mail, Facebook, Instagram, Twitter, Phone, MapPin, Award } from 'lucide-react';
 import { Container } from './ui/container';
+import { Button } from './ui/button';
 
 const Footer = () => {
   return (
@@ -12,17 +13,7 @@ const Footer = () => {
           
           {/* Brand and Contact */}
           <div className="flex flex-col gap-6">
-            <Link href="/" className="inline-block">
-              <div className="relative w-40 h-10">
-                <Image 
-                  src="/images/transparantLogo.png" 
-                  alt="Structro Logo" 
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            </Link>
-            
+           
             {/* ISO Certification Badge */}
             <div className="flex items-center gap-3 bg-white/5 p-3 rounded-lg border border-white/10">
               <Award className="text-accent w-8 h-8 flex-shrink-0" />
@@ -48,10 +39,6 @@ const Footer = () => {
                 <a href="tel:+919678027684" className="hover:text-primary transition-colors font-medium">+91-9678027684</a>
               </div>
               <div className="flex items-center gap-2 text-gray-300 text-sm">
-                <Phone size={16} className="text-accent" />
-                <a href="tel:+917002245491" className="hover:text-primary transition-colors font-medium">+91-7002245491</a>
-              </div>
-              <div className="flex items-center gap-2 text-gray-300 text-sm">
                 <Mail size={16} className="text-accent" />
                 <a href="mailto:structro.infratech@gmail.com" className="hover:text-primary transition-colors font-medium">structro.infratech@gmail.com</a>
               </div>
@@ -70,10 +57,10 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-lg mb-6 uppercase tracking-wide">Company</h4>
             <ul className="space-y-4 text-gray-400 text-sm">
-              <li><a href="/about" className="hover:text-primary transition-colors">About Us</a></li>
-              <li><a href="/projects" className="hover:text-primary transition-colors">Our Projects</a></li>
-              <li><a href="/services" className="hover:text-primary transition-colors">Services</a></li>
-              <li><a href="/contact" className="hover:text-primary transition-colors">Contact Us</a></li>
+              <li><Link href="/about" className="hover:text-primary transition-colors">About Us</Link></li>
+              <li><Link href="/projects" className="hover:text-primary transition-colors">Our Projects</Link></li>
+              <li><Link href="/services" className="hover:text-primary transition-colors">Services</Link></li>
+              <li><Link href="/contact" className="hover:text-primary transition-colors">Contact Us</Link></li>
             </ul>
           </div>
 
@@ -81,10 +68,10 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-lg mb-6 uppercase tracking-wide">Services</h4>
             <ul className="space-y-4 text-gray-400 text-sm">
-              <li><a href="/services#bridge" className="hover:text-primary transition-colors">Bridge Engineering</a></li>
-              <li><a href="/services#peb" className="hover:text-primary transition-colors">PEB Buildings</a></li>
-              <li><a href="/services#steel" className="hover:text-primary transition-colors">Steel Structures</a></li>
-              <li><a href="/services#water" className="hover:text-primary transition-colors">Water Staging</a></li>
+              <li><Link href="/services#bridge" className="hover:text-primary transition-colors">Bridge Engineering</Link></li>
+              <li><Link href="/services#peb" className="hover:text-primary transition-colors">PEB Buildings</Link></li>
+              <li><Link href="/services#steel" className="hover:text-primary transition-colors">Steel Structures</Link></li>
+
             </ul>
           </div>
 
@@ -140,11 +127,11 @@ const Footer = () => {
             <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-8 rounded-lg border border-white/5 h-full flex flex-col justify-center">
               <h4 className="font-bold text-xl text-white mb-2">Ready to Build Something Great?</h4>
               <p className="text-gray-400 text-sm mb-6">Request a technical consultation for your bridge, PEB, or steel infrastructure project.</p>
-              <a href="/contact">
-                <button className="bg-primary text-primary-foreground font-semibold px-8 py-3 rounded hover:bg-primary/90 transition-all w-fit">
+              <Link href="/contact">
+                <Button variant="saffron" size="lg">
                   Get Technical Quote
-                </button>
-              </a>
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

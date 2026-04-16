@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ArrowUpRight, Play } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { projectsData } from "@/lib/data";
 
@@ -47,7 +48,7 @@ export function ProjectsClient() {
         <Container>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { label: "Total Projects", value: "48+" },
+              { label: "Total Projects", value: "500+" },
               { label: "Completed", value: "45" },
               { label: "Ongoing", value: "3" },
               { label: "Regions", value: "Assam" }
@@ -69,26 +70,22 @@ export function ProjectsClient() {
       <div className="bg-gray-50 py-8 sticky top-16 z-40 border-b border-gray-200">
         <Container>
           <div className="flex justify-center gap-4">
-            <button
+            <Button
               onClick={() => setActiveTab("ongoing")}
-              className={`px-8 py-3 font-semibold rounded-sm transition-all ${
-                activeTab === "ongoing"
-                  ? "bg-primary text-primary-foreground shadow-md"
-                  : "bg-white text-gray-600 border border-gray-200 hover:border-primary/50"
-              }`}
+              variant={activeTab === "ongoing" ? "saffron" : "outline"}
+              size="lg"
+              className="px-8"
             >
               Ongoing Projects
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setActiveTab("completed")}
-              className={`px-8 py-3 font-semibold rounded-sm transition-all ${
-                activeTab === "completed"
-                  ? "bg-primary text-primary-foreground shadow-md"
-                  : "bg-white text-gray-600 border border-gray-200 hover:border-primary/50"
-              }`}
+              variant={activeTab === "completed" ? "saffron" : "outline"}
+              size="lg"
+              className="px-8"
             >
               Completed Projects
-            </button>
+            </Button>
           </div>
         </Container>
       </div>
@@ -133,12 +130,12 @@ export function ProjectsClient() {
                 
                 {/* Hover Content */}
                 <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                  <a href="/contact">
-                    <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
+                  <Link href={`/projects/${project.id}`}>
+                    <Button variant="red" className="w-full">
                       View Details
                       <ArrowUpRight className="ml-2 w-4 h-4" />
                     </Button>
-                  </a>
+                  </Link>
                 </div>
               </div>
               
@@ -212,17 +209,17 @@ export function ProjectsClient() {
             expert consultation for your next infrastructure project.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact">
-              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 py-3 rounded-sm shadow-md">
+            <Link href="/contact">
+              <Button variant="red" size="lg" className="shadow-md">
                 Request Technical Consultation
                 <ArrowUpRight className="ml-2 w-4 h-4" />
               </Button>
-            </a>
-            <a href="/services">
-              <Button variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground hover:text-primary font-semibold px-8 py-3 rounded-sm">
+            </Link>
+            <Link href="/services">
+              <Button variant="primary-outline" size="lg">
                 Explore Our Services
               </Button>
-            </a>
+            </Link>
           </div>
         </div>
       </Container>

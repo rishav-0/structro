@@ -17,7 +17,7 @@ const fontMono = Geist_Mono({
 // SEO Metadata for Structro Infra Tech
 export const metadata: Metadata = {
   title: 'Structro Infratech | Steel Engineering Company Guwahati | Bridge Construction Assam',
-  description: 'Structro Infratech is a leading steel engineering company in Guwahati, Assam. Specializing in bridge engineering, PEB buildings, steel structures, and water staging infrastructure. ISO 9001:2015 certified. Since 2000.',
+  description: 'Structro Infratech is a leading steel engineering company in Guwahati, Assam. Specializing in bridge engineering, PEB buildings, and steel structures. ISO 9001:2015 certified. Since 2000.',
   keywords: [
     'Steel Engineering Company Guwahati',
     'Bridge Construction Assam',
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     'Industrial Sheds Assam',
     'Bridge Engineering',
     'Steel Structure Company',
-    'Water Staging Construction',
+
     'Infrastructure Guwahati'
   ],
   authors: [{ name: 'Structro Infratech' }],

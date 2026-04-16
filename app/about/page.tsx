@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { ArrowUpRight, Award, Shield, Leaf, Lightbulb, Calendar, CheckCircle } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import type { Metadata } from 'next';
+import WhyChooseUs from "@/components/WhyChooseUs";
+
 
 export const metadata: Metadata = {
   title: 'About Us | Structro Infratech - Steel Engineering Company Guwahati',
@@ -13,7 +16,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   
   const stats = [
-    { label: "Projects Completed", value: "48+" },
+    { label: "Projects Completed", value: "500+" },
     { label: "Years of Experience", value: "25+" },
     { label: "Team Members", value: "400+" },
     { label: "Client Satisfaction", value: "95%" },
@@ -65,7 +68,7 @@ export default function AboutPage() {
     {
       year: "Present",
       title: "Industry Leader",
-      description: "Leading steel engineering company in Assam and Northeast India with 48+ successful projects."
+      description: "Leading steel engineering company in Assam and Northeast India with 500+ successful projects."
     }
   ];
 
@@ -140,7 +143,7 @@ export default function AboutPage() {
               </p>
               <p>
                 Today, we are proud to be one of the most trusted names in the construction industry 
-                in Assam and across Northeast India, having successfully delivered 48+ projects that 
+                in Assam and across Northeast India, having successfully delivered 500+ projects that 
                 stand as testaments to our commitment to excellence.
               </p>
             </div>
@@ -179,39 +182,10 @@ export default function AboutPage() {
         </div>
       </Container>
 
-      {/* Timeline Section */}
-      <div className="bg-gray-50 py-24">
-        <Container>
-          <div className="text-center mb-16">
-            <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4">
-              Our Journey
-            </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-              Milestones That Define Us
-            </h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {timeline.map((item, index) => (
-              <div key={index} className="relative">
-                {index < timeline.length - 1 && (
-                  <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-primary/20 -translate-x-4" />
-                )}
-                <div className="bg-white p-6 rounded-lg border border-gray-200 h-full">
-                  <span className="inline-block px-3 py-1 bg-primary text-primary-foreground text-xs font-bold rounded-full mb-4">
-                    {item.year}
-                  </span>
-                  <h3 className="font-bold text-gray-900 text-lg mb-2">{item.title}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </div>
+     
 
       {/* Core Values Section */}
-      <Container className="py-24">
+      <Container className="py-24 ">
         <div className="text-center mb-16">
           <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4">
             Core Values
@@ -241,51 +215,26 @@ export default function AboutPage() {
       </Container>
 
       {/* Why Choose Us Section */}
-      <div className="bg-primary py-24">
+      <WhyChooseUs />
+
+{/* Map Section */}
+      <div className="bg-gray-100 py-16">
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4">
-                Why Choose Us
-              </p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                Experience That Matters
-              </h2>
-              <div className="space-y-6">
-                {[
-                  "Founded by 4 experienced professionals",
-                  "Connecting dreams through quality construction since 2000",
-                  "Zero compromise on safety and risk management",
-                  "ISO 9001:2015 certified company",
-                  "Strong presence across Northeast India"
-                ].map((item, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-200">{item}</p>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="mt-10">
-                <a href="/contact">
-                  <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 py-3 rounded-sm">
-                    Request a Technical Consultation
-                    <ArrowUpRight className="ml-2 w-4 h-4" />
-                  </Button>
-                </a>
-              </div>
-            </div>
-            
-            <div className="relative">
-              <div className="aspect-square relative rounded-lg overflow-hidden">
-                <Image
-                  src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop"
-                  alt="Engineers discussing blueprints"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover"
-                />
-              </div>
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Find Us</h2>
+            <p className="text-gray-600 mt-2">Visit our head office in Guwahati, Assam</p>
+          </div>
+          <div className="bg-white rounded-lg p-4 border border-gray-200">
+            <div className="bg-gray-200 rounded-lg h-[400px] overflow-hidden">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4509.166628943781!2d91.7755516!3d26.1569559!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a59003ad2c8c3%3A0x45df74d231f0e84c!2sStructro%20Infra%20Tech!5e1!3m2!1sen!2sin!4v1776015415897!5m2!1sen!2sin" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
           </div>
         </Container>
@@ -302,19 +251,20 @@ export default function AboutPage() {
             Contact us for a technical consultation today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact">
-              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 py-3 rounded-sm w-full sm:w-auto">
+            <Link href="/contact">
+              <Button variant="red" size="lg" className="w-full sm:w-auto">
                 Get a Quote
               </Button>
-            </a>
-            <a href="/projects">
-              <Button variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground font-semibold px-8 py-3 rounded-sm w-full sm:w-auto">
+            </Link>
+            <Link href="/projects">
+              <Button variant="gold-outline" size="lg" className="w-full sm:w-auto">
                 View Our Projects
               </Button>
-            </a>
+            </Link>
           </div>
         </div>
       </Container>
+      
     </div>
   )
 }

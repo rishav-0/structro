@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { ArrowUpRight, Waypoints, Building2, HardHat, Waves, CheckCircle, Clock, Shield, Award, PenTool } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import type { Metadata } from 'next';
 
@@ -10,8 +11,8 @@ import { servicesData } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: 'Services | Structro Infratech - Bridge Engineering, PEB Buildings, Steel Structures',
-  description: 'Structro Infratech offers comprehensive steel engineering services including bridge engineering (Open Web, Railway, Highway, Foot Over, Composite, Arch, Baily, Cable-Stayed), PEB buildings, conventional sheds, and water staging infrastructure.',
-  keywords: ['Bridge Engineering', 'PEB Buildings', 'Pre-Engineered Buildings', 'Steel Structures', 'Industrial Sheds', 'Water Staging', 'Bridge Construction Guwahati', 'PEB Manufacturers Assam'],
+  description: 'Structro Infratech offers comprehensive steel engineering services including bridge engineering (Open Web, Railway, Highway, Foot Over, Composite, Arch, Baily, Cable-Stayed), PEB buildings, and conventional sheds.',
+  keywords: ['Bridge Engineering', 'PEB Buildings', 'Pre-Engineered Buildings', 'Steel Structures', 'Industrial Sheds', 'Bridge Construction Guwahati', 'PEB Manufacturers Assam'],
 }
 
 export default function ServicesPage() {
@@ -120,22 +121,22 @@ export default function ServicesPage() {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row flex-wrap gap-4">
-                  <a href={`/services/${service.id}`}>
-                    <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-6 py-3 rounded-sm">
+                  <Link href={`/services/${service.id}`}>
+                    <Button variant="saffron" size="lg">
                       Full Details
                       <ArrowUpRight className="ml-2 w-4 h-4" />
                     </Button>
-                  </a>
-                  <a href="/projects">
-                    <Button variant="outline" className="border-gray-300 text-gray-700 hover:bg-gray-100 font-semibold px-6 py-3 rounded-sm">
+                  </Link>
+                  <Link href="/projects">
+                    <Button variant="outline" size="lg">
                       View Projects
                     </Button>
-                  </a>
-                  <a href="/contact">
-                    <Button variant="ghost" className="text-primary font-semibold px-6 py-3 rounded-sm">
+                  </Link>
+                  <Link href="/contact">
+                    <Button variant="ghost" size="lg" className="text-primary font-semibold">
                       Consultation
                     </Button>
-                  </a>
+                  </Link>
                 </div>
               </div>
               
@@ -198,21 +199,16 @@ export default function ServicesPage() {
             and provide tailored solutions.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact">
-              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 py-3 rounded-sm shadow-md">
+            <Link href="/contact">
+              <Button variant="red" size="lg" className="shadow-md">
                 Request Technical Consultation
                 <ArrowUpRight className="ml-2 w-4 h-4" />
               </Button>
-            </a>
+            </Link>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href="tel:+919678027684">
-                <Button variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground font-semibold px-8 py-3 rounded-sm">
+                <Button variant="gold" size="lg">
                   Call: +91 96780 27684
-                </Button>
-              </a>
-              <a href="tel:+917002245491">
-                <Button variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground font-semibold px-8 py-3 rounded-sm">
-                  Call: +91 70022 45491
                 </Button>
               </a>
             </div>

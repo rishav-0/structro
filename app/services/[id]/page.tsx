@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { ArrowLeft, ArrowUpRight, CheckCircle, Target, Shield, Users, Lightbulb, TrendingUp, HardHat, Building2, MapPin, Calendar, Briefcase, Ruler } from "lucide-react";
 import Image from "next/image";
@@ -54,13 +55,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
         </div>
 
         <Container className="relative z-10">
-          <Link
-            href="/services"
-            className="inline-flex items-center text-accent font-bold uppercase tracking-widest text-[10px] mb-6 hover:translate-x-[-4px] transition-transform drop-shadow-md"
-          >
-            <ArrowLeft className="mr-2 w-4 h-4" />
-            Back to Services
-          </Link>
+        
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight uppercase tracking-tighter drop-shadow-lg">
               {service.title}
@@ -70,13 +65,13 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
             </p>
             <div className="flex flex-wrap gap-4">
               <Link href="/contact">
-                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/95 px-8 py-5 font-bold rounded-sm shadow-xl border-none">
+                <Button variant="saffron" size="xl" className="shadow-xl border-none">
                   Get Technical Advice
                   <ArrowUpRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
               <Link href="/projects">
-                <Button size="lg" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-black px-8 py-5 font-bold rounded-sm backdrop-blur-sm transition-all">
+                <Button variant="white-outline" size="xl" className="backdrop-blur-sm transition-all">
                   View Projects
                 </Button>
               </Link>
@@ -281,7 +276,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
               </h2>
             </div>
             <Link href="/projects">
-              <Button variant="outline" className="border-accent text-accent hover:bg-accent hover:text-white rounded-none px-8">
+              <Button variant="red" size="lg" className="px-8">
                 View All Projects
               </Button>
             </Link>
@@ -357,19 +352,14 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-6">
             <Link href="/contact">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 px-10 py-8 text-xl rounded-none shadow-xl transform hover:-translate-y-1 transition-all">
+              <Button variant="saffron" size="xl" className="shadow-xl transform hover:-translate-y-1 transition-all">
                 REQUEST CONSULTATION
               </Button>
             </Link>
             <div className="flex flex-col gap-2">
               <a href="tel:+919678027684">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-accent px-10 py-8 text-xl rounded-none w-full">
+                <Button variant="white-outline" size="xl" className="w-full">
                   CALL: +91 96780 27684
-                </Button>
-              </a>
-              <a href="tel:+917002245491">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-accent px-10 py-8 text-xl rounded-none w-full">
-                  CALL: +91 70022 45491
                 </Button>
               </a>
             </div>

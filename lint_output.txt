@@ -1,35 +1,87 @@
 
-> structro@0.0.1 lint /home/pappa69/programe/structro
+> structro@0.0.1 lint
 > eslint
 
 
 /home/pappa69/programe/structro/app/about/page.tsx
-  2:56  warning  'Users' is defined but never used  @typescript-eslint/no-unused-vars
+    2:10  warning  'ArrowUpRight' is defined but never used                                                                                                                        @typescript-eslint/no-unused-vars
+    2:66  warning  'CheckCircle' is defined but never used                                                                                                                         @typescript-eslint/no-unused-vars
+   51:9   warning  'timeline' is assigned a value but never used                                                                                                                   @typescript-eslint/no-unused-vars
+  258:13  error    Do not use an `<a>` element to navigate to `/projects/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
 
-/home/pappa69/programe/structro/app/contact/contact-client.tsx
-   5:10  warning  'ArrowUpRight' is defined but never used                         @typescript-eslint/no-unused-vars
-  53:16  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+/home/pappa69/programe/structro/app/new-launches/[id]/page.tsx
+  6:10  warning  'ArrowLeft' is defined but never used  @typescript-eslint/no-unused-vars
 
-/home/pappa69/programe/structro/app/contact/page.tsx
-  2:10  warning  'Container' is defined but never used  @typescript-eslint/no-unused-vars
+/home/pappa69/programe/structro/app/page.tsx
+  3:8   warning  'Hero' is defined but never used         @typescript-eslint/no-unused-vars
+  5:50  warning  'CheckCircle' is defined but never used  @typescript-eslint/no-unused-vars
+  5:72  warning  'Home' is defined but never used         @typescript-eslint/no-unused-vars
+  5:78  warning  'Factory' is defined but never used      @typescript-eslint/no-unused-vars
+  5:87  warning  'Package' is defined but never used      @typescript-eslint/no-unused-vars
+  5:96  warning  'Server' is defined but never used       @typescript-eslint/no-unused-vars
 
-/home/pappa69/programe/structro/app/projects/page.tsx
-  2:10  warning  'Container' is defined but never used  @typescript-eslint/no-unused-vars
-  3:8   warning  'Image' is defined but never used      @typescript-eslint/no-unused-vars
+/home/pappa69/programe/structro/app/products/[id]/page.tsx
+  6:10  warning  'ArrowLeft' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/pappa69/programe/structro/app/projects/[id]/page.tsx
+  6:10  warning  'ArrowLeft' is defined but never used  @typescript-eslint/no-unused-vars
 
 /home/pappa69/programe/structro/app/projects/projects-client.tsx
-  295:16  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  217:13  error  Do not use an `<a>` element to navigate to `/services/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
 
-/home/pappa69/programe/structro/components/hero.tsx
-  3:8  warning  'Image' is defined but never used  @typescript-eslint/no-unused-vars
+/home/pappa69/programe/structro/app/services/[id]/page.tsx
+    2:10   warning  'ArrowLeft' is defined but never used     @typescript-eslint/no-unused-vars
+    2:56   warning  'Shield' is defined but never used        @typescript-eslint/no-unused-vars
+    2:71   warning  'Lightbulb' is defined but never used     @typescript-eslint/no-unused-vars
+    2:94   warning  'HardHat' is defined but never used       @typescript-eslint/no-unused-vars
+    2:103  warning  'Building2' is defined but never used     @typescript-eslint/no-unused-vars
+    2:132  warning  'Briefcase' is defined but never used     @typescript-eslint/no-unused-vars
+    2:143  warning  'Ruler' is defined but never used         @typescript-eslint/no-unused-vars
+  131:20   error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  145:30   error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  145:56   error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  190:20   error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  199:28   error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  199:56   error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  220:20   error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  244:32   error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  244:63   error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/pappa69/programe/structro/app/services/page.tsx
+    4:24  warning  'Waypoints' is defined but never used                                                                                                                           @typescript-eslint/no-unused-vars
+    4:35  warning  'Building2' is defined but never used                                                                                                                           @typescript-eslint/no-unused-vars
+    4:46  warning  'HardHat' is defined but never used                                                                                                                             @typescript-eslint/no-unused-vars
+    4:55  warning  'Waves' is defined but never used                                                                                                                               @typescript-eslint/no-unused-vars
+    4:97  warning  'PenTool' is defined but never used                                                                                                                             @typescript-eslint/no-unused-vars
+  129:19  error    Do not use an `<a>` element to navigate to `/projects/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+/home/pappa69/programe/structro/components/Chatbot.tsx
+  407:11  warning  'boldRegex' is assigned a value but never used        @typescript-eslint/no-unused-vars
+  408:9   error    'lastIndex' is never reassigned. Use 'const' instead  prefer-const
+  408:9   warning  'lastIndex' is assigned a value but never used        @typescript-eslint/no-unused-vars
+  409:9   warning  'match' is defined but never used                     @typescript-eslint/no-unused-vars
+
+/home/pappa69/programe/structro/components/Footer.tsx
+   2:8   warning  'Link' is defined but never used                                                                                                                                @typescript-eslint/no-unused-vars
+   3:8   warning  'Image' is defined but never used                                                                                                                               @typescript-eslint/no-unused-vars
+  61:19  error    Do not use an `<a>` element to navigate to `/projects/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+  62:19  error    Do not use an `<a>` element to navigate to `/services/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+  71:19  error    Do not use an `<a>` element to navigate to `/services/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+  72:19  error    Do not use an `<a>` element to navigate to `/services/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+  73:19  error    Do not use an `<a>` element to navigate to `/services/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+/home/pappa69/programe/structro/components/WhyChooseUs.tsx
+  5:10  warning  'CheckCircle2' is defined but never used  @typescript-eslint/no-unused-vars
 
 /home/pappa69/programe/structro/components/ui/header-3.tsx
-   23:2   warning  'Users' is defined but never used                                                                                                                      @typescript-eslint/no-unused-vars
-   24:2   warning  'Award' is defined but never used                                                                                                                      @typescript-eslint/no-unused-vars
-   27:2   warning  'Shield' is defined but never used                                                                                                                     @typescript-eslint/no-unused-vars
-   62:6   error    Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
-  173:53  warning  'props' is defined but never used                                                                                                                      @typescript-eslint/no-unused-vars
+   21:2   warning  'Waypoints' is defined but never used  @typescript-eslint/no-unused-vars
+   22:2   warning  'Building2' is defined but never used  @typescript-eslint/no-unused-vars
+   23:2   warning  'HardHat' is defined but never used    @typescript-eslint/no-unused-vars
+   24:2   warning  'Waves' is defined but never used      @typescript-eslint/no-unused-vars
+   28:2   warning  'Shield' is defined but never used     @typescript-eslint/no-unused-vars
+   29:2   warning  'PenTool' is defined but never used    @typescript-eslint/no-unused-vars
+  188:53  warning  'props' is defined but never used      @typescript-eslint/no-unused-vars
 
-✖ 13 problems (3 errors, 10 warnings)
+✖ 55 problems (18 errors, 37 warnings)
+  1 error and 0 warnings potentially fixable with the `--fix` option.
 
- ELIFECYCLE  Command failed with exit code 1.

@@ -1,53 +1,33 @@
+"use client"
+
 import Hero from "@/components/hero"
 import { Button } from "@/components/ui/button"
 import { ArrowUpRight, Award, ShieldCheck, Leaf, CheckCircle, HardHat, Home, Factory, Package, Server } from "lucide-react";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import Link from "next/link";
-import { servicesData, projectsData } from "@/lib/data";
+import { servicesData, projectsData, newLaunchesData, featuredProductsData } from "@/lib/data";
+import NewHero from "@/components/NewHero";
+import WhyChooseUs from "@/components/WhyChooseUs";
+import FaqSection from "@/components/FaqSection";
 
 export default function Page() {
 
   const stats = [
-    { label: "Projects Completed", value: "48+" },
+    { label: "Projects Completed", value: "500+" },
     { label: "Years Experience", value: "25+" },
     { label: "Team Members", value: "400+" },
     { label: "Client Satisfaction", value: "95%" },
   ];
 
   const marqueeItems = [
-    "Bridge Engineering", "PEB Buildings", "Steel Structures", "Water Staging",
+    "Bridge Engineering", "PEB Buildings", "Steel Structures",
     "Industrial Sheds", "Infrastructure", "Railway Bridges"
   ];
 
   const services = servicesData.slice(0, 3);
 
-  const featuredProducts = [
-    {
-      title: "Portable PEB Residential Houses",
-      specs: "1 BHK, 2 BHK, 3 BHK",
-      icon: <Home className="w-5 h-5 text-accent" />,
-      image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop",
-    },
-    {
-      title: "Movable Sheds (Multipurpose)",
-      specs: "100 sqm onwards",
-      icon: <Factory className="w-5 h-5 text-accent" />,
-      image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=2070&auto=format&fit=crop",
-    },
-    {
-      title: "Multipurpose Industrial Containers",
-      specs: "500 Ltr to 10,000 Ltrs.",
-      icon: <Server className="w-5 h-5 text-accent" />,
-      image: "https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?q=80&w=2070&auto=format&fit=crop",
-    },
-    {
-      title: "Readymade Modern Staircases",
-      specs: "1 set onwards",
-      icon: <Package className="w-5 h-5 text-accent" />,
-      image: "https://images.unsplash.com/photo-1505069190533-da1c9af13346?q=80&w=2070&auto=format&fit=crop",
-    }
-  ];
+  const featuredProducts = featuredProductsData;
 
   const projects = projectsData.homeProjects;
 
@@ -77,7 +57,10 @@ export default function Page() {
   return (
     <div className="">
 
-      <Hero />
+      {/* <Hero /> */}
+
+      <NewHero />
+
       <div className="w-full bg-white py-16 border-b border-gray-100">
         {/* Experience Numbers Section */}
         <Container className="mb-12">
@@ -122,7 +105,7 @@ export default function Page() {
             </h2>
           </div>
           <Link href="/services">
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-8 py-3 rounded-sm">
+            <Button variant="saffron" size="lg">
               View All Services
               <ArrowUpRight className="ml-2 w-4 h-4" />
             </Button>
@@ -131,7 +114,7 @@ export default function Page() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {services.map((service, index) => (
-            <div key={index} className="group bg-white rounded-lg overflow-hidden border border-gray-200 hover:border-primary/30 hover:shadow-xl transition-all duration-300">
+            <div key={index} className="group bg-white rounded-md overflow-hidden border border-gray-200 hover:border-primary/30 hover:shadow-xl transition-all duration-300">
               <div className="aspect-[4/3] relative overflow-hidden">
                 <Image
                   src={service.homeImage || service.image}
@@ -169,53 +152,31 @@ export default function Page() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="relative group overflow-hidden rounded-sm border border-gray-200 bg-white p-2">
-              <div className="aspect-video relative overflow-hidden mb-4">
-                <Image 
-                  src="https://images.unsplash.com/photo-1517089534702-3de54906ec30?q=80&w=2070&auto=format&fit=crop" 
-                  alt="Multi-Span Bridge Project" 
-                  fill 
-                  className="object-cover group-hover:scale-105 transition-all duration-700"
-                />
-                <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold px-3 py-1 uppercase tracking-tighter">
-                  Latest Launch
+            {newLaunchesData.map((launch) => (
+              <div key={launch.id} className="relative group overflow-hidden rounded-md border border-gray-200 bg-white p-2">
+                <div className="aspect-video relative overflow-hidden mb-4">
+                  <Image 
+                    src={launch.image} 
+                    alt={launch.title} 
+                    fill 
+                    className="object-cover group-hover:scale-105 transition-all duration-700"
+                  />
+                  <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold px-3 py-1 uppercase tracking-tighter">
+                    {launch.type}
+                  </div>
+                </div>
+                <div className="p-4">
+                  <h3 className="text-xl font-bold text-gray-900">{launch.title}</h3>
+                  <p className="text-sm text-gray-500 mb-4">{launch.description}</p>
+                  <div className="flex justify-between items-center border-t border-gray-100 pt-4">
+                    <span className="text-xs font-bold text-primary uppercase">{launch.region}</span>
+                    <Link href={`/new-launches/${launch.id}`} className="text-xs font-bold text-gray-900 flex items-center hover:text-primary">
+                      VIEW SPECS <ArrowUpRight className="ml-1 w-3 h-3" />
+                    </Link>
+                  </div>
                 </div>
               </div>
-              <div className="p-4">
-                <h3 className="text-xl font-bold text-gray-900">Multi-Span Composite Bridge</h3>
-                <p className="text-sm text-gray-500 mb-4">Strategic infrastructure project connecting remote regions in Upper Assam.</p>
-                <div className="flex justify-between items-center border-t border-gray-100 pt-4">
-                  <span className="text-xs font-bold text-primary uppercase">Assam Region</span>
-                  <Link href="/projects" className="text-xs font-bold text-gray-900 flex items-center hover:text-primary">
-                    VIEW SPECS <ArrowUpRight className="ml-1 w-3 h-3" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative group overflow-hidden rounded-sm border border-gray-200 bg-white p-2">
-              <div className="aspect-video relative overflow-hidden mb-4">
-                <Image 
-                  src="https://images.unsplash.com/photo-1503387762-592dea58ef23?q=80&w=2070&auto=format&fit=crop" 
-                  alt="Industrial Hub Project" 
-                  fill 
-                  className="object-cover group-hover:scale-105 transition-all duration-700"
-                />
-                <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold px-3 py-1 uppercase tracking-tighter">
-                  New Addition
-                </div>
-              </div>
-              <div className="p-4">
-                <h3 className="text-xl font-bold text-gray-900">Large-Scale Industrial Shed</h3>
-                <p className="text-sm text-gray-500 mb-4">Modern warehousing facility with 40,000 sq.ft coverage and PEB technology.</p>
-                <div className="flex justify-between items-center border-t border-gray-100 pt-4">
-                  <span className="text-xs font-bold text-primary uppercase">Guwahati HUB</span>
-                  <Link href="/projects" className="text-xs font-bold text-gray-900 flex items-center hover:text-primary">
-                    VIEW SPECS <ArrowUpRight className="ml-1 w-3 h-3" />
-                  </Link>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </Container>
       </div>
@@ -231,32 +192,34 @@ export default function Page() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.map((product, idx) => (
-              <div key={idx} className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700 hover:border-accent/50 transition-all duration-300 group">
-                <div className="aspect-[4/3] relative overflow-hidden">
-                  <Image 
-                    src={product.image} 
-                    alt={product.title} 
-                    fill 
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-110 opacity-80 group-hover:opacity-100"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-80" />
-                </div>
-                <div className="p-6 relative -mt-8 bg-gray-800/90 backdrop-blur-sm rounded-t-xl">
-                  <div className="w-10 h-10 bg-gray-900 rounded-sm flex items-center justify-center mb-4 border border-gray-700 shadow-lg">
-                    {product.icon}
+            {featuredProducts.map((product) => (
+              <Link href={`/products/${product.id}`} key={product.id} className="block w-full h-full">
+                <div className="bg-gray-800 rounded-md overflow-hidden border border-gray-700 hover:border-accent/50 transition-all duration-300 group h-full">
+                  <div className="aspect-[4/3] relative overflow-hidden">
+                    <Image 
+                      src={product.image} 
+                      alt={product.title} 
+                      fill 
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-80" />
                   </div>
-                  <h3 className="text-white font-bold text-lg leading-tight mb-2 h-12">
-                    {product.title}
-                  </h3>
-                  <div className="flex items-center text-gray-200 text-sm font-semibold">
-                    <span className="bg-black/30 px-2 py-1 rounded-sm w-full backdrop-blur-sm border border-white/10">
-                      {product.specs}
-                    </span>
+                  <div className="p-6 relative -mt-8 bg-gray-800/90 backdrop-blur-sm rounded-t-xl h-full">
+                    <div className="w-10 h-10 bg-gray-900 rounded-sm flex items-center justify-center mb-4 border border-gray-700 shadow-lg">
+                      {product.icon}
+                    </div>
+                    <h3 className="text-white font-bold text-lg leading-tight mb-2 min-h-[3rem]">
+                      {product.title}
+                    </h3>
+                    <div className="flex items-center text-gray-200 text-sm font-semibold">
+                      <span className="bg-black/30 px-2 py-1 rounded-sm w-full backdrop-blur-sm border border-white/10 text-center">
+                        {product.specs}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </Container>
@@ -285,8 +248,8 @@ export default function Page() {
                 { title: "Vendors", desc: "Supply chain & material procurement", icon: <ShieldCheck className="w-6 h-6" />, type: "Registration" },
                 { title: "Job Seekers", desc: "Career opportunities & applications", icon: <ArrowUpRight className="w-6 h-6" />, type: "Apply Now" }
               ].map((portal, idx) => (
-                <div key={idx} className="bg-gray-50 border border-gray-100 p-8 rounded-sm hover:border-primary/30 hover:shadow-xl transition-all group relative">
-                  <div className="bg-white w-14 h-14 flex items-center justify-center rounded-sm mb-6 shadow-sm group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                <div key={idx} className="bg-gray-50 border border-gray-100 p-8 rounded-md hover:border-primary/30 hover:shadow-xl transition-all group relative">
+                  <div className="bg-white w-14 h-14 flex items-center justify-center rounded-md mb-6 shadow-sm group-hover:bg-primary group-hover:text-white transition-all duration-300">
                     {portal.icon}
                   </div>
                   <h4 className="font-bold text-gray-900 text-lg mb-3">{portal.title}</h4>
@@ -302,7 +265,7 @@ export default function Page() {
       </div>
 
       {/* Why Choose Us */}
-      <div className="bg-primary py-20">
+      {/* <div className="bg-primary py-20">
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
@@ -327,7 +290,7 @@ export default function Page() {
                 ))}
               </div>
               <Link href="/about">
-                <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 py-3 rounded-sm">
+                <Button variant="red" size="lg">
                   Know More About Us
                 </Button>
               </Link>
@@ -346,7 +309,9 @@ export default function Page() {
             </div>
           </div>
         </Container>
-      </div>
+      </div> */}
+
+      <WhyChooseUs />
 
       {/* Projects/Gallery Section */}
       <div className="text-center mb-10 pt-12">
@@ -364,7 +329,7 @@ export default function Page() {
       {/* Grid Layout */}
       <Container className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-16">
         {projects.map((project) => (
-          <div key={project.id} className={`${project.className} aspect-[4/3] overflow-hidden rounded-lg group relative`}>
+          <Link href={`/projects/${project.id}`} key={project.id} className={`${project.className} aspect-[4/3] overflow-hidden rounded-md group relative block`}>
             <Image 
               src={project.src} 
               alt={project.alt}
@@ -380,13 +345,13 @@ export default function Page() {
                 </div>
               </div>
             )}
-          </div>
+          </Link>
         ))}
       </Container>
 
       <div className="text-center mb-16">
         <Link href="/projects">
-          <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-8 py-3 rounded-sm">
+          <Button variant="saffron" size="lg">
             View All Projects
             <ArrowUpRight className="ml-2 w-4 h-4" />
           </Button>
@@ -408,9 +373,9 @@ export default function Page() {
         {values.map((item, index) => (
           <div 
             key={index} 
-            className="bg-gray-50 p-8 rounded-sm flex flex-col items-start transition-all duration-300 hover:shadow-lg hover:border-primary/20 border border-transparent"
+            className="bg-gray-50 p-8 rounded-md flex flex-col items-start transition-all duration-300 hover:shadow-lg hover:border-primary/20 border border-transparent"
           >
-            <div className="bg-primary p-3 rounded-sm mb-6 flex items-center justify-center">
+            <div className="bg-primary p-3 rounded-md mb-6 flex items-center justify-center">
               {item.icon}
             </div>
             <h3 className="text-lg font-bold text-gray-900 mb-3">
@@ -424,7 +389,7 @@ export default function Page() {
       </Container>
 
       {/* CTA Banner */}
-      <Container className="relative h-[400px] rounded-lg overflow-hidden mb-20 group">
+      <Container className="relative h-[400px] rounded-md overflow-hidden mb-20 group">
         <Image 
           src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
           alt="Modern Architecture" 
@@ -444,19 +409,45 @@ export default function Page() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Link href="/contact">
-              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 py-3 rounded-sm">
+              <Button variant="red" size="lg">
                 Request Technical Consultation
                 <ArrowUpRight className="ml-2 w-4 h-4" />
               </Button>
             </Link>
             <Link href="/projects">
-              <Button variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground hover:text-primary font-semibold px-8 py-3 rounded-sm">
+              <Button variant="primary-outline" size="lg">
                 View Our Projects
               </Button>
             </Link>
           </div>
         </div>
       </Container>
+
+
+      <FaqSection />
+
+      {/* Map Section */}
+      <div className="bg-gray-100 py-16">
+        <Container>
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Find Us</h2>
+            <p className="text-gray-600 mt-2">Visit our head office in Guwahati, Assam</p>
+          </div>
+          <div className="bg-white rounded-lg p-4 border border-gray-200">
+            <div className="bg-gray-200 rounded-lg h-[400px] overflow-hidden">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4509.166628943781!2d91.7755516!3d26.1569559!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a59003ad2c8c3%3A0x45df74d231f0e84c!2sStructro%20Infra%20Tech!5e1!3m2!1sen!2sin!4v1776015415897!5m2!1sen!2sin" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+          </div>
+        </Container>
+      </div>
     </div>
   )
 }

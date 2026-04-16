@@ -25,7 +25,7 @@ const COMPANY_INFO = {
     "Creating enduring value in every project undertaken.",
   ],
   stats: {
-    projects: "48+",
+    projects: "500+",
     years: "25+",
     team: "400+",
     satisfaction: "95%",
@@ -51,7 +51,7 @@ const COMPANY_INFO = {
 };
 
 const CONTACT_INFO = {
-  phones: ["+91-9678027684", "+91-7002245491"],
+  phones: ["+91-9678027684"],
   email: "structro.infratech@gmail.com",
   headOffice:
     "1st Floor, Silver Square, Christian Basti, G.S Road, Guwahati, Assam - 781005",
@@ -108,19 +108,7 @@ const SERVICES = [
       "Custom Steel Fabrication",
     ],
   },
-  {
-    id: "water",
-    title: "Water Staging",
-    desc: "Specialized water staging infrastructure for industrial and municipal water management needs.",
-    types: [
-      "Water Treatment Plants",
-      "Water Storage Tanks",
-      "Pumping Stations",
-      "Irrigation Structures",
-      "Marine & Coastal Infrastructure",
-      "Hydro Power Structures",
-    ],
-  },
+
   {
     id: "special-metal",
     title: "Special Metal Structures",
@@ -243,7 +231,7 @@ const TIMELINE = [
   {
     year: "Present",
     event:
-      "Industry leader in Assam & NE India with 48+ successful projects.",
+      "Industry leader in Assam & NE India with 500+ successful projects.",
   },
 ];
 
@@ -332,12 +320,7 @@ function getResponse(input: string): string {
     return `🏭 **${svc.title}**\n\n${svc.desc}\n\n**What We Build:**\n${types}`;
   }
 
-  // Water Staging
-  if (/water|staging|treatment|pumping|irrigation|marine|hydro/.test(q)) {
-    const svc = SERVICES.find((s) => s.id === "water")!;
-    const types = svc.types!.map((t) => `• ${t}`).join("\n");
-    return `💧 **${svc.title}**\n\n${svc.desc}\n\n**Solutions:**\n${types}`;
-  }
+
 
   // Special Metal
   if (/special metal|stainless|inconel|ss struct|corrosion/.test(q)) {
@@ -421,9 +404,6 @@ function renderMarkdown(text: string): React.ReactNode {
   return lines.map((line, i) => {
     // Bold
     let processed: React.ReactNode[] = [];
-    const boldRegex = /\*\*(.*?)\*\*/g;
-    let lastIndex = 0;
-    let match;
 
     const temp = line;
     // Handle italic
@@ -698,7 +678,7 @@ const Chatbot = () => {
               <button
                 onClick={() => handleSend()}
                 disabled={!input.trim()}
-                className="mr-1.5 w-8 h-8 rounded-lg flex items-center justify-center bg-[oklch(0.6_0.22_24)] text-white hover:bg-[oklch(0.55_0.22_24)] disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
+                className="mr-1.5 w-8 h-8 rounded-md flex items-center justify-center bg-[oklch(0.6_0.22_24)] text-white hover:bg-[oklch(0.55_0.22_24)] disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
                 aria-label="Send message"
                 id="chatbot-send"
               >

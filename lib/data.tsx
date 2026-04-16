@@ -1,5 +1,5 @@
 import React from "react";
-import { Waypoints, Building2, HardHat, Waves, Shield, PenTool } from "lucide-react";
+import { Waypoints, Building2, HardHat, Shield, PenTool, Home, Factory, Package, Server } from "lucide-react";
 
 export const companyVision = {
   name: "STRUCTRO INFRA TECH",
@@ -138,28 +138,7 @@ export const servicesData = [
       { title: "Factory Sheds", description: "Customized sheds for manufacturing units." }
     ]
   },
-  {
-    id: "water",
-    title: "Water Staging",
-    subtitle: "Specialized Water Infrastructure",
-    description: "We construct specialized water staging infrastructure for industrial and municipal water management needs. Our engineering expertise ensures reliable water solutions.",
-    icon: <Waves className="w-8 h-8" />,
-    navIcon: Waves,
-    features: [
-      "Water Treatment Plants",
-      "Water Storage Tanks",
-      "Pumping Stations",
-      "Irrigation Structures",
-      "Marine & Coastal Infrastructure",
-      "Hydro Power Structures"
-    ],
-    image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2070&auto=format&fit=crop",
-    alt: "Water Staging Infrastructure Assam",
-    navDescription: "Specialized Water Infrastructure",
-    catalog: [
-      { title: "Water Reservoirs", description: "High-capacity storage and staging solutions." }
-    ]
-  },
+
   {
     id: "special-metal",
     title: "Special Metal Structures",
@@ -405,16 +384,7 @@ export const projectsData = {
       alt: "Industrial Steel Shed Assam",
       isVideo: false
     },
-    {
-      id: 8,
-      title: "Water Staging Facility",
-      location: "Northeast India",
-      serviceId: "water",
-      category: "Water Staging",
-      src: "/images/gallery/image copy 3.png",
-      alt: "Water Staging Infrastructure Northeast India",
-      isVideo: false
-    },
+
     {
       id: 9,
       title: "PEB Manufacturing Unit",
@@ -436,3 +406,76 @@ export const projectsData = {
   ]
 };
 
+export const newLaunchesData = [
+  {
+    id: "multi-span-bridge",
+    title: "Multi-Span Composite Bridge",
+    description: "Strategic infrastructure project connecting remote regions in Upper Assam.",
+    longDescription: "Our Multi-Span Composite Bridge design integrates the strength of steel with the durability of concrete. Designed specifically for the challenging terrains of Upper Assam, it showcases advanced engineering that allows for long, unimpeded spans over difficult waterways and deep valleys. This project significantly reduces travel time and boosts local economic growth.",
+    features: ["High Load Capacity", "Earthquake Resistant Design", "Rapid Construction Time", "Corrosion Resistant Coatings"],
+    specifications: [
+      { label: "Span Length", value: "Up to 80m per span" },
+      { label: "Material", value: "High-grade structural steel and reinforced concrete" },
+      { label: "Design Life", value: "100+ Years" },
+      { label: "Application", value: "Highway and Railway Crossings" }
+    ],
+    image: "https://images.unsplash.com/photo-1517089534702-3de54906ec30?q=80&w=2070&auto=format&fit=crop",
+    region: "Assam Region",
+    type: "Latest Launch",
+  },
+  {
+    id: "industrial-shed",
+    title: "Large-Scale Industrial Shed",
+    description: "Modern warehousing facility with 40,000 sq.ft coverage and PEB technology.",
+    longDescription: "Engineered for maximum space utilization and operational efficiency, this large-scale industrial shed utilizes state-of-the-art Pre-Engineered Building (PEB) technology. The structure is tailored to withstand extreme weather conditions while providing a vast, clear-span interior suitable for modern manufacturing and warehousing logistics.",
+    features: ["Clear-Span Interior", "Energy Efficient Ventilation", "Heavy-Duty Flooring Capable", "Fast-track Installation"],
+    specifications: [
+      { label: "Total Area", value: "40,000 sq.ft" },
+      { label: "Structure Type", value: "Pre-Engineered Building (PEB)" },
+      { label: "Eave Height", value: "12 meters" },
+      { label: "Cladding", value: "High-strength Galvalume panels" }
+    ],
+    image: "https://images.unsplash.com/photo-1503387762-592dea58ef23?q=80&w=2070&auto=format&fit=crop",
+    region: "Guwahati HUB",
+    type: "New Addition",
+  }
+];
+
+export const featuredProductsData = [
+  {
+    id: "portable-peb",
+    title: "Portable PEB Residential Houses",
+    specs: "1 BHK, 2 BHK, 3 BHK",
+    description: "Experience the future of housing with our portable PEB residential units. Combining the speed of pre-engineered construction with the comfort of modern living, these homes are designed to be durable, eco-friendly, and quickly deployable to any location. Perfect for remote site offices or emergency housing.",
+    features: ["Quick Assembly & Disassembly", "Superior Thermal Insulation", "Customizable Floor Plans", "Weather-resistant Exterior"],
+    icon: <Home className="w-5 h-5 text-accent" />,
+    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop",
+  },
+  {
+    id: "movable-sheds",
+    title: "Movable Sheds (Multipurpose)",
+    specs: "100 sqm onwards",
+    description: "Our multipurpose movable sheds offer incredible versatility for industrial, commercial, and agricultural applications. Built with robust steel frames and premium cladding, they can be easily relocated or expanded as your spatial requirements change.",
+    features: ["Modular Expansion", "High Wind Resistance", "Minimal Foundation Required", "Relocatable Design"],
+    icon: <Factory className="w-5 h-5 text-accent" />,
+    image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=2070&auto=format&fit=crop",
+  },
+  {
+    id: "multipurpose-containers",
+    title: "Multipurpose Industrial Containers",
+    specs: "500 Ltr to 10,000 Ltrs.",
+    description: "Engineered to safely store and transport a wide range of materials, including liquids, chemicals, and bulk solids. These heavy-duty industrial containers are fabricated from specialized metals designed to withstand harsh industrial environments.",
+    features: ["Corrosion-Resistant Coating", "Custom Valve Fittings", "High Impact Strength", "Stackable Designs"],
+    icon: <Server className="w-5 h-5 text-accent" />,
+    image: "https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?q=80&w=2070&auto=format&fit=crop",
+  },
+  {
+    id: "readymade-staircases",
+    title: "Readymade Modern Staircases",
+    specs: "1 set onwards",
+    description: "Upgrade any commercial or industrial facility rapidly with our readymade steel staircases. Manufactured to strict safety tolerances in our facility, they arrive ready for immediate installation, saving significant time on-site.",
+    features: ["Anti-Slip Treads", "Compliance with Safety Standards", "Powder-Coated Finish", "Bolt-on Assembly (No On-site Welding)"],
+    icon: <Package className="w-5 h-5 text-accent" />,
+    image: "https://images.unsplash.com/photo-1505069190533-da1c9af13346?q=80&w=2070&auto=format&fit=crop",
+  }
+];

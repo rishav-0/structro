@@ -67,7 +67,7 @@ export function ContactClient() {
               {
                 icon: <Phone className="w-6 h-6 text-primary" />,
                 title: "Phone",
-                details: ["+91-9678027684", "+91-7002245491"],
+                details: ["+91-9678027684"],
                 link: "tel:+919678027684"
               },
               {
@@ -213,7 +213,7 @@ export function ContactClient() {
                     <option value="bridge">Bridge Engineering</option>
                     <option value="peb">PEB Buildings</option>
                     <option value="steel">Steel Structures & Sheds</option>
-                    <option value="water">Water Staging</option>
+
                     <option value="other">Other</option>
                   </select>
                 </div>
@@ -235,7 +235,9 @@ export function ContactClient() {
 
                 <Button 
                   type="submit" 
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-8 py-4 rounded-sm w-full md:w-auto"
+                  variant="saffron"
+                  size="lg"
+                  className="w-full md:w-auto"
                 >
                   Submit Request
                   <Send className="ml-2 w-4 h-4" />
@@ -265,7 +267,7 @@ export function ContactClient() {
                 {[
                   "25+ years of industry experience",
                   "ISO 9001:2015 certified",
-                  "48+ successful projects delivered",
+                  "500+ successful projects delivered",
                   "Expert team of 400+ professionals",
                   "Serving all of Northeast India"
                 ].map((item, index) => (
@@ -284,7 +286,7 @@ export function ContactClient() {
                 Call us now to discuss your project requirements with our technical team.
               </p>
               <a href="tel:+919678027684">
-                <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
+                <Button variant="red" size="lg" className="w-full">
                   <Phone className="mr-2 w-4 h-4" />
                   Call +91-9678027684
                 </Button>
