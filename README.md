@@ -2,6 +2,16 @@
 
 This is a Next.js template with shadcn/ui.
 
+## Cloudinary setup
+
+Add these environment variables before using admin image uploads:
+
+```bash
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+```
+
 ## Adding components
 
 To add components to your app, run the following command:

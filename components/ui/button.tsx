@@ -1,64 +1,70 @@
 import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
+import { Slot } from "radix-ui"
 
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md",
         outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+          "border-2 border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+        ghost:
+          "hover:bg-muted hover:text-foreground",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         link: "text-primary underline-offset-4 hover:underline",
-        saffron: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
-        red: "bg-accent text-accent-foreground hover:bg-accent/90 shadow-sm",
-        gold: "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-sm",
-        "gold-outline": "border-2 border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground transition-all duration-300",
-        "primary-outline": "border bg-background border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground hover:text-primary transition-all duration-300",
-        "white-outline": "border-2 border-white text-white hover:bg-white hover:text-black transition-all duration-300",
-        white: "bg-white text-black hover:bg-white/90 shadow-sm",
+        red: "bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/20",
+        saffron: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20",
+        "white-outline": "border-2 border-white bg-transparent text-white hover:bg-white hover:text-black",
+        "primary-outline": "border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground",
+        gold: "bg-yellow-500 text-black hover:bg-yellow-400 shadow-lg shadow-yellow-500/20",
+        white: "bg-white text-black hover:bg-gray-100",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-12 rounded-md px-8 py-4 text-base",
-        xl: "h-14 rounded-md px-10 py-6 text-lg font-bold",
-        icon: "h-10 w-10",
+        default: "h-11 px-6 py-2.5 text-sm font-bold",
+        xs: "h-8 px-3 text-xs",
+        sm: "h-9 px-4 text-xs",
+        lg: "h-12 px-8 text-base",
+        xl: "h-14 px-10 text-lg font-extrabold uppercase tracking-tight",
+        "2xl": "h-16 px-12 text-xl font-black uppercase tracking-widest",
+        icon: "size-11",
+        "icon-sm": "size-9",
       },
     },
     defaultVariants: {
       variant: "default",
       size: "default",
     },
-  },
+  }
 )
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  asChild?: boolean
+function Button({
+  className,
+  variant = "default",
+  size = "default",
+  asChild = false,
+  ...props
+}: React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean
+  }) {
+  const Comp = asChild ? Slot.Root : "button"
+
+  return (
+    <Comp
+      data-slot="button"
+      data-variant={variant}
+      data-size={size}
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props}
+    />
+  )
 }
-
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button"
-    return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      />
-    )
-  },
-)
-Button.displayName = "Button"
 
 export { Button, buttonVariants }

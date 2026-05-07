@@ -1,11 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { cn } from "@/lib/utils";
-import { Header } from "@/components/ui/header-3";
-import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
-import Chatbot from "@/components/Chatbot";
 import type { Metadata } from 'next';
+import ClientLayout from "./client-layout";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'})
 
@@ -14,7 +11,6 @@ const fontMono = Geist_Mono({
   variable: "--font-mono",
 })
 
-// SEO Metadata for Structro Infra Tech
 export const metadata: Metadata = {
   title: 'Structro Infratech | Steel Engineering Company Guwahati | Bridge Construction Assam',
   description: 'Structro Infratech is a leading steel engineering company in Guwahati, Assam. Specializing in bridge engineering, PEB buildings, and steel structures. ISO 9001:2015 certified. Since 2000.',
@@ -27,7 +23,6 @@ export const metadata: Metadata = {
     'Industrial Sheds Assam',
     'Bridge Engineering',
     'Steel Structure Company',
-
     'Infrastructure Guwahati'
   ],
   authors: [{ name: 'Structro Infratech' }],
@@ -67,11 +62,7 @@ export default function RootLayout({
       className={cn("antialiased", fontMono.variable, "font-sans", geist.variable)}
     >
       <body>
-          <Header />
-          {children}
-          <Footer />
-          <WhatsAppButton />
-          <Chatbot />
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   )

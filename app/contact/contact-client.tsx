@@ -1,10 +1,16 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { submitEnquiry } from "@/app/actions/public-actions";
 import { Button } from "@/components/ui/button"
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from "lucide-react";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
+
+interface Service {
+  id: string;
+  title: string;
+}
 
 export function ContactClient() {
   const [formData, setFormData] = useState({
@@ -16,11 +22,30 @@ export function ContactClient() {
     message: ""
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [services, setServices] = useState<Service[]>([]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    fetch("/api/public-data/services")
+      .then((res) => res.json())
+      .then((data: Service[]) => setServices(data))
+      .catch(() => setServices([]));
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    setIsSubmitted(true);
+    setIsSubmitting(true);
+    setSubmitError("");
+    try {
+      await submitEnquiry(formData);
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Error submitting enquiry:", error);
+      setSubmitError("Failed to submit. Please try again or contact us directly.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -210,11 +235,12 @@ export function ContactClient() {
                     className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all"
                   >
                     <option value="">Select a service</option>
-                    <option value="bridge">Bridge Engineering</option>
-                    <option value="peb">PEB Buildings</option>
-                    <option value="steel">Steel Structures & Sheds</option>
-
-                    <option value="other">Other</option>
+                    {services.map((service) => (
+                      <option key={service.id} value={service.title}>
+                        {service.title}
+                      </option>
+                    ))}
+                    <option value="Other">Other</option>
                   </select>
                 </div>
 
@@ -233,14 +259,18 @@ export function ContactClient() {
                   />
                 </div>
 
+                {submitError && (
+                  <p className="text-red-600 text-sm">{submitError}</p>
+                )}
                 <Button 
                   type="submit" 
                   variant="saffron"
                   size="lg"
                   className="w-full md:w-auto"
+                  disabled={isSubmitting}
                 >
-                  Submit Request
-                  <Send className="ml-2 w-4 h-4" />
+                  {isSubmitting ? "Submitting..." : "Submit Request"}
+                  {!isSubmitting && <Send className="ml-2 w-4 h-4" />}
                 </Button>
               </form>
             )}

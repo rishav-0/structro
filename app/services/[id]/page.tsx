@@ -1,37 +1,56 @@
+"use client";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
-import { ArrowLeft, ArrowUpRight, CheckCircle, Target, Shield, Users, Lightbulb, TrendingUp, HardHat, Building2, MapPin, Calendar, Briefcase, Ruler } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowLeft, ArrowUpRight, CheckCircle, Target, Shield, Users, Lightbulb, TrendingUp, HardHat, Building2, MapPin, Calendar, Briefcase, Ruler, CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { servicesData, companyVision, projectsData } from "@/lib/data";
+import { getCollectionData } from "@/lib/data-merge";
 
-interface ServicePageProps {
-  params: {
-    id: string;
-  };
+interface Service {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  homeDescription: string;
+  features: string[];
+  image: string;
+  alt: string;
+  navDescription: string;
+  catalog: { title: string; description: string }[];
 }
 
-export async function generateMetadata({ params }: ServicePageProps) {
-  const { id } = await params;
-  const service = servicesData.find((s) => s.id === id);
-  if (!service) return { title: "Service Not Found" };
+export default function ServicePage({ params }: { params: Promise<{ id: string }> }) {
+  const [service, setService] = useState<Service | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  return {
-    title: `${service.title} | Structro Infra Tech`,
-    description: service.description,
-  };
-}
+  useEffect(() => {
+    async function fetchService() {
+      const { id } = await params;
+      let found = servicesData.find((s) => s.id === id);
 
-export default async function ServiceDetailPage({ params }: ServicePageProps) {
-  const { id } = await params;
-  const service = servicesData.find((s) => s.id === id);
+      if (!found) {
+        try {
+          const dbServices = await getCollectionData("services") as any[];
+          found = dbServices.find(s => s.id === id) as any;
+        } catch (e) {
+          console.error("Error fetching service from DB:", e);
+        }
+      }
 
-  if (!service) {
-    notFound();
-  }
+      setService(found as any);
+      setLoading(false);
+    }
+    fetchService();
+  }, [params]);
+
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (!service) return notFound();
 
   // Filter projects related to this service
   const relatedProjects = projectsData.completed.filter(
@@ -41,88 +60,42 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="relative h-[50vh] min-h-[350px] flex items-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src={service.image}
-            alt={service.alt}
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent" />
-          <div className="absolute inset-0 blueprint-overlay opacity-10" />
-        </div>
-
-        <Container className="relative z-10">
-        
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight uppercase tracking-tighter drop-shadow-lg">
-              {service.title}
-            </h1>
-            <p className="text-lg text-gray-200 leading-relaxed mb-8 max-w-2xl font-medium drop-shadow-md">
-              {service.description}
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link href="/contact">
-                <Button variant="saffron" size="xl" className="shadow-xl border-none">
-                  Get Technical Advice
-                  <ArrowUpRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
-              <Link href="/projects">
-                <Button variant="white-outline" size="xl" className="backdrop-blur-sm transition-all">
-                  View Projects
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* Identity & Vision Section */}
-      <section className="py-24 bg-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-primary/5 -skew-x-12 translate-x-1/2" />
+      <section className="border-b border-gray-200 bg-white pt-20 md:pt-24">
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 items-center gap-8 py-12 md:py-16 lg:grid-cols-2 lg:gap-16">
             <div>
-              <div className="flex items-center gap-3 mb-6">
-                 <div className="bg-accent p-2 rounded-sm text-accent-foreground">
-                    <Target className="w-5 h-5" />
-                 </div>
-                 <span className="text-accent text-sm font-bold uppercase tracking-[0.2em] px-2 py-0.5 bg-accent/10 rounded-sm">
-                    Our Philosophy
-                 </span>
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 uppercase tracking-tight">
-                Corporate Identity<br/>& Vision
-              </h2>
-              <p className="text-xl font-semibold text-primary mb-10 italic border-l-4 border-accent pl-6 leading-relaxed">
-                &quot;{companyVision.philosophy}&quot;
+              <Link href="/services" className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-stone-600 transition-colors hover:text-stone-900">
+                <ArrowLeft className="w-4 h-4" />
+                Back to Services
+              </Link>
+              <h1 className="mb-4 text-4xl font-extrabold uppercase leading-tight tracking-tighter text-gray-900 md:text-6xl">
+                {service.title}
+              </h1>
+              <p className="mb-8 max-w-xl text-lg font-medium leading-relaxed text-gray-600">
+                {service.description}
               </p>
-              <div className="space-y-5">
-                {companyVision.principles.map((principle, index) => (
-                  <div key={index} className="flex items-start gap-4">
-                    <div className="mt-1 bg-primary/10 p-1 rounded-full">
-                      <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
-                    </div>
-                    <p className="text-gray-700 font-medium leading-relaxed">{principle}</p>
-                  </div>
-                ))}
+              <div className="flex flex-wrap gap-4">
+                <Link href="/contact">
+                  <Button variant="saffron" size="xl" className="border-none shadow-xl">
+                    Get Technical Advice
+                    <ArrowUpRight className="ml-2 w-5 h-5" />
+                  </Button>
+                </Link>
+                <Link href="/projects">
+                  <Button variant="outline" size="xl">
+                    View Projects
+                  </Button>
+                </Link>
               </div>
             </div>
-            <div className="relative aspect-square rounded-sm overflow-hidden shadow-2xl border-8 border-gray-50">
+            <div className="relative aspect-4/3 overflow-hidden">
               <Image
-                src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop"
-                alt="Construction vision"
+                src={service.image}
+                alt={service.alt}
                 fill
                 className="object-cover"
+                priority
               />
-              <div className="absolute inset-0 bg-primary/10 mix-blend-multiply" />
-              <div className="absolute bottom-6 left-6 right-6 p-6 bg-white shadow-xl rounded-sm border-b-4 border-accent">
-                <p className="text-accent font-bold text-xs uppercase tracking-[0.2em] mb-2 text-center">Our Commitment</p>
-                <p className="text-gray-800 text-base font-semibold text-center italic leading-tight">Delivering enduring value in every project through innovation and integrity.</p>
-              </div>
             </div>
           </div>
         </Container>
@@ -186,6 +159,56 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
           </div>
         </Container>
       </section>
+
+
+      {/* Identity & Vision Section */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-primary/5 -skew-x-12 translate-x-1/2" />
+        <Container>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                 <div className="bg-accent p-2 rounded-sm text-accent-foreground">
+                    <Target className="w-5 h-5" />
+                 </div>
+                 <span className="text-accent text-sm font-bold uppercase tracking-[0.2em] px-2 py-0.5 bg-accent/10 rounded-sm">
+                    Our Philosophy
+                 </span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 uppercase tracking-tight">
+                Corporate Identity<br/>& Vision
+              </h2>
+              <p className="text-xl font-semibold text-primary mb-10 italic border-l-4 border-accent pl-6 leading-relaxed">
+                &quot;{companyVision.philosophy}&quot;
+              </p>
+              <div className="space-y-5">
+                {companyVision.principles.map((principle, index) => (
+                  <div key={index} className="flex items-start gap-4">
+                    <div className="mt-1 bg-primary/10 p-1 rounded-full">
+                      <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
+                    </div>
+                    <p className="text-gray-700 font-medium leading-relaxed">{principle}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="relative aspect-square rounded-sm overflow-hidden shadow-2xl border-8 border-gray-50">
+              <Image
+                src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop"
+                alt="Construction vision"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-primary/10 mix-blend-multiply" />
+              <div className="absolute bottom-6 left-6 right-6 p-6 bg-white shadow-xl rounded-sm border-b-4 border-accent">
+                <p className="text-accent font-bold text-xs uppercase tracking-[0.2em] mb-2 text-center">Our Commitment</p>
+                <p className="text-gray-800 text-base font-semibold text-center italic leading-tight">Delivering enduring value in every project through innovation and integrity.</p>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+
 
       {/* Applications Section (Conditional) */}
       {(service as any).applications && (
@@ -264,78 +287,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
         </section>
       )}
 
-      {/* Related Projects Section */}
-      <section className="py-24 bg-gray-900 text-white overflow-hidden relative">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] border-[40px] border-white/5 rounded-full pointer-events-none" />
-        <Container>
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-            <div className="max-w-2xl">
-              <p className="text-accent font-bold uppercase tracking-[0.3em] mb-4">Portfolo</p>
-              <h2 className="text-4xl md:text-5xl font-bold uppercase">
-                Featured Projects
-              </h2>
-            </div>
-            <Link href="/projects">
-              <Button variant="red" size="lg" className="px-8">
-                View All Projects
-              </Button>
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {relatedProjects.map((project) => (
-              <div key={project.id} className="group bg-white/5 backdrop-blur-sm border border-white/10 overflow-hidden hover:border-accent/50 transition-all duration-500">
-                <div className="relative h-64 overflow-hidden">
-                  <Image
-                    src={project.src}
-                    alt={project.alt}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  <div className="absolute bottom-4 left-4 flex gap-2">
-                    <span className="bg-accent text-white text-[10px] font-bold px-2 py-1 uppercase tracking-tighter">
-                      {project.category}
-                    </span>
-                  </div>
-                </div>
-                <div className="p-8">
-                  <h3 className="text-xl font-bold mb-6 group-hover:text-accent transition-colors line-clamp-2 min-h-[3.5rem]">
-                    {project.title}
-                  </h3>
-                  <div className="space-y-4 text-sm text-gray-400 mb-8 border-t border-white/10 pt-6">
-                    <div className="flex items-center gap-3">
-                      <MapPin className="w-4 h-4 text-accent" />
-                      <span>{project.location}</span>
-                    </div>
-                    {project.client && (
-                      <div className="flex items-center gap-3">
-                        <Users className="w-4 h-4 text-accent" />
-                        <span>Client: {project.client}</span>
-                      </div>
-                    )}
-                    {project.period && (
-                      <div className="flex items-center gap-3">
-                        <Calendar className="w-4 h-4 text-accent" />
-                        <span>Period: {project.period}</span>
-                      </div>
-                    )}
-                    {project.quantity && (
-                      <div className="flex items-center gap-3">
-                        <TrendingUp className="w-4 h-4 text-accent" />
-                        <span>Scale: {project.quantity}</span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-4 bg-primary/50 text-[11px] uppercase tracking-widest text-accent border-l-2 border-accent">
-                    {project.scope || "Fabrication & Erection"}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
+      
 
       {/* CTA Section */}
       <section className="py-24 bg-accent relative overflow-hidden">

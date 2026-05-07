@@ -31,7 +31,6 @@ export const servicesData = [
       "Foot Over Bridge"
     ],
     image: "https://images.unsplash.com/photo-1545558014-8692077e9b5c?q=80&w=2070&auto=format&fit=crop",
-    homeImage: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop",
     alt: "Railway Bridge Construction Guwahati Assam",
     navDescription: "Open Web, Arch, Suspension...",
     catalog: [
@@ -82,7 +81,6 @@ export const servicesData = [
       "Low Maintenance"
     ],
     image: "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?q=80&w=2070&auto=format&fit=crop",
-    homeImage: "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?q=80&w=2070&auto=format&fit=crop",
     alt: "PEB Building Construction Assam",
     navDescription: "Standard, Customized & Hybrid PEB",
     catalog: [
@@ -130,7 +128,6 @@ export const servicesData = [
       "Custom Steel Fabrication"
     ],
     image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=2070&auto=format&fit=crop",
-    homeImage: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=2070&auto=format&fit=crop",
     alt: "Steel Structure Warehouse Guwahati",
     navDescription: "Warehouses, Sheds, Defense...",
     catalog: [

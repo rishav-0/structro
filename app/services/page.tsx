@@ -1,23 +1,45 @@
 
 
+"use client";
+
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button"
 import { ArrowUpRight, Waypoints, Building2, HardHat, Waves, CheckCircle, Clock, Shield, Award, PenTool } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
-import type { Metadata } from 'next';
-
 import { servicesData } from "@/lib/data";
-
-export const metadata: Metadata = {
-  title: 'Services | Structro Infratech - Bridge Engineering, PEB Buildings, Steel Structures',
-  description: 'Structro Infratech offers comprehensive steel engineering services including bridge engineering (Open Web, Railway, Highway, Foot Over, Composite, Arch, Baily, Cable-Stayed), PEB buildings, and conventional sheds.',
-  keywords: ['Bridge Engineering', 'PEB Buildings', 'Pre-Engineered Buildings', 'Steel Structures', 'Industrial Sheds', 'Bridge Construction Guwahati', 'PEB Manufacturers Assam'],
-}
+import { getCollectionData } from "@/lib/data-merge";
 
 export default function ServicesPage() {
-  
-  const services = servicesData;
+  const [services, setServices] = useState(servicesData);
+
+  useEffect(() => {
+    async function mergeData() {
+      try {
+        const dbServices = await getCollectionData("services") as any[];
+        if (dbServices.length > 0) {
+          // DB fields override hardcoded fields for matching IDs;
+          // icon/navIcon are React components kept from hardcoded base.
+          const dbById = new Map(dbServices.map((s: any) => [s.id, s]));
+          const merged = servicesData.map((hc) => {
+            const db = dbById.get(hc.id);
+            if (db) {
+              dbById.delete(hc.id);
+              return { ...hc, ...db, icon: hc.icon, navIcon: hc.navIcon };
+            }
+            return hc;
+          });
+          // Append any DB services that have no hardcoded counterpart
+          dbById.forEach((db) => merged.push(db));
+          setServices(merged as any);
+        }
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      }
+    }
+    mergeData();
+  }, []);
 
   const benefits = [
     {
@@ -95,9 +117,7 @@ export default function ServicesPage() {
               {/* Content */}
               <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-primary p-3 rounded-sm text-primary-foreground">
-                    {service.icon}
-                  </div>
+                  
                   <span className="text-accent text-sm font-bold uppercase tracking-[0.2em]">
                     {service.subtitle}
                   </span>

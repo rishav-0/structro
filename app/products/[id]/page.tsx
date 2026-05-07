@@ -1,4 +1,8 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { featuredProductsData } from "@/lib/data";
+import { getCollectionData } from "@/lib/data-merge";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
@@ -6,11 +10,46 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, CheckCircle2, ChevronRight, Ruler, Shield, Zap } from "lucide-react";
 import Link from "next/link";
 
-export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const product = featuredProductsData.find((item) => item.id === id);
+interface Product {
+  id: string;
+  title: string;
+  specs: string;
+  description: string;
+  features: string[];
+  image: string;
+}
 
-  if (!product) notFound();
+export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProduct() {
+      const { id } = await params;
+
+      try {
+        // Check DB first so admin edits take effect without a code change
+        const dbProducts = await getCollectionData("products") as any[];
+        const fromDb = dbProducts.find((p: any) => p.id === id);
+        if (fromDb) {
+          setProduct(fromDb as any);
+          setLoading(false);
+          return;
+        }
+      } catch (e) {
+        console.error("Error fetching product:", e);
+      }
+
+      // Fall back to hardcoded data if not found in DB
+      const found = featuredProductsData.find((item) => item.id === id);
+      setProduct(found as any);
+      setLoading(false);
+    }
+    fetchProduct();
+  }, [params]);
+
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (!product) return notFound();
 
   return (
     <div className="bg-[#0a0a0a] min-h-screen text-white pb-20">

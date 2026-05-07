@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react";
 import Hero from "@/components/hero"
 import { Button } from "@/components/ui/button"
 import { ArrowUpRight, Award, ShieldCheck, Leaf, CheckCircle, HardHat, Home, Factory, Package, Server } from "lucide-react";
@@ -7,11 +8,59 @@ import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import Link from "next/link";
 import { servicesData, projectsData, newLaunchesData, featuredProductsData } from "@/lib/data";
+import { getCollectionData } from "@/lib/data-merge";
 import NewHero from "@/components/NewHero";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import FaqSection from "@/components/FaqSection";
 
 export default function Page() {
+  const [services, setServices] = useState(servicesData.slice(0, 3));
+  const [products, setProducts] = useState(featuredProductsData);
+  const [projects, setProjects] = useState(projectsData.homeProjects);
+  const [launches, setLaunches] = useState(newLaunchesData);
+  const [dbLoaded, setDbLoaded] = useState(false);
+
+  useEffect(() => {
+    async function mergeData() {
+      try {
+        const [dbServices, dbProducts, dbProjects, dbLaunches] = await Promise.all([
+          getCollectionData("services") as any,
+          getCollectionData("products") as any,
+          getCollectionData("projects") as any,
+          getCollectionData("new-launches") as any,
+        ]);
+
+        if (dbServices.length > 0) {
+          const hcIds = new Set(servicesData.slice(0, 3).map(s => s.id));
+          const newFromDb = (dbServices as any[]).filter((ds: any) => !hcIds.has(ds.id));
+          setServices([...newFromDb, ...servicesData.slice(0, 3)].slice(0, 3) as any);
+        }
+
+        if (dbProducts.length > 0) {
+          const hcIds = new Set(featuredProductsData.map(p => p.id));
+          const newFromDb = (dbProducts as any[]).filter((dp: any) => !hcIds.has(dp.id));
+          const hcWithStringImage = featuredProductsData.map(p => ({ ...p, image: typeof p.image === "string" ? p.image : "" }));
+          setProducts([...newFromDb, ...hcWithStringImage].slice(0, 4) as any);
+        }
+
+        if (dbProjects.length > 0) {
+          const hcIds = new Set(projectsData.homeProjects.map(p => String(p.id)));
+          const newFromDb = (dbProjects as any[]).filter((p: any) => p.src && !hcIds.has(String(p.id)));
+          const dbWithClass = newFromDb.map((p: any) => ({ ...p, className: "md:col-span-2" }));
+          setProjects([...dbWithClass, ...projectsData.homeProjects].slice(0, 6) as any);
+        }
+
+        if (dbLaunches.length > 0) {
+          setLaunches(dbLaunches as any);
+        }
+      } catch (error) {
+        console.error("Error merging data:", error);
+      } finally {
+        setDbLoaded(true);
+      }
+    }
+    mergeData();
+  }, []);
 
   const stats = [
     { label: "Projects Completed", value: "500+" },
@@ -24,12 +73,6 @@ export default function Page() {
     "Bridge Engineering", "PEB Buildings", "Steel Structures",
     "Industrial Sheds", "Infrastructure", "Railway Bridges"
   ];
-
-  const services = servicesData.slice(0, 3);
-
-  const featuredProducts = featuredProductsData;
-
-  const projects = projectsData.homeProjects;
 
   const values = [
     {
@@ -117,7 +160,7 @@ export default function Page() {
             <div key={index} className="group bg-white rounded-md overflow-hidden border border-gray-200 hover:border-primary/30 hover:shadow-xl transition-all duration-300">
               <div className="aspect-[4/3] relative overflow-hidden">
                 <Image
-                  src={service.homeImage || service.image}
+                  src={service.image}
                   alt={service.alt}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
@@ -144,15 +187,13 @@ export default function Page() {
       <div className="bg-gray-50 py-20 border-y border-gray-200">
         <Container>
           <div className="text-center mb-12">
-            <span className="bg-accent/20 text-accent text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4 inline-block">
-              Project & Authority Engine
-            </span>
+            
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900">New Launches</h2>
             <p className="text-gray-500 mt-2">Latest additions to our heavy engineering portfolio</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {newLaunchesData.map((launch) => (
+            {launches.map((launch) => (
               <div key={launch.id} className="relative group overflow-hidden rounded-md border border-gray-200 bg-white p-2">
                 <div className="aspect-video relative overflow-hidden mb-4">
                   <Image 
@@ -185,14 +226,12 @@ export default function Page() {
       <div className="py-20 bg-gray-900 border-y border-gray-800">
         <Container>
           <div className="text-center mb-16">
-            <span className="text-accent text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4 inline-block bg-accent/10">
-              Premium Solutions
-            </span>
+            
             <h2 className="text-3xl md:text-5xl font-bold text-white">Our Featured Products</h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.map((product) => (
+            {products.map((product) => (
               <Link href={`/products/${product.id}`} key={product.id} className="block w-full h-full">
                 <div className="bg-gray-800 rounded-md overflow-hidden border border-gray-700 hover:border-accent/50 transition-all duration-300 group h-full">
                   <div className="aspect-[4/3] relative overflow-hidden">
@@ -206,9 +245,7 @@ export default function Page() {
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-80" />
                   </div>
                   <div className="p-6 relative -mt-8 bg-gray-800/90 backdrop-blur-sm rounded-t-xl h-full">
-                    <div className="w-10 h-10 bg-gray-900 rounded-sm flex items-center justify-center mb-4 border border-gray-700 shadow-lg">
-                      {product.icon}
-                    </div>
+                   
                     <h3 className="text-white font-bold text-lg leading-tight mb-2 min-h-[3rem]">
                       {product.title}
                     </h3>
@@ -263,53 +300,6 @@ export default function Page() {
           </div>
         </Container>
       </div>
-
-      {/* Why Choose Us */}
-      {/* <div className="bg-primary py-20">
-        <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4">
-                Why Choose Us
-              </p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                Experience That Sets Us Apart
-              </h2>
-              <div className="space-y-4 mb-8">
-                {[
-                  "Founded by 4 experienced professionals",
-                  "Connecting dreams through quality construction since 2000",
-                  "Zero compromise on safety and risk management",
-                  "ISO 9001:2015 certified company",
-                  "Strong presence across Northeast India"
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <CheckCircle className="w-5 h-5 text-accent flex-shrink-0" />
-                    <p className="text-gray-200">{item}</p>
-                  </div>
-                ))}
-              </div>
-              <Link href="/about">
-                <Button variant="red" size="lg">
-                  Know More About Us
-                </Button>
-              </Link>
-            </div>
-            
-            <div className="relative">
-              <div className="aspect-[4/3] relative rounded-lg overflow-hidden">
-                <Image
-                  src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2070&auto=format&fit=crop"
-                  alt="Construction team at work"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover"
-                />
-              </div>
-            </div>
-          </div>
-        </Container>
-      </div> */}
 
       <WhyChooseUs />
 
@@ -388,41 +378,42 @@ export default function Page() {
         ))}
       </Container>
 
-      {/* CTA Banner */}
-      <Container className="relative h-[400px] rounded-md overflow-hidden mb-20 group">
-        <Image 
-          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
-          alt="Modern Architecture" 
-          fill
-          sizes="100vw"
-          className="object-cover transition-transform duration-1000 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/60 to-transparent" />
-        
-        <div className="relative h-full flex flex-col justify-center px-8 md:px-16 max-w-2xl">
-          <h2 className="text-white text-4xl md:text-5xl font-bold mb-6 leading-tight">
-            Ready to Build<br/>Something Great?
-          </h2>
-          <p className="text-gray-200 text-base mb-8 leading-relaxed max-w-md">
-            From concept to completion, our team of experienced engineers and 
-            construction professionals delivers projects on time and built to last.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link href="/contact">
-              <Button variant="red" size="lg">
-                Request Technical Consultation
-                <ArrowUpRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Link>
-            <Link href="/projects">
-              <Button variant="primary-outline" size="lg">
-                View Our Projects
-              </Button>
-            </Link>
+      {/* Standard CTA Section */}
+      <section className="py-24 bg-white">
+        <Container className="relative h-[400px] rounded-sm overflow-hidden group">
+          <Image 
+            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
+            alt="Modern Architecture" 
+            fill
+            sizes="100vw"
+            className="object-cover transition-transform duration-1000 group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/60 via-primary/30 to-transparent" />
+          
+          <div className="relative h-full flex flex-col justify-center px-8 md:px-16 max-w-2xl">
+            <h2 className="text-white text-4xl md:text-5xl font-bold mb-6 leading-tight uppercase tracking-tight">
+              Ready to Build<br/>Your Project?
+            </h2>
+            <p className="text-gray-200 text-base mb-8 leading-relaxed max-w-md font-medium">
+              Let our experienced team help you turn your vision into reality. 
+              Contact us for a technical consultation today.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/contact">
+                <Button variant="red" size="lg" className="rounded-sm font-bold uppercase tracking-widest text-xs">
+                  Get a Quote
+                  <ArrowUpRight className="ml-2 w-4 h-4" />
+                </Button>
+              </Link>
+              <Link href="/projects">
+                <Button variant="white-outline" size="lg" className="rounded-sm font-bold uppercase tracking-widest text-xs">
+                  View Our Projects
+                </Button>
+              </Link>
+            </div>
           </div>
-        </div>
-      </Container>
-
+        </Container>
+      </section>
 
       <FaqSection />
 

@@ -1,17 +1,66 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { ArrowUpRight, Play } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { projectsData } from "@/lib/data";
+import { getCollectionData } from "@/lib/data-merge";
+
+interface Project {
+  id: string | number;
+  title: string;
+  location: string;
+  category?: string;
+  serviceId?: string;
+  src: string;
+  alt: string;
+  isVideo?: boolean;
+  client?: string;
+  scope?: string;
+  quantity?: string;
+  period?: string;
+}
 
 export function ProjectsClient() {
   const [activeTab, setActiveTab] = useState<"ongoing" | "completed">("completed");
+  const [projects, setProjects] = useState(projectsData);
+  const [loading, setLoading] = useState(true);
 
-  const projects = projectsData;
+  useEffect(() => {
+    async function mergeData() {
+      try {
+        const dbProjects = await getCollectionData("projects") as any[];
+        if (dbProjects.length > 0) {
+          // DB items win over hardcoded items with the same ID (string comparison).
+          const dbOngoing = dbProjects.filter((p: any) => p.type === "ongoing");
+          const dbCompleted = dbProjects.filter((p: any) => p.type === "completed");
+
+          const dbOngoingIds = new Set(dbOngoing.map((p: any) => String(p.id)));
+          const dbCompletedIds = new Set(dbCompleted.map((p: any) => String(p.id)));
+
+          // Keep hardcoded entries not overridden by the DB, then append all DB entries
+          const allOngoing = [
+            ...projectsData.ongoing.filter((p) => !dbOngoingIds.has(String(p.id))),
+            ...dbOngoing,
+          ];
+          const allCompleted = [
+            ...projectsData.completed.filter((p) => !dbCompletedIds.has(String(p.id))),
+            ...dbCompleted,
+          ];
+
+          setProjects({ ongoing: allOngoing, completed: allCompleted, homeProjects: projectsData.homeProjects });
+        }
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    mergeData();
+  }, []);
 
   return (
     <div className="">
@@ -148,6 +197,15 @@ export function ProjectsClient() {
                   <span className="w-2 h-2 bg-accent rounded-full"></span>
                   {project.location}
                 </p>
+                <div className="mt-4 sm:hidden">
+
+                <Link href={`/projects/${project.id}`}>
+                    <Button variant="red" className="w-full ">
+                      View Details
+                      <ArrowUpRight className="ml-2 w-4 h-4" />
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
           ))}

@@ -9,20 +9,26 @@ import Link from 'next/link';
 const slides = [
   {
     id: 1,
-    title: "BRIDGE ENGINEERING & INFRASTRUCTURE",
-    description: "Connecting dreams across Northeast India with robust, precision-engineered bridges built to last.",
+    title: "Bridge Engineering",
+    highlight: "& Infrastructure",
+    description:
+      "Connecting Northeast India with precision-engineered bridges built for durability and scale.",
     image: "/images/hero/c.png"
   },
   {
     id: 2,
-    title: "PRE-ENGINEERED BUILDING SOLUTIONS",
-    description: "Pioneering PEB technology for durable, scalable, and cost-effective industrial and residential structures.",
+    title: "Pre-Engineered",
+    highlight: "Buildings",
+    description:
+      "Scalable and cost-efficient PEB solutions for modern industrial and residential needs.",
     image: "/images/hero/a.png"
   },
   {
     id: 3,
-    title: "INDUSTRIAL SHEDS & WAREHOUSING",
-    description: "High-performance heavy engineering solutions for industrial giants, featuring state-of-the-art construction.",
+    title: "Industrial Sheds",
+    highlight: "& Warehousing",
+    description:
+      "High-performance infrastructure tailored for heavy industries and logistics.",
     image: "/images/hero/b.png"
   }
 ];
@@ -38,99 +44,114 @@ const NewHero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-[80vh] h-[90vh] md:h-screen w-full overflow-hidden bg-black text-white">
-      {/* Background Images - Using a darker overlay for better legibility */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={slides[index].id}
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
-          className="absolute inset-0 z-0"
-        >
-          <Image
-            src={slides[index].image}
-            alt={slides[index].title}
-            fill
-            priority
-            className="object-cover opacity-50" // Reduced opacity for professional feel
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-        </motion.div>
-      </AnimatePresence>
+    <section className="relative h-screen w-full overflow-hidden bg-black text-white">
+      
+      {/* Background Video */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        src="/images/hero/structro.mp4"
+        poster="/images/hero/frame-1.webp"
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
+      <div className="absolute inset-0 bg-black/70" />
 
-      <Container className="relative z-10 h-full flex items-center  md:pt-0">
-        {/* Changed from grid-cols-2 to flex-col/lg:grid */}
-        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-12 w-full">
+      <Container className="relative z-10 h-full flex items-center">
+        <div className="grid lg:grid-cols-2 gap-12 w-full">
           
-          {/* Left Side: Headline */}
-          <div className="overflow-hidden">
+          {/* LEFT CONTENT */}
+          <div className="flex flex-col justify-center">
             <AnimatePresence mode="wait">
               <motion.div
                 key={slides[index].id}
-                initial={{ y: 40, opacity: 0 }}
+                initial={{ y: 60, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -40, opacity: 0 }}
-                transition={{ duration: 0.8, ease: "circOut" }}
+                transition={{ duration: 0.8 }}
               >
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.1] tracking-tighter uppercase">
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight">
                   {slides[index].title}
+                  <br />
+                  <span className="text-red-500">
+                    {slides[index].highlight}
+                  </span>
                 </h1>
+
+                <p className="mt-6 text-lg text-zinc-300 max-w-lg leading-relaxed">
+                  {slides[index].description}
+                </p>
+
+                {/* CTA */}
+                <div className="mt-8 flex gap-4 flex-wrap">
+                  <Button asChild size="xl" variant="red">
+                    <Link href="/projects">
+                      Explore Projects
+                      <ArrowUpRight className="ml-2 w-4 h-4" />
+                    </Link>
+                  </Button>
+
+                  <Button
+                    asChild
+                    size="xl"
+                    variant="outline"
+                    className="bg-transparent border-white text-white hover:bg-white hover:text-black transition-colors"
+                  >
+                    <Link href="/contact">
+                      Get Consultation
+                    </Link>
+                  </Button>
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* Right Side: Description & CTA */}
-          <div className="flex flex-col items-start lg:items-end lg:text-right mt-4 md:mt-0">
+          {/* RIGHT SIDE VISUAL ELEMENT */}
+          <div className="hidden lg:flex items-center justify-center">
             <AnimatePresence mode="wait">
               <motion.div
                 key={slides[index].id}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="max-w-xl lg:max-w-md"
+                initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+                className="relative w-[80%] h-[400px] border border-white/10 backdrop-blur-lg bg-white/5 rounded-sm overflow-hidden shadow-2xl"
               >
-                <p className="text-lg md:text-xl text-zinc-300 mb-8 leading-relaxed font-light">
-                  {slides[index].description}
-                </p>
-                <div className="flex flex-wrap gap-3 sm:gap-4 justify-start lg:justify-end">
-                  <Link href="/projects" className="w-full sm:w-auto">
-                    <Button variant="red" size="xl" className="w-full">
-                      EXPLORE PROJECTS <ArrowUpRight className="ml-2 w-4 h-4" />
-                    </Button>
-                  </Link>
-                  <Link href="/contact" className="w-full sm:w-auto">
-                    <Button variant="white-outline" size="xl" className="w-full">
-                      GET CONSULTATION
-                    </Button>
-                  </Link>
-                </div>
+                <Image
+                  src={slides[index].image}
+                  alt=""
+                  fill
+                  className="object-cover"
+                />
               </motion.div>
             </AnimatePresence>
           </div>
         </div>
       </Container>
 
-      {/* Navigation Indicators - Responsive placement */}
-      <div className="absolute bottom-6 md:bottom-12 left-0 w-full z-20">
-        <Container>
-          <div className="flex items-center gap-1 ">
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setIndex(i)}
-                className="group flex flex-col items-start gap-2 focus:outline-none"
-              >
-                <div className={`h-1 transition-all duration-500 rounded-full ${i === index ? "w-12 md:w-20 bg-red-600" : "w-6 md:w-10 bg-white/20 group-hover:bg-white/40"}`} />
-                <span className={`hidden md:block text-[10px] uppercase tracking-[0.2em] font-bold transition-all ${i === index ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"}`}>
-                  Section 0{i + 1}
-                </span>
-              </button>
-            ))}
-          </div>
-        </Container>
+      {/* PROGRESS INDICATOR */}
+      <div className="absolute bottom-0 left-0 w-full h-1 bg-white/10">
+        <motion.div
+          key={index}
+          initial={{ width: "0%" }}
+          animate={{ width: "100%" }}
+          transition={{ duration: 6, ease: "linear" }}
+          className="h-full bg-red-600"
+        />
+      </div>
+
+      {/* DOT NAV */}
+      <div className="absolute bottom-6 right-6 flex gap-2">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIndex(i)}
+            className={`w-3 h-3 rounded-full transition ${
+              i === index ? "bg-red-600 scale-125" : "bg-white/30"
+            }`}
+          />
+        ))}
       </div>
     </section>
   );

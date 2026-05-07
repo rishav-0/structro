@@ -18,6 +18,8 @@ const Navbar = () => {
     { name: 'About', href: '/about' },
     { name: 'Services', href: '/services' },
     { name: 'Projects', href: '/projects' },
+    { name: 'Careers', href: '/careers' },
+    { name: 'Blog', href: '/blogs' },
     { name: 'Contact', href: '/contact' },
   ];
 
@@ -30,30 +32,20 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled || isOpen ? 'bg-white shadow-md py-2 md:py-3' : 'bg-transparent py-3 md:py-5'
-      }`}
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || isOpen ? 'bg-white shadow-md py-2 md:py-3' : 'bg-transparent py-3 md:py-5'
+        }`}
     >
       <Container className="flex justify-between items-center">
         {/* Brand */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="relative w-[50px] h-[40px] md:w-[63px] md:h-[50px] transition-all duration-300">
-            <Image 
-              src="/images/transparantLogo.png" 
-              alt="Structro Logo" 
-              fill
-              sizes="(max-width: 768px) 50px, 63px"
-              className={`object-contain transition-opacity duration-300 ${scrolled || isOpen ? 'opacity-0' : 'opacity-100'}`}
-            />
-            <Image 
-              src="/images/logo.png" 
-              alt="Structro Logo" 
-              fill
-              sizes="(max-width: 768px) 50px, 63px"
-              className={`object-contain transition-opacity duration-300 ${scrolled || isOpen ? 'opacity-100' : 'opacity-0'}`}
-            />
-          </div>
+        <Link href="/" className="relative flex items-center gap-2 group h-10 w-32 md:h-12 md:w-40">
+          <Image
+            src={scrolled || isOpen ? "/images/logo.png" : "/images/transparantLogo.png"}
+            alt="Structro Logo"
+            fill
+            className="object-contain transition-all duration-300 transform group-hover:scale-105"
+            priority
+          />
         </Link>
 
         {/* Desktop Links */}
@@ -64,31 +56,30 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 href={link.href}
-                className={`text-sm font-semibold uppercase tracking-wider transition-all relative py-1 ${
-                  scrolled 
+                className={`text-sm font-semibold uppercase tracking-wider transition-all relative py-1 ${scrolled
                     ? isActive ? 'text-primary' : 'text-gray-600 hover:text-primary'
                     : isActive ? 'text-accent' : 'text-white/80 hover:text-white'
-                }`}
+                  }`}
               >
                 {link.name}
                 {isActive && (
-                  <span className={`absolute bottom-0 left-0 w-full h-0.5 ${
-                    scrolled ? 'bg-primary' : 'bg-accent'
-                  }`}></span>
+                  <span className={`absolute bottom-0 left-0 w-full h-0.5 ${scrolled ? 'bg-primary' : 'bg-accent'
+                    }`}></span>
                 )}
               </Link>
             );
           })}
-          
-          <Link href="/contact">
-            <Button 
-              variant={scrolled ? "saffron" : "red"} 
-              size="default"
-              className="ml-2 xl:ml-4 font-bold transition-all whitespace-nowrap"
-            >
+
+          <Button
+            asChild
+            variant={scrolled ? "saffron" : "red"}
+            size="default"
+            className="ml-2 xl:ml-4 font-bold transition-all whitespace-nowrap"
+          >
+            <Link href="/contact">
               GET A QUOTE <ArrowUpRight className="ml-1 w-4 h-4" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -106,10 +97,9 @@ const Navbar = () => {
       </Container>
 
       {/* Mobile Menu */}
-      <div 
-        className={`lg:hidden fixed inset-0 top-[56px] sm:top-[72px] bg-white z-40 transition-transform duration-300 transform ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+      <div
+        className={`lg:hidden fixed inset-0 top-[56px] sm:top-[72px] bg-white z-40 transition-transform duration-300 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
       >
         <div className="flex flex-col p-6 space-y-6 bg-white border-t border-gray-100 h-[calc(100vh-56px)] sm:h-[calc(100vh-72px)] overflow-y-auto pb-20">
           {navLinks.map((link) => {
@@ -118,20 +108,19 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 href={link.href}
-                className={`text-xl font-bold uppercase tracking-wider border-b border-gray-50 pb-4 ${
-                  isActive ? 'text-primary' : 'text-gray-900 hover:text-primary'
-                }`}
+                className={`text-xl font-bold uppercase tracking-wider border-b border-gray-50 pb-4 ${isActive ? 'text-primary' : 'text-gray-900 hover:text-primary'
+                  }`}
                 onClick={() => setIsOpen(false)}
               >
                 {link.name}
               </Link>
             );
           })}
-          <Link href="/contact" onClick={() => setIsOpen(false)}>
-            <Button variant="saffron" size="xl" className="w-full mt-4">
+          <Button asChild variant="saffron" size="xl" className="w-full mt-4">
+            <Link href="/contact" onClick={() => setIsOpen(false)}>
               REQUEST QUOTE <ArrowUpRight className="ml-2 w-5 h-5" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
       </div>
     </nav>

@@ -1,14 +1,36 @@
 import { newLaunchesData } from "@/lib/data";
+import { adminDb } from "@/lib/firebase-admin";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MapPin, Tag, CheckCircle2 } from "lucide-react";
+import { MapPin, Tag, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+
+interface LaunchSpecification {
+  label: string;
+  value: string;
+}
+
+interface NewLaunch {
+  id: string;
+  title: string;
+  description: string;
+  longDescription?: string;
+  image: string;
+  type: string;
+  region: string;
+  features?: string[];
+  specifications?: LaunchSpecification[];
+  status?: "active" | "inactive";
+}
 
 export default async function NewLaunchPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const launch = newLaunchesData.find((item) => item.id === id);
+  const launchSnapshot = await adminDb.collection("new-launches").doc(id).get();
+  const launchFromDb = launchSnapshot.exists ? ({ id: launchSnapshot.id, ...launchSnapshot.data() } as NewLaunch) : null;
+  const launchFromFallback = newLaunchesData.find((item) => item.id === id) as NewLaunch | undefined;
+  const launch = launchFromDb && launchFromDb.status !== "inactive" ? launchFromDb : launchFromFallback;
 
   if (!launch) {
     notFound();
@@ -16,34 +38,41 @@ export default async function NewLaunchPage({ params }: { params: Promise<{ id: 
 
   return (
     <div className="bg-white min-h-screen">
-      {/* Hero Header */}
-      <div className="relative h-[60vh] min-h-[500px] w-full bg-gray-900 flex items-center">
-        <Image 
-          src={launch.image} 
-          alt={launch.title} 
-          fill 
-          className="object-cover opacity-50"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-900/70 to-transparent" />
-        
-        <Container className="relative z-10">
-        
-          <div className="flex flex-wrap items-center gap-4 mb-6">
-            <span className="bg-accent text-white font-bold px-4 py-1.5 uppercase tracking-wider rounded-md text-sm shadow-lg flex items-center gap-2">
-              <Tag className="w-4 h-4" /> {launch.type}
-            </span>
-            <span className="text-sm font-bold text-gray-300 uppercase flex items-center gap-2 bg-gray-800/50 px-4 py-1.5 rounded-md backdrop-blur-sm">
-              <MapPin className="w-4 h-4" /> {launch.region}
-            </span>
+      <div className="bg-gray-950 py-16 md:py-24">
+        <Container>
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
+            <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gray-900 shadow-2xl">
+              <div className="relative aspect-4/3 min-h-80 w-full">
+                <Image
+                  src={launch.image}
+                  alt={launch.title}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-gray-950/40 via-transparent to-transparent" />
+              </div>
+            </div>
+
+            <div>
+              <div className="mb-6 flex flex-wrap items-center gap-4">
+                <span className="flex items-center gap-2 rounded-md bg-accent px-4 py-1.5 text-sm font-bold uppercase tracking-wider text-white shadow-lg">
+                  <Tag className="w-4 h-4" /> {launch.type}
+                </span>
+                <span className="flex items-center gap-2 rounded-md bg-white/10 px-4 py-1.5 text-sm font-bold uppercase text-gray-200 backdrop-blur-sm">
+                  <MapPin className="w-4 h-4" /> {launch.region}
+                </span>
+              </div>
+
+              <h1 className="mb-6 max-w-3xl text-4xl font-bold leading-tight text-white md:text-6xl">
+                {launch.title}
+              </h1>
+
+              <p className="max-w-2xl text-lg leading-relaxed text-gray-300 md:text-xl">
+                {launch.description}
+              </p>
+            </div>
           </div>
-          
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 max-w-4xl leading-tight">
-            {launch.title}
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl leading-relaxed">
-            {launch.description}
-          </p>
         </Container>
       </div>
 
@@ -59,7 +88,7 @@ export default async function NewLaunchPage({ params }: { params: Promise<{ id: 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
               {launch.features?.map((feature, idx) => (
                 <div key={idx} className="flex items-start gap-4 p-6 bg-gray-50 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
-                  <CheckCircle2 className="w-6 h-6 text-accent flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-6 h-6 text-accent shrink-0 mt-0.5" />
                   <span className="text-gray-800 font-medium text-lg">{feature}</span>
                 </div>
               ))}

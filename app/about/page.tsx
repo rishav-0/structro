@@ -240,30 +240,43 @@ export default function AboutPage() {
         </Container>
       </div>
 
-      {/* CTA Section */}
-      <Container className="py-24">
-        <div className="bg-gray-900 rounded-lg p-12 md:p-16 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Ready to Build Your Project?
-          </h2>
-          <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
-            Let our experienced team help you turn your vision into reality. 
-            Contact us for a technical consultation today.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/contact">
-              <Button variant="red" size="lg" className="w-full sm:w-auto">
-                Get a Quote
-              </Button>
-            </Link>
-            <Link href="/projects">
-              <Button variant="gold-outline" size="lg" className="w-full sm:w-auto">
-                View Our Projects
-              </Button>
-            </Link>
+      {/* Standard CTA Section */}
+      <section className="py-24 bg-white">
+        <Container className="relative h-[400px] rounded-sm overflow-hidden group">
+          <Image 
+            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
+            alt="Modern Architecture" 
+            fill
+            sizes="100vw"
+            className="object-cover transition-transform duration-1000 group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/60 via-primary/30 to-transparent" />
+          
+          <div className="relative h-full flex flex-col justify-center px-8 md:px-16 max-w-2xl">
+            <h2 className="text-white text-4xl md:text-5xl font-bold mb-6 leading-tight uppercase tracking-tight">
+              Ready to Build<br/>Your Project?
+            </h2>
+            <p className="text-gray-200 text-base mb-8 leading-relaxed max-w-md font-medium">
+              Let our experienced team help you turn your vision into reality. 
+              Contact us for a technical consultation today.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/contact">
+                <Button variant="red" size="lg" className="rounded-sm font-bold uppercase tracking-widest text-xs">
+                  Get a Quote
+                  <ArrowUpRight className="ml-2 w-4 h-4" />
+                </Button>
+              </Link>
+              <Link href="/projects">
+                <Button variant="white-outline" size="lg" className="rounded-sm font-bold uppercase tracking-widest text-xs">
+                  View Our Projects
+                </Button>
+              </Link>
+            </div>
           </div>
-        </div>
-      </Container>
+        </Container>
+      </section>
+
       
     </div>
   )

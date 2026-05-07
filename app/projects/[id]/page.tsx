@@ -1,4 +1,8 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { projectsData } from "@/lib/data";
+import { getCollectionData } from "@/lib/data-merge";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
@@ -6,22 +10,58 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, MapPin, Building, Calendar, Scale } from "lucide-react";
 import Link from "next/link";
 
-export default async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const projectId = parseInt(id);
-  
-  let project = null;
-  const categories = ["ongoing", "completed", "homeProjects"] as const;
-  
-  for (const category of categories) {
-    const found = projectsData[category].find((p) => p.id === projectId);
-    if (found) {
-      project = found;
-      break;
-    }
-  }
+interface Project {
+  id: string | number;
+  title: string;
+  location: string;
+  category?: string;
+  serviceId?: string;
+  src: string;
+  alt: string;
+  isVideo?: boolean;
+  client?: string;
+  scope?: string;
+  quantity?: string;
+  period?: string;
+}
 
-  if (!project) notFound();
+export default function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
+  const [project, setProject] = useState<Project | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProject() {
+      const { id } = await params;
+      const projectId = id.includes("-") ? id : parseInt(id);
+      
+      let found: Project | null = null;
+      const categories = ["ongoing", "completed", "homeProjects"] as const;
+      
+      for (const category of categories) {
+        const f = projectsData[category].find((p) => p.id === projectId);
+        if (f) {
+          found = f as Project;
+          break;
+        }
+      }
+
+      if (!found) {
+        try {
+          const dbProjects = await getCollectionData("projects") as any[];
+          found = dbProjects.find(p => String(p.id) === id) || null;
+        } catch (e) {
+          console.error("Error fetching from DB:", e);
+        }
+      }
+
+      setProject(found);
+      setLoading(false);
+    }
+    fetchProject();
+  }, [params]);
+
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (!project) return notFound();
 
   const p: any = project;
 
