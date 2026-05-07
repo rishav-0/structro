@@ -6,6 +6,8 @@ import { Button } from './ui/button';
 import { ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 
+const assetPath = (path: string) => `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}${path}`;
+
 const slides = [
   {
     id: 1,
@@ -13,7 +15,7 @@ const slides = [
     highlight: "& Infrastructure",
     description:
       "Connecting Northeast India with precision-engineered bridges built for durability and scale.",
-    image: "/images/hero/c.png"
+    image: assetPath('/images/hero/c.png')
   },
   {
     id: 2,
@@ -21,7 +23,7 @@ const slides = [
     highlight: "Buildings",
     description:
       "Scalable and cost-efficient PEB solutions for modern industrial and residential needs.",
-    image: "/images/hero/a.png"
+    image: assetPath('/images/hero/a.png')
   },
   {
     id: 3,
@@ -29,7 +31,7 @@ const slides = [
     highlight: "& Warehousing",
     description:
       "High-performance infrastructure tailored for heavy industries and logistics.",
-    image: "/images/hero/b.png"
+    image: assetPath('/images/hero/b.png')
   }
 ];
 
@@ -45,16 +47,25 @@ const NewHero = () => {
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-black text-white">
-      
+      <Image
+        src={slides[index].image}
+        alt="Structro hero background"
+        fill
+        priority
+        sizes="100vw"
+        className="absolute inset-0 object-cover"
+      />
+
       {/* Background Video */}
       <video
         className="absolute inset-0 w-full h-full object-cover"
-        src="/images/hero/structro.mp4"
-        poster="/images/hero/frame-1.webp"
+        src={assetPath('/images/hero/structro.mp4')}
+        poster={assetPath('/frame-1.webp')}
         autoPlay
         muted
         loop
         playsInline
+        preload="metadata"
       />
       <div className="absolute inset-0 bg-black/70" />
 
