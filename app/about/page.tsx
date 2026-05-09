@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button"
-import { ArrowUpRight, Award, Shield, Leaf, Lightbulb, Calendar, CheckCircle } from "lucide-react";
+import { PageHero } from "@/components/page-hero";
+import { Award, Shield, Leaf, Lightbulb, Calendar } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import type { Metadata } from 'next';
 import WhyChooseUs from "@/components/WhyChooseUs";
+import SiteCta from "@/components/SiteCta";
 
 
 export const metadata: Metadata = {
@@ -49,58 +49,13 @@ export default function AboutPage() {
     },
   ];
 
-  const timeline = [
-    {
-      year: "Early 2000s",
-      title: "Foundation",
-      description: "Founded by four experienced professionals with a vision to transform infrastructure in Northeast India."
-    },
-    {
-      year: "July 6, 2018",
-      title: "Official Registration",
-      description: "Structro Infratech officially registered as a company, formalizing decades of expertise."
-    },
-    {
-      year: "2019",
-      title: "ISO Certification",
-      description: "Achieved ISO 9001:2015 certification, demonstrating commitment to international quality standards."
-    },
-    {
-      year: "Present",
-      title: "Industry Leader",
-      description: "Leading steel engineering company in Assam and Northeast India with 500+ successful projects."
-    }
-  ];
-
   return (
     <div className="">
-      {/* Hero Section */}
-      <div className="relative h-[60vh] min-h-[400px]">
-        <div className="absolute inset-0 bg-primary">
-          <Image
-            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop"
-            alt="Steel structure construction"
-            fill
-            sizes="100vw"
-            className="object-cover opacity-30"
-            priority
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/50" />
-        <Container className="relative h-full flex flex-col justify-center">
-          <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4 drop-shadow-sm">
-            About Us
-          </p>
-          <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground leading-tight max-w-3xl">
-            Building Infrastructure<br/>
-            <span className="text-accent drop-shadow-sm">Since 2000</span>
-          </h1>
-          <p className="text-primary-foreground/80 text-lg mt-6 max-w-2xl font-medium">
-            Structro Infratech is a leading steel engineering company in Northeast India, 
-            specializing in bridge construction, PEB buildings, and industrial infrastructure.
-          </p>
-        </Container>
-      </div>
+      <PageHero
+        eyebrow="About Us"
+        title={<>Building Infrastructure<br />Since 2000</>}
+        description="Structro Infratech is a steel engineering company serving Northeast India through bridge construction, PEB buildings, and industrial infrastructure delivery."
+      />
 
       {/* Stats Section */}
       <div className="bg-white py-16 border-b border-gray-100">
@@ -222,60 +177,48 @@ export default function AboutPage() {
         <Container>
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Find Us</h2>
-            <p className="text-gray-600 mt-2">Visit our head office in Guwahati, Assam</p>
+            <p className="text-gray-600 mt-2">Visit both our head office and workshop locations in Assam</p>
           </div>
-          <div className="bg-white rounded-lg p-4 border border-gray-200">
-            <div className="bg-gray-200 rounded-lg h-[400px] overflow-hidden">
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4509.166628943781!2d91.7755516!3d26.1569559!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a59003ad2c8c3%3A0x45df74d231f0e84c!2sStructro%20Infra%20Tech!5e1!3m2!1sen!2sin!4v1776015415897!5m2!1sen!2sin" 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0 }} 
-                allowFullScreen 
-                loading="lazy" 
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="bg-white rounded-lg p-4 border border-gray-200">
+              <div className="mb-4">
+                <h3 className="text-lg font-bold text-gray-900">Head Office</h3>
+                <p className="text-sm text-gray-600">Christian Basti, Guwahati, Assam</p>
+              </div>
+              <div className="bg-gray-200 rounded-lg h-100 overflow-hidden">
+                <iframe 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4509.166628943781!2d91.7755516!3d26.1569559!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a59003ad2c8c3%3A0x45df74d231f0e84c!2sStructro%20Infra%20Tech!5e1!3m2!1sen!2sin!4v1776015415897!5m2!1sen!2sin" 
+                  width="100%" 
+                  height="100%" 
+                  style={{ border: 0 }} 
+                  allowFullScreen 
+                  loading="lazy" 
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
+              </div>
+            </div>
+            <div className="bg-white rounded-lg p-4 border border-gray-200">
+              <div className="mb-4">
+                <h3 className="text-lg font-bold text-gray-900">Workshop</h3>
+                <p className="text-sm text-gray-600">Rani, Guwahati, Assam</p>
+              </div>
+              <div className="bg-gray-200 rounded-lg h-100 overflow-hidden">
+                <iframe 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4102.698420047236!2d91.5887681!3d26.0463064!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a410007764fb1%3A0x269c33cf41adcb77!2sStructro%20Infra%20Tech%20Rani%20(%20Workshop%20)!5e1!3m2!1sen!2sin!4v1778258046366!5m2!1sen!2sin"
+                  width="100%" 
+                  height="100%" 
+                  style={{ border: 0 }} 
+                  allowFullScreen 
+                  loading="lazy" 
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
+              </div>
             </div>
           </div>
         </Container>
       </div>
 
-      {/* Standard CTA Section */}
-      <section className="py-24 bg-white">
-        <Container className="relative h-[400px] rounded-sm overflow-hidden group">
-          <Image 
-            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
-            alt="Modern Architecture" 
-            fill
-            sizes="100vw"
-            className="object-cover transition-transform duration-1000 group-hover:scale-110"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/60 via-primary/30 to-transparent" />
-          
-          <div className="relative h-full flex flex-col justify-center px-8 md:px-16 max-w-2xl">
-            <h2 className="text-white text-4xl md:text-5xl font-bold mb-6 leading-tight uppercase tracking-tight">
-              Ready to Build<br/>Your Project?
-            </h2>
-            <p className="text-gray-200 text-base mb-8 leading-relaxed max-w-md font-medium">
-              Let our experienced team help you turn your vision into reality. 
-              Contact us for a technical consultation today.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/contact">
-                <Button variant="red" size="lg" className="rounded-sm font-bold uppercase tracking-widest text-xs">
-                  Get a Quote
-                  <ArrowUpRight className="ml-2 w-4 h-4" />
-                </Button>
-              </Link>
-              <Link href="/projects">
-                <Button variant="white-outline" size="lg" className="rounded-sm font-bold uppercase tracking-widest text-xs">
-                  View Our Projects
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </Container>
-      </section>
+      <SiteCta />
 
       
     </div>

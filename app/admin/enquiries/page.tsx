@@ -10,8 +10,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Search, Phone, Mail, Trash2, Eye } from "lucide-react";
+import { Search, Phone, Mail, Trash2, Eye, Users, Building2, Briefcase } from "lucide-react";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+
+type EnquiryType = "lead" | "vendor" | "contractor";
 
 interface Enquiry {
   id: string;
@@ -23,6 +25,8 @@ interface Enquiry {
   message: string;
   status: "new" | "contacted" | "resolved";
   followUpNotes: string;
+  type?: EnquiryType;
+  additionalFields?: Record<string, string>;
   createdAt: number;
   updatedAt: number;
 }
@@ -38,6 +42,7 @@ export default function EnquiriesPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [typeFilter, setTypeFilter] = useState<EnquiryType>("lead");
   const [open, setOpen] = useState(false);
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
   const [followUpNotes, setFollowUpNotes] = useState("");
@@ -132,6 +137,7 @@ export default function EnquiriesPage() {
   };
 
   const filteredEnquiries = enquiries
+    .filter((enquiry) => (enquiry.type || "lead") === typeFilter)
     .filter(
       (enquiry) =>
         enquiry.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -141,18 +147,53 @@ export default function EnquiriesPage() {
     )
     .filter((enquiry) => statusFilter === "all" || enquiry.status === statusFilter);
 
+  const typeFilteredEnquiries = enquiries.filter((e) => (e.type || "lead") === typeFilter);
   const stats = {
-    total: enquiries.length,
-    new: enquiries.filter((e) => e.status === "new").length,
-    contacted: enquiries.filter((e) => e.status === "contacted").length,
-    resolved: enquiries.filter((e) => e.status === "resolved").length,
+    total: typeFilteredEnquiries.length,
+    new: typeFilteredEnquiries.filter((e) => e.status === "new").length,
+    contacted: typeFilteredEnquiries.filter((e) => e.status === "contacted").length,
+    resolved: typeFilteredEnquiries.filter((e) => e.status === "resolved").length,
+  };
+
+  const typeStats = {
+    leads: enquiries.filter((e) => (e.type || "lead") === "lead").length,
+    vendors: enquiries.filter((e) => e.type === "vendor").length,
+    contractors: enquiries.filter((e) => e.type === "contractor").length,
   };
 
   return (
     <>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Enquiries</h1>
-        <p className="mt-1 text-neutral-400">Manage incoming enquiries from website</p>
+      <div className="mb-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Enquiries</h1>
+          <p className="mt-1 text-neutral-400">Manage incoming enquiries from website</p>
+        </div>
+        <div className="flex gap-2">
+          <Button
+            variant={typeFilter === "lead" ? "default" : "outline"}
+            onClick={() => setTypeFilter("lead")}
+            className={typeFilter === "lead" ? "bg-primary" : ""}
+          >
+            <Users className="w-4 h-4 mr-2" />
+            Leads ({typeStats.leads})
+          </Button>
+          <Button
+            variant={typeFilter === "vendor" ? "default" : "outline"}
+            onClick={() => setTypeFilter("vendor")}
+            className={typeFilter === "vendor" ? "bg-primary" : ""}
+          >
+            <Building2 className="w-4 h-4 mr-2" />
+            Vendors ({typeStats.vendors})
+          </Button>
+          <Button
+            variant={typeFilter === "contractor" ? "default" : "outline"}
+            onClick={() => setTypeFilter("contractor")}
+            className={typeFilter === "contractor" ? "bg-primary" : ""}
+          >
+            <Briefcase className="w-4 h-4 mr-2" />
+            Contractors ({typeStats.contractors})
+          </Button>
+        </div>
       </div>
 
       <div className="mb-6 grid grid-cols-4 gap-4">
@@ -274,9 +315,16 @@ export default function EnquiriesPage() {
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-5xl bg-neutral-900 text-white border-neutral-800">
+        <DialogContent className="max-w-5xl bg-neutral-900 text-white border-neutral-800 max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Enquiry Details</DialogTitle>
+            <div className="flex items-center gap-3">
+              <DialogTitle>Enquiry Details</DialogTitle>
+              {selectedEnquiry?.type && selectedEnquiry.type !== "lead" && (
+                <Badge variant="outline" className="text-xs">
+                  {selectedEnquiry.type === "vendor" ? "Vendor" : "Contractor"}
+                </Badge>
+              )}
+            </div>
           </DialogHeader>
           {selectedEnquiry && (
             <div className="grid gap-4 py-4">
@@ -304,9 +352,74 @@ export default function EnquiriesPage() {
                 <label className="text-xs text-neutral-400">Service</label>
                 <p>{selectedEnquiry.service}</p>
               </div>
+              {(selectedEnquiry.type === "vendor" || selectedEnquiry.type === "contractor") && selectedEnquiry.additionalFields && (
+                <div className="border-t border-neutral-700 pt-4 mt-2">
+                  <label className="text-sm font-medium text-neutral-300 mb-2 block">
+                    {selectedEnquiry.type === "vendor" ? "Vendor Details" : "Contractor Details"}
+                  </label>
+                  <div className="grid grid-cols-2 gap-4 bg-neutral-800/50 p-4 rounded-lg">
+                    {selectedEnquiry.type === "vendor" && (
+                      <>
+                        {selectedEnquiry.additionalFields.address && (
+                          <div>
+                            <label className="text-xs text-neutral-400">Address</label>
+                            <p className="text-sm">{selectedEnquiry.additionalFields.address}</p>
+                          </div>
+                        )}
+                        {selectedEnquiry.additionalFields.gstNumber && (
+                          <div>
+                            <label className="text-xs text-neutral-400">GST Number</label>
+                            <p className="text-sm">{selectedEnquiry.additionalFields.gstNumber}</p>
+                          </div>
+                        )}
+                        {selectedEnquiry.additionalFields.productCategories && (
+                          <div className="col-span-2">
+                            <label className="text-xs text-neutral-400">Product Categories</label>
+                            <p className="text-sm">{selectedEnquiry.additionalFields.productCategories}</p>
+                          </div>
+                        )}
+                      </>
+                    )}
+                    {selectedEnquiry.type === "contractor" && (
+                      <>
+                        {selectedEnquiry.additionalFields.yearsInBusiness && (
+                          <div>
+                            <label className="text-xs text-neutral-400">Years in Business</label>
+                            <p className="text-sm">{selectedEnquiry.additionalFields.yearsInBusiness}</p>
+                          </div>
+                        )}
+                        {selectedEnquiry.additionalFields.teamSize && (
+                          <div>
+                            <label className="text-xs text-neutral-400">Team Size</label>
+                            <p className="text-sm">{selectedEnquiry.additionalFields.teamSize}</p>
+                          </div>
+                        )}
+                        {selectedEnquiry.additionalFields.specialization && (
+                          <div className="col-span-2">
+                            <label className="text-xs text-neutral-400">Specialization</label>
+                            <p className="text-sm">{selectedEnquiry.additionalFields.specialization}</p>
+                          </div>
+                        )}
+                        {selectedEnquiry.additionalFields.pastProjects && (
+                          <div className="col-span-2">
+                            <label className="text-xs text-neutral-400">Past Projects</label>
+                            <p className="text-sm">{selectedEnquiry.additionalFields.pastProjects}</p>
+                          </div>
+                        )}
+                      </>
+                    )}
+                    {selectedEnquiry.additionalFields.description && (
+                      <div className="col-span-2">
+                        <label className="text-xs text-neutral-400">Description</label>
+                        <p className="text-sm">{selectedEnquiry.additionalFields.description}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
               <div>
                 <label className="text-xs text-neutral-400">Message</label>
-                <p className="rounded bg-neutral-800 p-3 text-neutral-300">{selectedEnquiry.message}</p>
+                <p className="rounded bg-neutral-800 p-3 text-neutral-300">{selectedEnquiry.message || "-"}</p>
               </div>
               <div>
                 <label className="text-sm font-medium">Follow-up Notes</label>

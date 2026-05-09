@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { LayoutDashboard, FileText, Briefcase, Users, Mail, Package, FolderKanban, Wrench, Rocket, LogOut, ChevronLeft, Menu } from "lucide-react";
+import { LayoutDashboard, FileText, Briefcase, Users, Mail, Package, FolderKanban, Wrench, Rocket, LogOut, ChevronLeft, Menu, HelpCircle } from "lucide-react";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -15,6 +15,7 @@ const navItems = [
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
   { href: "/admin/new-launches", label: "New Launches", icon: Rocket },
   { href: "/admin/services", label: "Services", icon: Wrench },
+  { href: "/admin/faqs", label: "FAQs", icon: HelpCircle },
 ];
 
 interface SidebarNavProps {

@@ -203,7 +203,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
       <div className="bg-primary py-16">
         <Container>
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-white mb-4">Want to read more?</h2>
+            <h2 className="mb-4 text-2xl font-bold text-gray-900">Want to read more?</h2>
             <Link href="/blogs">
               <Button variant="saffron" size="lg">
                 View All Articles

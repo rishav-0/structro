@@ -38,10 +38,10 @@ export default async function NewLaunchPage({ params }: { params: Promise<{ id: 
 
   return (
     <div className="bg-white min-h-screen">
-      <div className="bg-gray-950 py-16 md:py-24">
+      <div className="border-b border-gray-200 bg-gray-50 py-16 md:py-24">
         <Container>
           <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
-            <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gray-900 shadow-2xl">
+            <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-xl">
               <div className="relative aspect-4/3 min-h-80 w-full">
                 <Image
                   src={launch.image}
@@ -50,7 +50,7 @@ export default async function NewLaunchPage({ params }: { params: Promise<{ id: 
                   className="object-cover"
                   priority
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-gray-950/40 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-white/35 via-transparent to-transparent" />
               </div>
             </div>
 
@@ -59,16 +59,16 @@ export default async function NewLaunchPage({ params }: { params: Promise<{ id: 
                 <span className="flex items-center gap-2 rounded-md bg-accent px-4 py-1.5 text-sm font-bold uppercase tracking-wider text-white shadow-lg">
                   <Tag className="w-4 h-4" /> {launch.type}
                 </span>
-                <span className="flex items-center gap-2 rounded-md bg-white/10 px-4 py-1.5 text-sm font-bold uppercase text-gray-200 backdrop-blur-sm">
+                <span className="flex items-center gap-2 rounded-md border border-gray-200 bg-white px-4 py-1.5 text-sm font-bold uppercase text-gray-700 backdrop-blur-sm">
                   <MapPin className="w-4 h-4" /> {launch.region}
                 </span>
               </div>
 
-              <h1 className="mb-6 max-w-3xl text-4xl font-bold leading-tight text-white md:text-6xl">
+              <h1 className="mb-6 max-w-3xl text-4xl font-bold leading-tight text-gray-900 md:text-6xl">
                 {launch.title}
               </h1>
 
-              <p className="max-w-2xl text-lg leading-relaxed text-gray-300 md:text-xl">
+              <p className="max-w-2xl text-lg leading-relaxed text-gray-600 md:text-xl">
                 {launch.description}
               </p>
             </div>

@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button"
+import { PageHero } from "@/components/page-hero";
 import { ArrowUpRight, Waypoints, Building2, HardHat, Waves, CheckCircle, Clock, Shield, Award, PenTool } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -61,46 +62,24 @@ export default function ServicesPage() {
 
   return (
     <div className="">
-      {/* Hero Section */}
-      <div className="relative h-[50vh] min-h-[350px]">
-        <div className="absolute inset-0 bg-primary">
-          <Image
-            src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2070&auto=format&fit=crop"
-            alt="Steel construction site"
-            fill
-            sizes="100vw"
-            className="object-cover opacity-30"
-            priority
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/50" />
-        <Container className="relative h-full flex flex-col justify-center">
-          <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4 drop-shadow-sm">
-            Our Services
-          </p>
-          <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground leading-tight">
-            Comprehensive<br/>
-            <span className="drop-shadow-sm">Steel Engineering Solutions</span>
-          </h1>
-          <p className="text-primary-foreground/80 text-lg mt-6 max-w-2xl font-medium">
-            From bridge engineering to PEB buildings—delivering excellence in every project 
-            across Northeast India.
-          </p>
-        </Container>
-      </div>
+      <PageHero
+        eyebrow="Our Services"
+        title={<>Comprehensive<br />Steel Engineering Solutions</>}
+        description="From bridge engineering to PEB buildings, we deliver technical execution that fits the demands of projects across Northeast India."
+      />
 
       {/* Benefits Bar */}
-      <div className="bg-gray-900 py-8">
+      <div className="border-y border-gray-200 bg-gray-50 py-8">
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {benefits.map((benefit, index) => (
               <div key={index} className="flex items-center gap-4">
-                <div className="bg-white/10 p-3 rounded-sm">
+                <div className="rounded-sm bg-white p-3 shadow-sm">
                   {benefit.icon}
                 </div>
                 <div>
-                  <h3 className="font-bold text-white">{benefit.title}</h3>
-                  <p className="text-gray-400 text-sm">{benefit.description}</p>
+                  <h3 className="font-bold text-gray-900">{benefit.title}</h3>
+                  <p className="text-sm text-gray-600">{benefit.description}</p>
                 </div>
               </div>
             ))}
@@ -134,7 +113,7 @@ export default function ServicesPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
                   {service.features.map((feature, fIndex) => (
                     <div key={fIndex} className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
+                      <CheckCircle className="h-4 w-4 shrink-0 text-primary" />
                       <span className="text-gray-700 text-sm">{feature}</span>
                     </div>
                   ))}
@@ -162,7 +141,7 @@ export default function ServicesPage() {
               
               {/* Image */}
               <div className={index % 2 === 1 ? 'lg:order-1' : ''}>
-                <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
+                <div className="relative aspect-4/3 overflow-hidden rounded-lg">
                   <Image
                     src={service.image}
                     alt={service.alt}
@@ -210,11 +189,11 @@ export default function ServicesPage() {
 
       {/* CTA Section */}
       <Container className="py-24">
-        <div className="bg-gray-900 rounded-lg p-12 md:p-16 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+        <div className="rounded-lg border border-gray-200 bg-gray-50 p-12 text-center md:p-16">
+          <h2 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
             Need a Custom Solution?
           </h2>
-          <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
+          <p className="mx-auto mb-8 max-w-2xl text-gray-600">
             Our team of experienced engineers is ready to discuss your project requirements 
             and provide tailored solutions.
           </p>

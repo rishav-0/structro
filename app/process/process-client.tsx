@@ -6,7 +6,6 @@ import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
-  ArrowUpRight,
   ClipboardCheck,
   Search,
   Construction,
@@ -20,6 +19,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import SiteCta from "@/components/SiteCta";
 
 /* ---------------- DATA ---------------- */
 
@@ -117,8 +117,8 @@ const ProcessClient = () => {
     <div className="bg-white text-[#0a192f]">
 
       {/* ---------------- HERO ---------------- */}
-      <section className="pt-40 pb-24 bg-gradient-to-b from-white to-[#f4f5f7] relative overflow-hidden">
-        <div className="absolute top-[-100px] right-[-100px] w-[400px] h-[400px] bg-primary/10 blur-[120px] rounded-full" />
+      <section className="relative overflow-hidden bg-linear-to-b from-white to-[#f4f5f7] pt-40 pb-24">
+        <div className="absolute -top-25 -right-25 h-100 w-100 rounded-full bg-primary/10 blur-[120px]" />
 
         <Container>
           <div className="max-w-3xl">
@@ -152,7 +152,7 @@ const ProcessClient = () => {
         <Container>
           <div className="relative">
 
-            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] bg-gray-200" />
+            <div className="absolute top-0 bottom-0 left-4 w-0.5 bg-gray-200 md:left-1/2" />
 
             <div className="space-y-24">
               {processSteps.map((step, i) => (
@@ -190,7 +190,7 @@ const ProcessClient = () => {
                   </div>
 
                   {/* image */}
-                  <div className={`relative h-[260px] rounded-sm overflow-hidden shadow-xl ${i % 2 !== 0 ? "md:order-1" : ""}`}>
+                  <div className={`relative h-65 overflow-hidden rounded-sm shadow-xl ${i % 2 !== 0 ? "md:order-1" : ""}`}>
                     <Image src={step.img} alt="" fill className="object-cover hover:scale-105 transition duration-700" />
                   </div>
 
@@ -233,20 +233,20 @@ const ProcessClient = () => {
       </section>
 
       {/* ---------------- REGULATORY ---------------- */}
-      <section className="py-28 bg-gradient-to-br from-[#0a192f] to-black text-white">
+      <section className="border-y border-gray-200 bg-gray-50 py-28 text-gray-900">
         <Container>
 
-          <h2 className="text-5xl font-bold mb-16">
+          <h2 className="mb-16 text-5xl font-bold">
             Compliance & Safety
           </h2>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {regulatoryData.map((item, i) => (
-              <div key={i} className="p-6 bg-white/5 backdrop-blur rounded-sm border border-white/10 hover:-translate-y-2 transition">
+              <div key={i} className="rounded-sm border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-2 hover:shadow-lg">
                 <item.icon className="mb-4 text-primary" />
 
                 <h3 className="font-bold mb-2">{item.title}</h3>
-                <p className="text-sm text-gray-300">{item.desc}</p>
+                <p className="text-sm text-gray-600">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -254,36 +254,13 @@ const ProcessClient = () => {
         </Container>
       </section>
 
-      {/* ---------------- STANDARD CTA ---------------- */}
-      <section className="py-24 bg-white">
-        <Container className="relative h-[400px] rounded-sm overflow-hidden group">
-          <Image 
-            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
-            alt="Modern Architecture" 
-            fill
-            sizes="100vw"
-            className="object-cover transition-transform duration-1000 group-hover:scale-110 shadow-2xl"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/60 via-primary/30 to-transparent" />
-          
-          <div className="relative h-full flex flex-col justify-center px-8 md:px-16 max-w-2xl">
-            <h2 className="text-white text-4xl md:text-5xl font-bold mb-6 leading-tight uppercase tracking-tight">
-              Ready to Build<br/>Something Great?
-            </h2>
-            <p className="text-gray-200 text-base mb-8 leading-relaxed max-w-md font-medium">
-              From concept to completion, our team of experienced engineers delivers infrastructure that stands the test of time.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/contact">
-                <Button variant="red" size="lg" className="rounded-sm font-bold uppercase tracking-widest text-xs">
-                  Request Technical Consultation
-                  <ArrowUpRight className="ml-2 w-4 h-4" />
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </Container>
-      </section>
+      <SiteCta
+        eyebrow="Ready To Build Something Great?"
+        title="Turn the right process into confident project execution."
+        description="From concept review to execution planning, Structro helps structure technical decisions that hold up on site and over time."
+        primaryLabel="Request Technical Consultation"
+        secondaryLabel="View Projects"
+      />
 
     </div>
   );

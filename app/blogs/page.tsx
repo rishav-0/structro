@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { PageHero } from "@/components/page-hero";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { getPublicCollectionData } from "@/lib/public-db-server";
@@ -107,33 +108,11 @@ export default async function BlogsPage({
 
   return (
     <div className="">
-      {/* Hero Section */}
-      <div className="relative h-[50vh] min-h-87.5">
-        <div className="absolute inset-0 bg-primary">
-          <Image
-            src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2070&auto=format&fit=crop"
-            alt="Steel construction"
-            fill
-            sizes="100vw"
-            className="object-cover opacity-30"
-            priority
-          />
-        </div>
-        <div className="absolute inset-0 bg-linear-to-r from-primary/90 to-primary/50" />
-        <Container className="relative h-full flex flex-col justify-center">
-          <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4 drop-shadow-sm">
-            Our Blog
-          </p>
-          <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground leading-tight">
-            Engineering<br />
-            <span className="drop-shadow-sm">Insights & Updates</span>
-          </h1>
-          <p className="text-primary-foreground/80 text-lg mt-6 max-w-2xl font-medium">
-            Stay informed with the latest developments in bridge engineering, 
-            steel structures, and infrastructure projects.
-          </p>
-        </Container>
-      </div>
+      <PageHero
+        eyebrow="Our Blog"
+        title={<>Engineering<br />Insights &amp; Updates</>}
+        description="Stay informed with the latest developments in bridge engineering, steel structures, and infrastructure projects."
+      />
 
       {/* Categories */}
     
@@ -265,11 +244,11 @@ export default async function BlogsPage({
       {/* Newsletter CTA */}
       <div className="bg-primary py-24">
         <Container>
-          <div className="bg-gray-900 rounded-lg p-12 md:p-16 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+          <div className="rounded-lg border border-gray-200 bg-gray-50 p-12 text-center md:p-16">
+              <h2 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
               Subscribe to Our Newsletter
             </h2>
-            <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
+              <p className="mx-auto mb-8 max-w-2xl text-gray-600">
               Get the latest engineering insights and project updates delivered 
               directly to your inbox.
             </p>
@@ -277,7 +256,7 @@ export default async function BlogsPage({
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 bg-white/10 border border-white/20 text-white px-4 py-3 rounded-sm focus:outline-none focus:ring-2 focus:ring-accent"
+                  className="flex-1 rounded-sm border border-gray-200 bg-white px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
               />
               <Button variant="saffron" size="lg">
                 Subscribe

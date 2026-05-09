@@ -22,6 +22,7 @@ import {
  	Info,
  	Mail,
  	Home,
+    Package,
     Briefcase,
     FileText,
 } from 'lucide-react';
@@ -104,6 +105,15 @@ export function Header() {
 								)} asChild>
 									<Link href="/services">
 										Services
+									</Link>
+								</NavigationMenuLink>
+							</NavigationMenuItem>
+							<NavigationMenuItem>
+								<NavigationMenuLink className={cn("px-4 text-xs font-bold uppercase tracking-widest transition-colors", 
+									isTransparent ? "text-white hover:text-accent" : "text-foreground hover:text-primary"
+								)} asChild>
+									<Link href="/products">
+										Products
 									</Link>
 								</NavigationMenuLink>
 							</NavigationMenuItem>
@@ -200,6 +210,7 @@ export function Header() {
 					<div className="flex w-full flex-col gap-y-2">
 						<ListItem title="Home" href="/" icon={Home} description="Back to main" onNavigate={() => setOpen(false)} />
 						<ListItem title="Services" href="/services" icon={Building2} description="View our core services" onNavigate={() => setOpen(false)} />
+						<ListItem title="Products" href="/products" icon={Package} description="Browse fabricated product solutions" onNavigate={() => setOpen(false)} />
 						<ListItem title="Projects" href="/projects" icon={FolderOpen} description="Browse our project portfolio" onNavigate={() => setOpen(false)} />
 						<ListItem title="Process" href="/process" icon={Waypoints} description="Discover our engineering workflow" onNavigate={() => setOpen(false)} />
 						<ListItem title="About Us" href="/about" icon={Info} description="Learn our story and values" onNavigate={() => setOpen(false)} />

@@ -38,6 +38,11 @@ const publicCollectionConfigs: Record<string, PublicCollectionConfig> = {
     orderByField: "title",
     orderDirection: "asc" as const,
   },
+  faqs: {
+    orderByField: "order",
+    orderDirection: "asc" as const,
+    filters: [{ field: "status", value: "active" }],
+  },
 };
 
 type PublicCollectionName = keyof typeof publicCollectionConfigs;

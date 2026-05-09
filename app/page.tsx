@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Hero from "@/components/hero"
 import { Button } from "@/components/ui/button"
-import { ArrowUpRight, Award, ShieldCheck, Leaf, CheckCircle, HardHat, Home, Factory, Package, Server } from "lucide-react";
+import { ArrowUpRight, Award, ShieldCheck, Leaf, HardHat } from "lucide-react";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import Link from "next/link";
@@ -12,6 +12,8 @@ import { getCollectionData } from "@/lib/data-merge";
 import NewHero from "@/components/NewHero";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import FaqSection from "@/components/FaqSection";
+import OurCredentials from "@/components/OurCredentials";
+import SiteCta from "@/components/SiteCta";
 
 export default function Page() {
   const [services, setServices] = useState(servicesData.slice(0, 3));
@@ -158,7 +160,7 @@ export default function Page() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {services.map((service, index) => (
             <div key={index} className="group bg-white rounded-md overflow-hidden border border-gray-200 hover:border-primary/30 hover:shadow-xl transition-all duration-300">
-              <div className="aspect-[4/3] relative overflow-hidden">
+              <div className="relative aspect-4/3 overflow-hidden">
                 <Image
                   src={service.image}
                   alt={service.alt}
@@ -167,7 +169,7 @@ export default function Page() {
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-4 left-4">
                   <h3 className="text-white font-bold text-lg">{service.title}</h3>
                 </div>
@@ -182,6 +184,104 @@ export default function Page() {
           ))}
         </div>
       </Container>
+
+      <WhyChooseUs />
+
+      <OurCredentials />
+
+      {/* Projects/Gallery Section */}
+      <div className="text-center mb-10 pt-12">
+        <span className="text-accent text-sm font-bold uppercase tracking-[0.2em] block mb-4">
+          Our Projects
+        </span>
+        <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
+          From Concept to Completion
+        </h2>
+        <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+          Explore our portfolio of successful projects across Northeast India
+        </p>
+      </div>
+
+      {/* Grid Layout */}
+      <Container className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-16">
+        {projects.map((project) => (
+          <Link href={`/projects/${project.id}`} key={project.id} className={`${project.className} aspect-4/3 overflow-hidden rounded-md group relative block`}>
+            <Image 
+              src={project.src} 
+              alt={project.alt}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+            />
+            {project.isVideo && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="bg-black/60 p-3 rounded-full">
+                  <div className="w-3 h-3 bg-white rounded-full"></div>
+                </div>
+              </div>
+            )}
+          </Link>
+        ))}
+      </Container>
+
+      <div className="text-center mb-16">
+        <Link href="/projects">
+          <Button variant="saffron" size="lg">
+            View All Projects
+            <ArrowUpRight className="ml-2 w-4 h-4" />
+          </Button>
+        </Link>
+      </div>
+
+      {/* Featured Products */}
+      <div className="border-y border-gray-200 bg-gray-50 py-20">
+        <Container>
+          <div className="text-center mb-16">
+            
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900">Our Featured Products</h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {products.map((product) => (
+              <Link href={`/products/${product.id}`} key={product.id} className="block w-full h-full">
+                <div className="group h-full overflow-hidden rounded-md border border-gray-200 bg-white transition-all duration-300 hover:border-primary/30 hover:shadow-lg">
+                  <div className="relative aspect-4/3 overflow-hidden">
+                    <Image 
+                      src={product.image} 
+                      alt={product.title} 
+                      fill 
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-black/45 via-black/10 to-transparent opacity-80" />
+                  </div>
+                  <div className="relative -mt-8 h-full rounded-t-xl bg-white p-6">
+                   
+                    <h3 className="mb-2 min-h-12 text-lg font-bold leading-tight text-gray-900">
+                      {product.title}
+                    </h3>
+                    <div className="flex items-center text-sm font-semibold text-gray-700">
+                      <span className="w-full rounded-sm border border-gray-200 bg-gray-50 px-2 py-1 text-center backdrop-blur-sm">
+                        {product.specs}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <Link href="/products">
+              <Button variant="saffron" size="lg">
+                View All Products
+                <ArrowUpRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
+        </Container>
+      </div>
 
       {/* New Launches & Special Projects */}
       <div className="bg-gray-50 py-20 border-y border-gray-200">
@@ -222,46 +322,6 @@ export default function Page() {
         </Container>
       </div>
 
-      {/* Featured Products */}
-      <div className="py-20 bg-gray-900 border-y border-gray-800">
-        <Container>
-          <div className="text-center mb-16">
-            
-            <h2 className="text-3xl md:text-5xl font-bold text-white">Our Featured Products</h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.map((product) => (
-              <Link href={`/products/${product.id}`} key={product.id} className="block w-full h-full">
-                <div className="bg-gray-800 rounded-md overflow-hidden border border-gray-700 hover:border-accent/50 transition-all duration-300 group h-full">
-                  <div className="aspect-[4/3] relative overflow-hidden">
-                    <Image 
-                      src={product.image} 
-                      alt={product.title} 
-                      fill 
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-110 opacity-80 group-hover:opacity-100"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-80" />
-                  </div>
-                  <div className="p-6 relative -mt-8 bg-gray-800/90 backdrop-blur-sm rounded-t-xl h-full">
-                   
-                    <h3 className="text-white font-bold text-lg leading-tight mb-2 min-h-[3rem]">
-                      {product.title}
-                    </h3>
-                    <div className="flex items-center text-gray-200 text-sm font-semibold">
-                      <span className="bg-black/30 px-2 py-1 rounded-sm w-full backdrop-blur-sm border border-white/10 text-center">
-                        {product.specs}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </Container>
-      </div>
-
       {/* Stakeholder Portal System */}
       <div className="py-20 lg:py-24 bg-white">
         <Container>
@@ -281,71 +341,24 @@ export default function Page() {
             
             <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
-                { title: "Contractors", desc: "Project tenders & site management", icon: <HardHat className="w-6 h-6" />, type: "Intake Form" },
-                { title: "Vendors", desc: "Supply chain & material procurement", icon: <ShieldCheck className="w-6 h-6" />, type: "Registration" },
-                { title: "Job Seekers", desc: "Career opportunities & applications", icon: <ArrowUpRight className="w-6 h-6" />, type: "Apply Now" }
+                { title: "Contractors", desc: "Project tenders & site management", icon: <HardHat className="w-6 h-6" />, type: "Intake Form", href: "/stakeholder/contractor" },
+                { title: "Vendors", desc: "Supply chain & material procurement", icon: <ShieldCheck className="w-6 h-6" />, type: "Registration", href: "/stakeholder/vendor" },
+                { title: "Job Seekers", desc: "Career opportunities & applications", icon: <ArrowUpRight className="w-6 h-6" />, type: "Apply Now", href: "/careers" }
               ].map((portal, idx) => (
-                <div key={idx} className="bg-gray-50 border border-gray-100 p-8 rounded-md hover:border-primary/30 hover:shadow-xl transition-all group relative">
+                <Link key={idx} href={portal.href} className="bg-gray-50 border border-gray-100 p-8 rounded-md hover:border-primary/30 hover:shadow-xl transition-all group relative block">
                   <div className="bg-white w-14 h-14 flex items-center justify-center rounded-md mb-6 shadow-sm group-hover:bg-primary group-hover:text-white transition-all duration-300">
                     {portal.icon}
                   </div>
                   <h4 className="font-bold text-gray-900 text-lg mb-3">{portal.title}</h4>
                   <p className="text-sm text-gray-500 mb-8 leading-relaxed">{portal.desc}</p>
-                  <button className="text-xs font-bold text-primary group-hover:translate-x-1 transition-all flex items-center gap-2">
+                  <span className="text-xs font-bold text-primary group-hover:translate-x-1 transition-all flex items-center gap-2">
                     {portal.type.toUpperCase()} <ArrowUpRight className="w-3 h-3" />
-                  </button>
-                </div>
+                  </span>
+                </Link>
               ))}
             </div>
           </div>
         </Container>
-      </div>
-
-      <WhyChooseUs />
-
-      {/* Projects/Gallery Section */}
-      <div className="text-center mb-10 pt-12">
-        <span className="text-accent text-sm font-bold uppercase tracking-[0.2em] block mb-4">
-          Our Projects
-        </span>
-        <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
-          From Concept to Completion
-        </h2>
-        <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-          Explore our portfolio of successful projects across Northeast India
-        </p>
-      </div>
-
-      {/* Grid Layout */}
-      <Container className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-16">
-        {projects.map((project) => (
-          <Link href={`/projects/${project.id}`} key={project.id} className={`${project.className} aspect-[4/3] overflow-hidden rounded-md group relative block`}>
-            <Image 
-              src={project.src} 
-              alt={project.alt}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-              loading="lazy"
-            />
-            {project.isVideo && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="bg-black/60 p-3 rounded-full">
-                  <div className="w-3 h-3 bg-white rounded-full"></div>
-                </div>
-              </div>
-            )}
-          </Link>
-        ))}
-      </Container>
-
-      <div className="text-center mb-16">
-        <Link href="/projects">
-          <Button variant="saffron" size="lg">
-            View All Projects
-            <ArrowUpRight className="ml-2 w-4 h-4" />
-          </Button>
-        </Link>
       </div>
 
       {/* Core Values Section */}
@@ -378,42 +391,7 @@ export default function Page() {
         ))}
       </Container>
 
-      {/* Standard CTA Section */}
-      <section className="py-24 bg-white">
-        <Container className="relative h-[400px] rounded-sm overflow-hidden group">
-          <Image 
-            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
-            alt="Modern Architecture" 
-            fill
-            sizes="100vw"
-            className="object-cover transition-transform duration-1000 group-hover:scale-110"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/60 via-primary/30 to-transparent" />
-          
-          <div className="relative h-full flex flex-col justify-center px-8 md:px-16 max-w-2xl">
-            <h2 className="text-white text-4xl md:text-5xl font-bold mb-6 leading-tight uppercase tracking-tight">
-              Ready to Build<br/>Your Project?
-            </h2>
-            <p className="text-gray-200 text-base mb-8 leading-relaxed max-w-md font-medium">
-              Let our experienced team help you turn your vision into reality. 
-              Contact us for a technical consultation today.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/contact">
-                <Button variant="red" size="lg" className="rounded-sm font-bold uppercase tracking-widest text-xs">
-                  Get a Quote
-                  <ArrowUpRight className="ml-2 w-4 h-4" />
-                </Button>
-              </Link>
-              <Link href="/projects">
-                <Button variant="white-outline" size="lg" className="rounded-sm font-bold uppercase tracking-widest text-xs">
-                  View Our Projects
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </Container>
-      </section>
+      <SiteCta />
 
       <FaqSection />
 
@@ -422,19 +400,42 @@ export default function Page() {
         <Container>
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Find Us</h2>
-            <p className="text-gray-600 mt-2">Visit our head office in Guwahati, Assam</p>
+            <p className="text-gray-600 mt-2">Visit both our head office and workshop locations in Assam</p>
           </div>
-          <div className="bg-white rounded-lg p-4 border border-gray-200">
-            <div className="bg-gray-200 rounded-lg h-[400px] overflow-hidden">
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4509.166628943781!2d91.7755516!3d26.1569559!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a59003ad2c8c3%3A0x45df74d231f0e84c!2sStructro%20Infra%20Tech!5e1!3m2!1sen!2sin!4v1776015415897!5m2!1sen!2sin" 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0 }} 
-                allowFullScreen 
-                loading="lazy" 
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="bg-white rounded-lg p-4 border border-gray-200">
+              <div className="mb-4">
+                <h3 className="text-lg font-bold text-gray-900">Head Office</h3>
+                <p className="text-sm text-gray-600">Christian Basti, Guwahati, Assam</p>
+              </div>
+              <div className="bg-gray-200 rounded-lg h-100 overflow-hidden">
+                <iframe 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4509.166628943781!2d91.7755516!3d26.1569559!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a59003ad2c8c3%3A0x45df74d231f0e84c!2sStructro%20Infra%20Tech!5e1!3m2!1sen!2sin!4v1776015415897!5m2!1sen!2sin" 
+                  width="100%" 
+                  height="100%" 
+                  style={{ border: 0 }} 
+                  allowFullScreen 
+                  loading="lazy" 
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
+              </div>
+            </div>
+            <div className="bg-white rounded-lg p-4 border border-gray-200">
+              <div className="mb-4">
+                <h3 className="text-lg font-bold text-gray-900">Workshop</h3>
+                <p className="text-sm text-gray-600">Rani, Guwahati, Assam</p>
+              </div>
+              <div className="bg-gray-200 rounded-lg h-100 overflow-hidden">
+                <iframe 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4102.698420047236!2d91.5887681!3d26.0463064!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a410007764fb1%3A0x269c33cf41adcb77!2sStructro%20Infra%20Tech%20Rani%20(%20Workshop%20)!5e1!3m2!1sen!2sin!4v1778258046366!5m2!1sen!2sin"
+                  width="100%" 
+                  height="100%" 
+                  style={{ border: 0 }} 
+                  allowFullScreen 
+                  loading="lazy" 
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
+              </div>
             </div>
           </div>
         </Container>

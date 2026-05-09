@@ -15,26 +15,26 @@ export default async function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-neutral-950 px-4">
+    <main className="relative flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4">
       {/* Background glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-1/2 top-1/3 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-500/10 blur-3xl" />
+        <div className="absolute left-1/2 top-1/3 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-300/30 blur-3xl" />
       </div>
 
       <div className="relative z-10 w-full max-w-sm">
         {/* Logo / brand */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-white">
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
             Structro <span className="text-amber-400">Admin</span>
           </h1>
-          <p className="mt-2 text-sm text-neutral-400">
+          <p className="mt-2 text-sm text-gray-600">
             Sign in to access the management dashboard
           </p>
         </div>
 
         {/* Card */}
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-xl">
-          <p className="mb-6 text-center text-sm text-neutral-300">
+        <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-xl backdrop-blur-xl">
+          <p className="mb-6 text-center text-sm text-gray-600">
             Only authorised administrators can access this area.
           </p>
 
@@ -73,7 +73,7 @@ export default async function LoginPage() {
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-xs text-neutral-600">
+          <p className="mt-6 text-center text-xs text-gray-500">
             Unauthorised access is logged and monitored.
           </p>
         </div>

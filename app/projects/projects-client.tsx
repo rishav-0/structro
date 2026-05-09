@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowUpRight, Play } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { PageHero } from "@/components/page-hero";
 import { Container } from "@/components/ui/container";
 import { projectsData } from "@/lib/data";
 import { getCollectionData } from "@/lib/data-merge";
@@ -64,33 +65,11 @@ export function ProjectsClient() {
 
   return (
     <div className="">
-      {/* Hero Section */}
-      <div className="relative h-[50vh] min-h-[350px]">
-        <div className="absolute inset-0 bg-primary">
-          <Image
-            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop"
-            alt="Construction project"
-            fill
-            sizes="100vw"
-            className="object-cover opacity-30"
-            priority
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/50" />
-        <Container className="relative h-full flex flex-col justify-center">
-          <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4 drop-shadow-sm">
-            Our Projects
-          </p>
-          <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground leading-tight">
-            Building the Future<br/>
-            <span className="drop-shadow-sm">Across Northeast India</span>
-          </h1>
-          <p className="text-primary-foreground/80 text-lg mt-6 max-w-2xl font-medium">
-            Explore our portfolio of successful projects spanning bridge engineering, 
-            PEB buildings, and industrial infrastructure.
-          </p>
-        </Container>
-      </div>
+      <PageHero
+        eyebrow="Our Projects"
+        title={<>Building the Future<br />Across Northeast India</>}
+        description="Explore our portfolio of successful projects spanning bridge engineering, PEB buildings, and industrial infrastructure."
+      />
 
       {/* Projects Stats */}
       <div className="bg-white py-12 border-b border-gray-100">

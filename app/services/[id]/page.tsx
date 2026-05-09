@@ -103,7 +103,7 @@ export default function ServicePage({ params }: { params: Promise<{ id: string }
 
       {/* Advantages Section (Conditional) */}
       {(service as any).advantages && (
-        <section className="py-24 bg-gray-900 text-white overflow-hidden relative">
+        <section className="relative overflow-hidden border-y border-gray-200 bg-gray-50 py-24 text-gray-900">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
           <Container>
             <div className="flex flex-col lg:flex-row gap-16">
@@ -111,16 +111,16 @@ export default function ServicePage({ params }: { params: Promise<{ id: string }
                 <p className="text-accent font-bold uppercase tracking-[0.3em] mb-4">Strategic Value</p>
                 <h2 className="text-4xl font-bold mb-8 uppercase leading-tight tracking-tight">Key Advantages</h2>
                 <div className="w-20 h-1.5 bg-primary mb-8" />
-                <p className="text-gray-400 text-lg leading-relaxed">
+                <p className="text-lg leading-relaxed text-gray-600">
                   Our systems-based approach ensures efficiency, quality, and cost-effectiveness tailored to industrial demands.
                 </p>
               </div>
               <div className="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-6">
                 {(service as any).advantages.map((adv: any, index: number) => (
-                  <div key={index} className="bg-white/5 p-8 border border-white/10 hover:border-primary/50 transition-all duration-300 group rounded-sm shadow-sm">
+                  <div key={index} className="group rounded-sm border border-gray-200 bg-white p-8 shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-lg">
                     <CheckCircle className="w-8 h-8 text-secondary mb-6 group-hover:scale-110 transition-transform" />
-                    <h3 className="text-lg font-bold mb-3 uppercase tracking-wider text-white">{adv.title}</h3>
-                    <p className="text-gray-400 leading-relaxed text-sm font-medium">{adv.description}</p>
+                    <h3 className="mb-3 text-lg font-bold uppercase tracking-wider text-gray-900">{adv.title}</h3>
+                    <p className="text-sm font-medium leading-relaxed text-gray-600">{adv.description}</p>
                   </div>
                 ))}
               </div>
@@ -255,9 +255,9 @@ export default function ServicePage({ params }: { params: Promise<{ id: string }
                 />
                 <div className="absolute inset-0 bg-primary/20 mix-blend-multiply" />
                 <div className="absolute inset-0 flex items-center justify-center p-8">
-                   <div className="w-full h-full border border-white/40 flex flex-col items-center justify-center text-center p-6 bg-gray-900/40 backdrop-blur-[2px]">
-                      <p className="text-white text-3xl font-extrabold uppercase tracking-[0.2em] drop-shadow-lg">Structural Accuracy</p>
-                      <p className="text-white font-bold mt-4 tracking-widest bg-accent px-4 py-1 text-sm uppercase">Engineered to Perfection</p>
+                   <div className="flex h-full w-full flex-col items-center justify-center border border-white/70 bg-white/55 p-6 text-center backdrop-blur-[2px]">
+                     <p className="text-3xl font-extrabold uppercase tracking-[0.2em] text-gray-900 drop-shadow-lg">Structural Accuracy</p>
+                     <p className="mt-4 bg-accent px-4 py-1 text-sm font-bold uppercase tracking-widest text-white">Engineered to Perfection</p>
                    </div>
                 </div>
               </div>
