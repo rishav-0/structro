@@ -112,72 +112,78 @@ export default async function BlogsPage({
         eyebrow="Our Blog"
         title={<>Engineering<br />Insights &amp; Updates</>}
         description="Stay informed with the latest developments in bridge engineering, steel structures, and infrastructure projects."
-      />
-
-      {/* Categories */}
-    
-        <Container>
-          <div className="py-6">
-            <div className="flex flex-col gap-4 rounded-2xl  px-5 py-5 md:flex-row md:items-center md:justify-between">
+      />      {/* Categories */}
+      <Container>
+        <div className="py-8 border-b border-gray-100">
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
-                  Browse by category
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
+                  Discover Content
                 </p>
-                <p className="mt-1 text-sm text-gray-700">
-                  Select a topic to narrow the articles.
+                <h3 className="mt-1 text-2xl font-bold text-gray-900 tracking-tight">
+                  Browse by Category
+                </h3>
+                <p className="mt-1 text-sm text-gray-600">
+                  Filter engineering insights, case studies, and local updates.
                 </p>
               </div>
-
-              <div className="flex flex-wrap gap-2">
-                <Link
-                  href="/blogs"
-                  className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
-                    !selectedCategory
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:text-gray-900"
-                  }`}
-                >
-                  All Articles
-                  <span className={`rounded-full px-2 py-0.5 text-xs ${
-                    !selectedCategory
-                      ? "bg-primary-foreground/15 text-primary-foreground"
-                      : "bg-gray-100 text-gray-600"
-                  }`}>
-                    {posts.length}
-                  </span>
-                </Link>
-
-                {sortedCategories.length > 0 ? sortedCategories.map(([category, count]) => {
-                  const isActive = selectedCategory === category;
-
-                  return (
-                    <Link
-                      key={category}
-                      href={`/blogs?category=${encodeURIComponent(category)}`}
-                      className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium capitalize transition-colors ${
-                        isActive
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : "border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:text-gray-900"
-                      }`}
-                    >
-                      {category}
-                      <span className={`rounded-full px-2 py-0.5 text-xs ${
-                        isActive
-                          ? "bg-primary-foreground/15 text-primary-foreground"
-                          : "bg-gray-100 text-gray-600"
-                      }`}>
-                        {count}
-                      </span>
-                    </Link>
-                  );
-                }) : (
-                  <span className="self-center text-sm text-gray-500">No categories yet</span>
-                )}
+              
+              <div className="flex items-center gap-2 self-start md:self-end text-xs font-semibold text-gray-500 bg-gray-100/80 border border-gray-200/50 rounded-lg px-3.5 py-2">
+                <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                <span>{posts.length} Professional Articles Published</span>
               </div>
             </div>
+            {/* Categories Grid (Wrap Style) */}
+            <div className="flex flex-wrap gap-2 md:gap-2.5">
+              <Link
+                href="/blogs"
+                className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                  !selectedCategory
+                    ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                    : "border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:text-gray-900"
+                }`}
+              >
+                All Articles
+                <span className={`rounded-full px-2 py-0.5 text-xs ${
+                  !selectedCategory
+                    ? "bg-primary-foreground/15 text-primary-foreground"
+                    : "bg-gray-100 text-gray-600"
+                }`}>
+                  {posts.length}
+                </span>
+              </Link>
+
+              {sortedCategories.length > 0 ? sortedCategories.map(([category, count]) => {
+                const isActive = selectedCategory === category;
+
+                return (
+                  <Link
+                    key={category}
+                    href={`/blogs?category=${encodeURIComponent(category)}`}
+                    className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium capitalize transition-colors duration-200 ${
+                      isActive
+                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                        : "border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:text-gray-900"
+                    }`}
+                  >
+                    {category}
+                    <span className={`rounded-full px-2 py-0.5 text-xs ${
+                      isActive
+                        ? "bg-primary-foreground/15 text-primary-foreground"
+                        : "bg-gray-100 text-gray-600"
+                    }`}>
+                      {count}
+                    </span>
+                  </Link>
+                );
+              }) : (
+                <span className="self-center text-sm text-gray-500 py-2">No categories yet</span>
+              )}
+            </div>
           </div>
-        </Container>
-      
+        </div>
+      </Container>
 
       {/* Blog Posts */}
       <div className="py-24 bg-gray-50">
@@ -242,7 +248,7 @@ export default async function BlogsPage({
       </div>
 
       {/* Newsletter CTA */}
-      <div className="bg-primary py-24">
+      {/* <div className="bg-primary py-24">
         <Container>
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-12 text-center md:p-16">
               <h2 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
@@ -264,7 +270,7 @@ export default async function BlogsPage({
             </div>
           </div>
         </Container>
-      </div>
+      </div> */}
     </div>
   );
 }

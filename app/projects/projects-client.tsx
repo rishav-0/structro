@@ -7,7 +7,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
 import { Container } from "@/components/ui/container";
-import { projectsData } from "@/lib/data";
 import { getCollectionData } from "@/lib/data-merge";
 
 interface Project {
@@ -23,44 +22,26 @@ interface Project {
   scope?: string;
   quantity?: string;
   period?: string;
+  type?: "ongoing" | "completed";
 }
 
 export function ProjectsClient() {
   const [activeTab, setActiveTab] = useState<"ongoing" | "completed">("completed");
-  const [projects, setProjects] = useState(projectsData);
-  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState<{ ongoing: Project[]; completed: Project[]; homeProjects: Project[] }>({ ongoing: [], completed: [], homeProjects: [] });
 
   useEffect(() => {
-    async function mergeData() {
+    async function loadProjects() {
       try {
-        const dbProjects = await getCollectionData("projects") as any[];
-        if (dbProjects.length > 0) {
-          // DB items win over hardcoded items with the same ID (string comparison).
-          const dbOngoing = dbProjects.filter((p: any) => p.type === "ongoing");
-          const dbCompleted = dbProjects.filter((p: any) => p.type === "completed");
+        const dbProjects = await getCollectionData<Project>("projects");
+        const dbOngoing = dbProjects.filter((project) => project.type === "ongoing");
+        const dbCompleted = dbProjects.filter((project) => project.type === "completed");
 
-          const dbOngoingIds = new Set(dbOngoing.map((p: any) => String(p.id)));
-          const dbCompletedIds = new Set(dbCompleted.map((p: any) => String(p.id)));
-
-          // Keep hardcoded entries not overridden by the DB, then append all DB entries
-          const allOngoing = [
-            ...projectsData.ongoing.filter((p) => !dbOngoingIds.has(String(p.id))),
-            ...dbOngoing,
-          ];
-          const allCompleted = [
-            ...projectsData.completed.filter((p) => !dbCompletedIds.has(String(p.id))),
-            ...dbCompleted,
-          ];
-
-          setProjects({ ongoing: allOngoing, completed: allCompleted, homeProjects: projectsData.homeProjects });
-        }
+        setProjects({ ongoing: dbOngoing, completed: dbCompleted, homeProjects: [] });
       } catch (error) {
         console.error("Error fetching projects:", error);
-      } finally {
-        setLoading(false);
       }
     }
-    mergeData();
+    loadProjects();
   }, []);
 
   return (
@@ -79,7 +60,7 @@ export function ProjectsClient() {
               { label: "Total Projects", value: "500+" },
               { label: "Completed", value: "45" },
               { label: "Ongoing", value: "3" },
-              { label: "Regions", value: "Assam" }
+              { label: "Regions", value: "North East" }
             ].map((stat, index) => (
               <div key={index} className="text-center">
                 <h2 className="text-3xl md:text-4xl font-bold text-primary mb-1">
@@ -127,7 +108,7 @@ export function ProjectsClient() {
               className="group relative bg-white rounded-lg overflow-hidden border border-gray-200 hover:border-primary/30 hover:shadow-xl transition-all duration-300"
             >
               {/* Image Container */}
-              <div className="aspect-[4/3] relative overflow-hidden">
+              <div className="relative aspect-4/3 overflow-hidden">
                 <Image
                   src={project.src}
                   alt={project.alt}
@@ -154,7 +135,7 @@ export function ProjectsClient() {
                 )}
                 
                 {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
                 
                 {/* Hover Content */}
                 <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300">

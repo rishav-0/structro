@@ -75,7 +75,7 @@ export function Header() {
 								alt="Structro Logo" 
 								fill
 								className={cn("object-contain transition-opacity duration-300", 
-									scrolled ? "opacity-0" : "opacity-100"
+									isTransparent ? "opacity-100 invert" : "opacity-0"
 								)}
 							/>
 							<Image 
@@ -83,7 +83,7 @@ export function Header() {
 								alt="Structro Logo" 
 								fill
 								className={cn("object-contain transition-opacity duration-300", 
-									scrolled ? "opacity-100" : "opacity-0"
+									isTransparent ? "opacity-0" : "opacity-100"
 								)}
 							/>
 						</div>

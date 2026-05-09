@@ -1,4 +1,3 @@
-import { newLaunchesData } from "@/lib/data";
 import { adminDb } from "@/lib/firebase-admin";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -29,8 +28,7 @@ export default async function NewLaunchPage({ params }: { params: Promise<{ id: 
   const { id } = await params;
   const launchSnapshot = await adminDb.collection("new-launches").doc(id).get();
   const launchFromDb = launchSnapshot.exists ? ({ id: launchSnapshot.id, ...launchSnapshot.data() } as NewLaunch) : null;
-  const launchFromFallback = newLaunchesData.find((item) => item.id === id) as NewLaunch | undefined;
-  const launch = launchFromDb && launchFromDb.status !== "inactive" ? launchFromDb : launchFromFallback;
+  const launch = launchFromDb && launchFromDb.status !== "inactive" ? launchFromDb : null;
 
   if (!launch) {
     notFound();

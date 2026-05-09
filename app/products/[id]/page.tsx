@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { featuredProductsData } from "@/lib/data";
 import { getCollectionData } from "@/lib/data-merge";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -28,21 +27,14 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
       const { id } = await params;
 
       try {
-        // Check DB first so admin edits take effect without a code change
-        const dbProducts = await getCollectionData("products") as any[];
-        const fromDb = dbProducts.find((p: any) => p.id === id);
-        if (fromDb) {
-          setProduct(fromDb as any);
-          setLoading(false);
-          return;
-        }
+        const dbProducts = await getCollectionData<Product>("products");
+        const fromDb = dbProducts.find((productItem) => productItem.id === id) || null;
+        setProduct(fromDb);
       } catch (e) {
         console.error("Error fetching product:", e);
+        setProduct(null);
       }
 
-      // Fall back to hardcoded data if not found in DB
-      const found = featuredProductsData.find((item) => item.id === id);
-      setProduct(found as any);
       setLoading(false);
     }
     fetchProduct();

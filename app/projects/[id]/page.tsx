@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { projectsData } from "@/lib/data";
 import { getCollectionData } from "@/lib/data-merge";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -46,29 +45,14 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
   useEffect(() => {
     async function fetchProject() {
       const { id } = await params;
-      const projectId = id.includes("-") ? id : parseInt(id);
-      
-      let found: Project | null = null;
-      const categories = ["ongoing", "completed", "homeProjects"] as const;
-      
-      for (const category of categories) {
-        const f = projectsData[category].find((p) => p.id === projectId);
-        if (f) {
-          found = f as Project;
-          break;
-        }
+      try {
+        const dbProjects = (await getCollectionData("projects")) as Project[];
+        const found = dbProjects.find((projectItem) => String(projectItem.id) === id) || null;
+        setProject(found);
+      } catch (e) {
+        console.error("Error fetching from DB:", e);
+        setProject(null);
       }
-
-      if (!found) {
-        try {
-          const dbProjects = (await getCollectionData("projects")) as Project[];
-          found = dbProjects.find((projectItem) => String(projectItem.id) === id) || null;
-        } catch (e) {
-          console.error("Error fetching from DB:", e);
-        }
-      }
-
-      setProject(found);
       setLoading(false);
     }
     fetchProject();

@@ -2,14 +2,13 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
-import { ArrowLeft, ArrowUpRight, CheckCircle, Target, Shield, Users, Lightbulb, TrendingUp, HardHat, Building2, MapPin, Calendar, Briefcase, Ruler, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, CheckCircle, Target } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { servicesData, companyVision, projectsData } from "@/lib/data";
+import { companyVision } from "@/lib/data";
 import { getCollectionData } from "@/lib/data-merge";
 
 interface Service {
@@ -32,18 +31,14 @@ export default function ServicePage({ params }: { params: Promise<{ id: string }
   useEffect(() => {
     async function fetchService() {
       const { id } = await params;
-      let found = servicesData.find((s) => s.id === id);
-
-      if (!found) {
-        try {
-          const dbServices = await getCollectionData("services") as any[];
-          found = dbServices.find(s => s.id === id) as any;
-        } catch (e) {
-          console.error("Error fetching service from DB:", e);
-        }
+      try {
+        const dbServices = await getCollectionData("services") as any[];
+        const found = dbServices.find((serviceItem) => serviceItem.id === id) as any;
+        setService(found || null);
+      } catch (e) {
+        console.error("Error fetching service from DB:", e);
+        setService(null);
       }
-
-      setService(found as any);
       setLoading(false);
     }
     fetchService();
@@ -51,11 +46,6 @@ export default function ServicePage({ params }: { params: Promise<{ id: string }
 
   if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   if (!service) return notFound();
-
-  // Filter projects related to this service
-  const relatedProjects = projectsData.completed.filter(
-    (p) => p.serviceId === service.id
-  ).slice(0, 6);
 
   return (
     <div className="bg-white">
@@ -185,7 +175,7 @@ export default function ServicePage({ params }: { params: Promise<{ id: string }
                 {companyVision.principles.map((principle, index) => (
                   <div key={index} className="flex items-start gap-4">
                     <div className="mt-1 bg-primary/10 p-1 rounded-full">
-                      <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
+                      <CheckCircle className="h-4 w-4 shrink-0 text-primary" />
                     </div>
                     <p className="text-gray-700 font-medium leading-relaxed">{principle}</p>
                   </div>
@@ -228,7 +218,7 @@ export default function ServicePage({ params }: { params: Promise<{ id: string }
                   <ul className="space-y-3">
                     {app.items.map((item: string, iIndex: number) => (
                       <li key={iIndex} className="flex items-start gap-3 text-gray-600">
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full mt-1.5 flex-shrink-0" />
+                        <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
                         <span className="text-sm font-semibold">{item}</span>
                       </li>
                     ))}
@@ -243,10 +233,10 @@ export default function ServicePage({ params }: { params: Promise<{ id: string }
       {/* Structural Specifications (Conditional) */}
       {(service as any).specifications && (
         <section className="py-24 bg-white relative">
-          <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+          <div className="absolute bottom-0 left-0 h-px w-full bg-linear-to-r from-transparent via-gray-200 to-transparent" />
           <Container>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              <div className="relative aspect-[4/3] rounded-sm overflow-hidden shadow-2xl group">
+              <div className="group relative aspect-4/3 overflow-hidden rounded-sm shadow-2xl">
                 <Image 
                   src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop"
                   alt="Technical Excellence"
@@ -267,7 +257,7 @@ export default function ServicePage({ params }: { params: Promise<{ id: string }
                 <div className="space-y-10">
                   {(service as any).specifications.map((spec: any, index: number) => (
                     <div key={index} className="flex gap-6 group">
-                      <div className="flex-shrink-0 w-12 h-12 border-2 border-primary text-primary flex items-center justify-center font-bold rounded-sm group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-sm border-2 border-primary font-bold text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white">
                         {index + 1}
                       </div>
                       <div>

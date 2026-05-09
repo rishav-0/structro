@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,7 +11,6 @@ import {
   Construction,
   Key,
   ShieldCheck,
-  Settings2,
   Zap,
   Scale,
   GitMerge,
@@ -113,6 +112,17 @@ const regulatoryData = [
 ];
 
 const ProcessClient = () => {
+  const timelineRef = useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ["start 75%", "end 35%"],
+  });
+  const lineProgress = useSpring(scrollYProgress, {
+    stiffness: 140,
+    damping: 28,
+    mass: 0.25,
+  });
+
   return (
     <div className="bg-white text-[#0a192f]">
 
@@ -148,11 +158,16 @@ const ProcessClient = () => {
       </section>
 
       {/* ---------------- PROCESS TIMELINE ---------------- */}
-      <section className="py-28 bg-[#f4f5f7]">
+      <section ref={timelineRef} className="py-28 bg-[#f4f5f7]">
         <Container>
           <div className="relative">
 
             <div className="absolute top-0 bottom-0 left-4 w-0.5 bg-gray-200 md:left-1/2" />
+            <motion.div
+              aria-hidden="true"
+              className="absolute top-0 bottom-0 left-4 w-0.5 origin-top bg-primary md:left-1/2"
+              style={{ scaleY: lineProgress }}
+            />
 
             <div className="space-y-24">
               {processSteps.map((step, i) => (

@@ -5,7 +5,6 @@ import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { featuredProductsData } from "@/lib/data";
 import { getPublicCollectionData } from "@/lib/public-db-server";
 
 type Product = {
@@ -31,40 +30,11 @@ export const metadata: Metadata = {
 };
 
 async function getProducts(): Promise<Product[]> {
-  const hardcodedProducts = featuredProductsData.map((product) => ({
-    id: product.id,
-    title: product.title,
-    specs: product.specs,
-    description: product.description,
-    features: product.features,
-    image: product.image,
-  }));
-
   try {
-    const dbProducts = await getPublicCollectionData<Product>("products");
-
-    if (dbProducts.length === 0) {
-      return hardcodedProducts;
-    }
-
-    const dbById = new Map(dbProducts.map((product) => [product.id, product]));
-    const mergedProducts = hardcodedProducts.map((product) => {
-      const dbProduct = dbById.get(product.id);
-
-      if (!dbProduct) {
-        return product;
-      }
-
-      dbById.delete(product.id);
-      return { ...product, ...dbProduct };
-    });
-
-    dbById.forEach((product) => mergedProducts.push(product));
-
-    return mergedProducts;
+    return await getPublicCollectionData<Product>("products");
   } catch (error) {
     console.error("Error fetching products:", error);
-    return hardcodedProducts;
+    return [];
   }
 }
 

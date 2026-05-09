@@ -1,13 +1,11 @@
 "use client"
 
 import { useState, useEffect } from "react";
-import Hero from "@/components/hero"
 import { Button } from "@/components/ui/button"
 import { ArrowUpRight, Award, ShieldCheck, Leaf, HardHat } from "lucide-react";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import Link from "next/link";
-import { servicesData, projectsData, newLaunchesData, featuredProductsData } from "@/lib/data";
 import { getCollectionData } from "@/lib/data-merge";
 import NewHero from "@/components/NewHero";
 import WhyChooseUs from "@/components/WhyChooseUs";
@@ -15,53 +13,69 @@ import FaqSection from "@/components/FaqSection";
 import OurCredentials from "@/components/OurCredentials";
 import SiteCta from "@/components/SiteCta";
 
+type HomeService = {
+  id: string;
+  title: string;
+  description: string;
+  homeDescription?: string;
+  image: string;
+  alt: string;
+};
+
+type HomeProduct = {
+  id: string;
+  title: string;
+  specs: string;
+  image: string;
+};
+
+type HomeProject = {
+  id: string | number;
+  src: string;
+  alt: string;
+  isVideo?: boolean;
+  className?: string;
+};
+
+type HomeLaunch = {
+  id: string;
+  image: string;
+  title: string;
+  type: string;
+  description: string;
+  region: string;
+};
+
 export default function Page() {
-  const [services, setServices] = useState(servicesData.slice(0, 3));
-  const [products, setProducts] = useState(featuredProductsData);
-  const [projects, setProjects] = useState(projectsData.homeProjects);
-  const [launches, setLaunches] = useState(newLaunchesData);
-  const [dbLoaded, setDbLoaded] = useState(false);
+  const [services, setServices] = useState<HomeService[]>([]);
+  const [products, setProducts] = useState<HomeProduct[]>([]);
+  const [projects, setProjects] = useState<HomeProject[]>([]);
+  const [launches, setLaunches] = useState<HomeLaunch[]>([]);
 
   useEffect(() => {
-    async function mergeData() {
+    async function loadData() {
       try {
         const [dbServices, dbProducts, dbProjects, dbLaunches] = await Promise.all([
-          getCollectionData("services") as any,
-          getCollectionData("products") as any,
-          getCollectionData("projects") as any,
-          getCollectionData("new-launches") as any,
+          getCollectionData<HomeService>("services"),
+          getCollectionData<HomeProduct>("products"),
+          getCollectionData<HomeProject>("projects"),
+          getCollectionData<HomeLaunch>("new-launches"),
         ]);
 
-        if (dbServices.length > 0) {
-          const hcIds = new Set(servicesData.slice(0, 3).map(s => s.id));
-          const newFromDb = (dbServices as any[]).filter((ds: any) => !hcIds.has(ds.id));
-          setServices([...newFromDb, ...servicesData.slice(0, 3)].slice(0, 3) as any);
-        }
-
-        if (dbProducts.length > 0) {
-          const hcIds = new Set(featuredProductsData.map(p => p.id));
-          const newFromDb = (dbProducts as any[]).filter((dp: any) => !hcIds.has(dp.id));
-          const hcWithStringImage = featuredProductsData.map(p => ({ ...p, image: typeof p.image === "string" ? p.image : "" }));
-          setProducts([...newFromDb, ...hcWithStringImage].slice(0, 4) as any);
-        }
-
-        if (dbProjects.length > 0) {
-          const hcIds = new Set(projectsData.homeProjects.map(p => String(p.id)));
-          const newFromDb = (dbProjects as any[]).filter((p: any) => p.src && !hcIds.has(String(p.id)));
-          const dbWithClass = newFromDb.map((p: any) => ({ ...p, className: "md:col-span-2" }));
-          setProjects([...dbWithClass, ...projectsData.homeProjects].slice(0, 6) as any);
-        }
-
-        if (dbLaunches.length > 0) {
-          setLaunches(dbLaunches as any);
-        }
+        setServices(dbServices.slice(0, 3));
+        setProducts(dbProducts.slice(0, 4));
+        setProjects(
+          dbProjects
+            .filter((project) => project.src)
+            .slice(0, 6)
+            .map((project) => ({ ...project, className: project.className || "md:col-span-2" }))
+        );
+        setLaunches(dbLaunches);
       } catch (error) {
         console.error("Error merging data:", error);
-      } finally {
-        setDbLoaded(true);
       }
     }
-    mergeData();
+    loadData();
   }, []);
 
   const stats = [
@@ -322,6 +336,37 @@ export default function Page() {
         </Container>
       </div>
 
+      {/* Core Values Section */}
+      <div className="text-center mb-10 pt-8">
+        <span className="text-accent text-sm font-bold uppercase tracking-[0.2em] block mb-4">
+          Our Values
+        </span>
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+          Core Values That Drive Us
+        </h2>
+      </div>
+
+      {/* Values Grid */}
+      <Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+        {values.map((item, index) => (
+          <div 
+            key={index} 
+            className="bg-gray-50 p-8 rounded-md flex flex-col items-start transition-all duration-300 hover:shadow-lg hover:border-primary/20 border border-transparent"
+          >
+            <div className="bg-primary p-3 rounded-md mb-6 flex items-center justify-center">
+              {item.icon}
+            </div>
+            <h3 className="text-lg font-bold text-gray-900 mb-3">
+              {item.title}
+            </h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              {item.description}
+            </p>
+          </div>
+        ))}
+      </Container>
+
+
       {/* Stakeholder Portal System */}
       <div className="py-20 lg:py-24 bg-white">
         <Container>
@@ -361,35 +406,8 @@ export default function Page() {
         </Container>
       </div>
 
-      {/* Core Values Section */}
-      <div className="text-center mb-10 pt-8">
-        <span className="text-accent text-sm font-bold uppercase tracking-[0.2em] block mb-4">
-          Our Values
-        </span>
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-          Core Values That Drive Us
-        </h2>
-      </div>
-
-      {/* Values Grid */}
-      <Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-        {values.map((item, index) => (
-          <div 
-            key={index} 
-            className="bg-gray-50 p-8 rounded-md flex flex-col items-start transition-all duration-300 hover:shadow-lg hover:border-primary/20 border border-transparent"
-          >
-            <div className="bg-primary p-3 rounded-md mb-6 flex items-center justify-center">
-              {item.icon}
-            </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-3">
-              {item.title}
-            </h3>
-            <p className="text-gray-600 text-sm leading-relaxed">
-              {item.description}
-            </p>
-          </div>
-        ))}
-      </Container>
+      
+      
 
       <SiteCta />
 

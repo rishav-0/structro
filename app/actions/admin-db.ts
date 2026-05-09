@@ -27,13 +27,13 @@ export async function getAdminDoc(collectionName: string, docId: string) {
   return { id: snapshot.id, ...snapshot.data() };
 }
 
-export async function addAdminDoc(collectionName: string, data: any) {
+export async function addAdminDoc(collectionName: string, data: Record<string, unknown>) {
   await verifyAdmin();
   const ref = await adminDb.collection(collectionName).add(data);
   return ref.id;
 }
 
-export async function updateAdminDoc(collectionName: string, docId: string, data: any) {
+export async function updateAdminDoc(collectionName: string, docId: string, data: Record<string, unknown>) {
   await verifyAdmin();
   await adminDb.collection(collectionName).doc(docId).update(data);
 }

@@ -43,7 +43,7 @@ const Navbar = () => {
             src={scrolled || isOpen ? "/images/logo.png" : "/images/transparantLogo.png"}
             alt="Structro Logo"
             fill
-            className="object-contain transition-all duration-300 transform group-hover:scale-105"
+            className={`object-contain transition-all duration-300 transform group-hover:scale-105 ${scrolled || isOpen ? "invert-0" : "invert"}`}
             priority
           />
         </Link>

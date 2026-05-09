@@ -1,14 +1,25 @@
 "use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { CheckCircle2, ShieldCheck, Trophy, HardHat, Globe, ArrowUpRight } from 'lucide-react';
+import React, { useRef } from 'react';
+import { motion, useScroll, useSpring } from 'framer-motion';
+import { ShieldCheck, Trophy, HardHat, Globe, ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 import { Container } from './ui/container';
 import { Button } from './ui/button';
 import Link from 'next/link';
 
 const WhyChooseUs = () => {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start 75%', 'end 35%'],
+  });
+  const lineProgress = useSpring(scrollYProgress, {
+    stiffness: 140,
+    damping: 28,
+    mass: 0.25,
+  });
+
   const features = [
     {
       icon: <Trophy className="w-6 h-6 text-accent" />,
@@ -28,13 +39,20 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="relative bg-gray-50 py-24 overflow-hidden">
+    <section ref={sectionRef} className="relative overflow-hidden bg-gray-50 py-24">
       {/* Structural Pattern Overlay (Subtle) */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
            style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
 
       <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="relative grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
+          <div className="absolute bottom-12 left-[58.333333%] top-12 hidden w-px -translate-x-1/2 bg-gray-200 lg:block" />
+          <motion.div
+            aria-hidden="true"
+            className="absolute bottom-12 left-[58.333333%] top-12 hidden w-px -translate-x-1/2 origin-top bg-primary lg:block"
+            style={{ scaleY: lineProgress }}
+          />
+          <div className="absolute left-[58.333333%] top-1/2 hidden h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-accent shadow-md lg:block" />
           
           {/* Left: Content & Bento Cards */}
           <div className="lg:col-span-7 z-10">
