@@ -65,7 +65,7 @@ const WhyChooseUs = () => {
               <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4">
                 Why Choose Us
               </p>
-              <h2 className="text-4xl md:text-6xl font-black text-gray-900 leading-tight tracking-tighter uppercase">
+              <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
                 Engineering <span className="text-accent">Beyond</span> Limits.
               </h2>
             </motion.div>

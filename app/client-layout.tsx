@@ -6,6 +6,7 @@ import Footer from "@/components/Footer"
 import WhatsAppButton from "@/components/WhatsAppButton"
 import Chatbot from "@/components/Chatbot"
 import { usePathname } from "next/navigation"
+import { ChatbotProvider } from "./chatbot-provider"
 
 export default function ClientLayout({
   children,
@@ -29,7 +30,11 @@ export default function ClientLayout({
       {children}
       {!isAdminRoute && <Footer />}
       {!isAdminRoute && <WhatsAppButton />}
-      {!isAdminRoute && <Chatbot />}
+      {!isAdminRoute && (
+        <ChatbotProvider autoRefreshInterval={180000}>
+          <Chatbot />
+        </ChatbotProvider>
+      )}
     </>
   )
 }

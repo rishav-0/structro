@@ -29,7 +29,7 @@ const processSteps = [
     desc: "We analyze your vision, constraints, and site conditions to eliminate uncertainty early.",
     icon: Search,
     tags: ["Survey", "Budget", "Alignment"],
-    img: "/images/hero/c.png",
+    img: "/images/process/a.jpeg",
   },
   {
     num: "02",
@@ -37,7 +37,7 @@ const processSteps = [
     desc: "Advanced CAD + structural simulations tailored for seismic conditions.",
     icon: DraftingCompass,
     tags: ["Blueprints", "3D Models", "Seismic"],
-    img: "/images/hero/a.png",
+    img: "/images/process/b.jpeg",
   },
   {
     num: "03",
@@ -45,7 +45,7 @@ const processSteps = [
     desc: "Permits, compliance, and sourcing high-grade materials.",
     icon: ClipboardCheck,
     tags: ["Permits", "Sourcing", "QA"],
-    img: "/images/hero/b.png",
+    img: "/images/process/c.jpeg",
   },
   {
     num: "04",
@@ -53,7 +53,7 @@ const processSteps = [
     desc: "Execution with strict monitoring, safety, and quality control.",
     icon: Construction,
     tags: ["Fabrication", "Safety", "Execution"],
-    img: "/images/hero/c.png",
+    img: "/images/process/d.jpeg",
   },
   {
     num: "05",
@@ -61,7 +61,7 @@ const processSteps = [
     desc: "Audit, certification, and delivery of a ready-to-use structure.",
     icon: Key,
     tags: ["Audit", "Certification", "Delivery"],
-    img: "/images/hero/a.png",
+    img: "/images/process/e.jpeg",
   },
 ];
 

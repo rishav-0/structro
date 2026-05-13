@@ -2,16 +2,21 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button"
-import { ArrowUpRight, Award, ShieldCheck, Leaf, HardHat } from "lucide-react";
+import { ArrowUpRight, Award, ShieldCheck, Leaf, HardHat, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import Link from "next/link";
 import { getCollectionData } from "@/lib/data-merge";
-import NewHero from "@/components/NewHero";
+import HeroTwo from "@/components/HeroTwo";
+import BlogSection from "@/components/BlogSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
 import WhyChooseUs from "@/components/WhyChooseUs";
+import FoundationalPhilosophy from "@/components/FoundationalPhilosophy";
+import StructuralAdvantage from "@/components/StructuralAdvantage";
 import FaqSection from "@/components/FaqSection";
 import OurCredentials from "@/components/OurCredentials";
 import SiteCta from "@/components/SiteCta";
+import { motion, Variants } from "framer-motion";
 
 type HomeService = {
   id: string;
@@ -44,6 +49,26 @@ type HomeLaunch = {
   type: string;
   description: string;
   region: string;
+};
+
+// Framer motion variants
+const fadeInUp: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } 
+  }
+};
+
+const staggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12
+    }
+  }
 };
 
 export default function Page() {
@@ -94,53 +119,56 @@ export default function Page() {
     {
       title: "Integrity",
       description: "We uphold the highest ethical standards. No hidden costs, no broken promises—just honest communication.",
-      icon: <ShieldCheck size={20} className="text-white" />,
+      icon: <ShieldCheck size={24} />,
     },
     {
       title: "Quality",
       description: "Zero compromise on quality. Every project undergoes rigorous checks for durability and safety.",
-      icon: <Award size={20} className="text-white" />,
+      icon: <Award size={24} />,
     },
     {
       title: "Sustainability",
       description: "Building for the future with eco-conscious materials and efficient construction methods.",
-      icon: <Leaf size={20} className="text-white" />,
+      icon: <Leaf size={24} />,
     },
     {
       title: "Innovation",
       description: "Embracing cutting-edge technology and modern engineering techniques for future-ready solutions.",
-      icon: <ArrowUpRight size={20} className="text-white" />,
+      icon: <ArrowUpRight size={24} />,
     },
   ];
 
   return (
-    <div className="">
+    <div className="bg-white overflow-x-hidden">
+      <HeroTwo />
 
-      {/* <Hero /> */}
-
-      <NewHero />
-
-      <div className="w-full bg-white py-16 border-b border-gray-100">
+      <div className="w-full bg-white py-16 border-b border-gray-100 relative z-10 shadow-sm">
         {/* Experience Numbers Section */}
         <Container className="mb-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center"
+          >
             {stats.map((stat, index) => (
-              <div key={index} className="flex flex-col items-center">
+              <motion.div variants={fadeInUp} key={index} className="flex flex-col items-center">
                 <h2 className="text-5xl md:text-6xl font-bold text-primary mb-3">
                   {stat.value}
                 </h2>
-                <p className="text-sm md:text-base text-gray-500 font-medium uppercase tracking-wide">
+                <p className="text-sm text-gray-500 font-bold uppercase tracking-wide">
                   {stat.label}
                 </p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </Container>
 
-        {/* Black Background Marquee Section */}
-        <div className="bg-primary py-5 overflow-hidden relative">
-          <div className="flex whitespace-nowrap animate-marquee">
-            {[...marqueeItems, ...marqueeItems].map((item, idx) => (
+        {/* Solid Primary Background Marquee Section */}
+        <div className="bg-primary py-5 overflow-hidden relative shadow-inner">
+          <div className="flex whitespace-nowrap animate-marquee relative z-10">
+            {[...marqueeItems, ...marqueeItems, ...marqueeItems].map((item, idx) => (
               <div key={idx} className="flex items-center mx-10">
                 <span className="w-2 h-2 bg-accent rounded-full mr-4"></span>
                 <span className="text-white text-lg md:text-xl font-bold uppercase tracking-wider whitespace-nowrap">
@@ -152,11 +180,23 @@ export default function Page() {
         </div>
       </div>
 
+      <FoundationalPhilosophy />
+      <OurCredentials />
+      <StructuralAdvantage />
+      <BlogSection />
+      <WhyChooseUs />
+    
+
       {/* Services Preview */}
       <Container className="py-20" id="services">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-          <div>
-            <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8"
+        >
+          <div className="max-w-2xl">
+            <p className="text-primary text-sm font-bold uppercase tracking-[0.2em] mb-4">
               Our Services
             </p>
             <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
@@ -164,269 +204,372 @@ export default function Page() {
             </h2>
           </div>
           <Link href="/services">
-            <Button variant="saffron" size="lg">
-              View All Services
-              <ArrowUpRight className="ml-2 w-4 h-4" />
+            <Button variant="saffron" size="lg" className="font-bold shadow-md hover:shadow-lg transition-all group">
+              Explore Services
+              <ArrowUpRight className="ml-2 w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </Button>
           </Link>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          {services.map((service, index) => (
-            <div key={index} className="group bg-white rounded-md overflow-hidden border border-gray-200 hover:border-primary/30 hover:shadow-xl transition-all duration-300">
-              <div className="relative aspect-4/3 overflow-hidden">
+        {services.length > 0 && (
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10"
+          >
+            {services.map((service, index) => (
+              <motion.div variants={fadeInUp} key={index} className="group bg-white rounded-md overflow-hidden border border-gray-200 hover:border-primary/30 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col">
+              <div className="relative aspect-[4/3] overflow-hidden">
                 <Image
                   src={service.image}
                   alt={service.alt}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-4 left-4">
-                  <h3 className="text-white font-bold text-lg">{service.title}</h3>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-90 transition-opacity duration-300" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <h3 className="text-white font-bold text-xl">{service.title}</h3>
                 </div>
               </div>
-              <div className="p-5">
-                <p className="text-gray-600 text-sm">{service.homeDescription || service.description}</p>
-                <Link href="/services" className="inline-flex items-center text-primary font-semibold text-sm mt-3 hover:underline">
-                  Technical Specs <ArrowUpRight className="ml-1 w-4 h-4" />
+              <div className="p-6 flex-grow flex flex-col justify-between bg-white relative">
+                <p className="text-gray-600 text-sm leading-relaxed mb-6">{service.homeDescription || service.description}</p>
+                <Link href="/services" className="inline-flex items-center text-primary font-bold text-sm tracking-wide uppercase hover:text-gray-900 transition-colors group/link mt-auto">
+                  Technical Specs 
+                  <ArrowUpRight className="ml-1 w-4 h-4" />
                 </Link>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
+        )}
       </Container>
-
-      <WhyChooseUs />
-
-      <OurCredentials />
 
       {/* Projects/Gallery Section */}
-      <div className="text-center mb-10 pt-12">
-        <span className="text-accent text-sm font-bold uppercase tracking-[0.2em] block mb-4">
-          Our Projects
-        </span>
-        <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
-          From Concept to Completion
-        </h2>
-        <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-          Explore our portfolio of successful projects across Northeast India
-        </p>
-      </div>
-
-      {/* Grid Layout */}
-      <Container className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-16">
-        {projects.map((project) => (
-          <Link href={`/projects/${project.id}`} key={project.id} className={`${project.className} aspect-4/3 overflow-hidden rounded-md group relative block`}>
-            <Image 
-              src={project.src} 
-              alt={project.alt}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-              loading="lazy"
-            />
-            {project.isVideo && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="bg-black/60 p-3 rounded-full">
-                  <div className="w-3 h-3 bg-white rounded-full"></div>
-                </div>
-              </div>
-            )}
-          </Link>
-        ))}
-      </Container>
-
-      <div className="text-center mb-16">
-        <Link href="/projects">
-          <Button variant="saffron" size="lg">
-            View All Projects
-            <ArrowUpRight className="ml-2 w-4 h-4" />
-          </Button>
-        </Link>
-      </div>
-
-      {/* Featured Products */}
-      <div className="border-y border-gray-200 bg-gray-50 py-20">
+      <div className="bg-gray-50 py-20 relative overflow-hidden border-y border-gray-200">
         <Container>
-          <div className="text-center mb-16">
-            
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900">Our Featured Products</h2>
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
+            className="text-center mb-12 relative z-10"
+          >
+            <p className="text-primary text-sm font-bold uppercase tracking-[0.2em] mb-4">
+              Our Projects
+            </p>
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
+              From Concept to Completion
+            </h2>
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+              Explore our portfolio of engineering marvels and infrastructural landmarks across Northeast India.
+            </p>
+          </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.map((product) => (
-              <Link href={`/products/${product.id}`} key={product.id} className="block w-full h-full">
-                <div className="group h-full overflow-hidden rounded-md border border-gray-200 bg-white transition-all duration-300 hover:border-primary/30 hover:shadow-lg">
-                  <div className="relative aspect-4/3 overflow-hidden">
-                    <Image 
-                      src={product.image} 
-                      alt={product.title} 
-                      fill 
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-black/45 via-black/10 to-transparent opacity-80" />
-                  </div>
-                  <div className="relative -mt-8 h-full rounded-t-xl bg-white p-6">
-                   
-                    <h3 className="mb-2 min-h-12 text-lg font-bold leading-tight text-gray-900">
-                      {product.title}
-                    </h3>
-                    <div className="flex items-center text-sm font-semibold text-gray-700">
-                      <span className="w-full rounded-sm border border-gray-200 bg-gray-50 px-2 py-1 text-center backdrop-blur-sm">
-                        {product.specs}
-                      </span>
+          {projects.length > 0 && (
+            <motion.div 
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
+              className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-12 relative z-10"
+            >
+              {projects.map((project) => (
+                <motion.div variants={fadeInUp} key={project.id} className={`${project.className} h-64 md:h-80 overflow-hidden rounded-md group relative block shadow-sm hover:shadow-lg transition-shadow`}>
+                <Link href={`/projects/${project.id}`} className="w-full h-full block">
+                  <Image 
+                    src={project.src} 
+                    alt={project.alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
+                  
+                  {project.isVideo && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="bg-black/60 p-3 rounded-full border border-white/20 transform group-hover:scale-110 transition-transform duration-300">
+                        <div className="w-0 h-0 border-t-[6px] border-t-transparent border-l-[10px] border-l-white border-b-[6px] border-b-transparent ml-1"></div>
+                      </div>
                     </div>
+                  )}
+                  
+                  <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <p className="text-white font-bold text-sm tracking-wide flex items-center gap-2">
+                      View Project <ArrowUpRight className="w-4 h-4 text-primary" />
+                    </p>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
+          )}
 
-          <div className="mt-12 text-center">
-            <Link href="/products">
-              <Button variant="saffron" size="lg">
-                View All Products
-                <ArrowUpRight className="ml-2 w-4 h-4" />
+          <div className="text-center relative z-10">
+            <Link href="/projects">
+              <Button variant="outline" size="lg" className="font-bold border-gray-300 text-gray-900 hover:bg-gray-100 transition-all duration-300 group">
+                View Entire Portfolio
+                <ChevronRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
           </div>
         </Container>
       </div>
 
-      {/* New Launches & Special Projects */}
-      <div className="bg-gray-50 py-20 border-y border-gray-200">
+      {/* Featured Products */}
+      <div className="py-20 bg-white relative">
         <Container>
-          <div className="text-center mb-12">
-            
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">New Launches</h2>
-            <p className="text-gray-500 mt-2">Latest additions to our heavy engineering portfolio</p>
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
+            className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6"
+          >
+            <div>
+              <p className="text-primary text-sm font-bold uppercase tracking-[0.2em] mb-4">
+                Manufacturing
+              </p>
+              <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">Featured Products</h2>
+            </div>
+            <Link href="/products" className="hidden md:flex items-center font-bold text-gray-900 hover:text-primary transition-colors group">
+              Browse Catalog 
+              <span className="ml-2 bg-gray-100 p-2 rounded-full group-hover:bg-primary/10 transition-colors">
+                <ArrowUpRight className="w-4 h-4" />
+              </span>
+            </Link>
+          </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {launches.map((launch) => (
-              <div key={launch.id} className="relative group overflow-hidden rounded-md border border-gray-200 bg-white p-2">
-                <div className="aspect-video relative overflow-hidden mb-4">
+          {products.length > 0 && (
+            <motion.div 
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            >
+              {products.map((product) => (
+                <motion.div variants={fadeInUp} key={product.id}>
+                <Link href={`/products/${product.id}`} className="block w-full h-full group">
+                  <div className="h-full rounded-md border border-gray-200 bg-white transition-all duration-300 hover:border-primary/50 hover:shadow-lg overflow-hidden flex flex-col">
+                    <div className="relative aspect-[4/3] w-full overflow-hidden border-b border-gray-100">
+                      <Image 
+                        src={product.image} 
+                        alt={product.title} 
+                        fill 
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    </div>
+                    <div className="p-5 flex-grow flex flex-col justify-center items-center text-center bg-gray-50 group-hover:bg-white transition-colors">
+                      <h3 className="mb-3 text-lg font-bold text-gray-900">
+                        {product.title}
+                      </h3>
+                      <div className="inline-block rounded-sm bg-white border border-gray-200 px-3 py-1 text-xs font-semibold text-gray-600">
+                        {product.specs}
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+          )}
+          
+          <div className="mt-10 text-center md:hidden">
+            <Link href="/products">
+              <Button variant="outline" className="w-full">
+                Browse Catalog <ArrowUpRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
+        </Container>
+      </div>
+
+      {/* New Launches */}
+      <div className="bg-gray-50 py-20 relative overflow-hidden border-y border-gray-200">
+        <Container className="relative z-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
+            className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6"
+          >
+            <div>
+              <p className="text-primary text-sm font-bold uppercase tracking-[0.2em] mb-4">
+                Innovations
+              </p>
+              <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">New Launches</h2>
+              <p className="text-gray-500 mt-3 max-w-xl">Discover our latest additions to the heavy engineering portfolio.</p>
+            </div>
+          </motion.div>
+
+          {launches.length > 0 && (
+            <motion.div 
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+            >
+              {launches.map((launch) => (
+                <motion.div variants={fadeInUp} key={launch.id} className="group overflow-hidden rounded-md bg-white border border-gray-200 hover:border-primary/40 transition-all duration-300 hover:shadow-lg flex flex-col sm:flex-row">
+                <div className="aspect-video sm:aspect-square sm:w-2/5 relative overflow-hidden border-r border-gray-100">
                   <Image 
                     src={launch.image} 
                     alt={launch.title} 
                     fill 
-                    className="object-cover group-hover:scale-105 transition-all duration-700"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold px-3 py-1 uppercase tracking-tighter">
+                  <div className="absolute top-3 left-3 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-wider">
                     {launch.type}
                   </div>
                 </div>
-                <div className="p-4">
-                  <h3 className="text-xl font-bold text-gray-900">{launch.title}</h3>
-                  <p className="text-sm text-gray-500 mb-4">{launch.description}</p>
-                  <div className="flex justify-between items-center border-t border-gray-100 pt-4">
-                    <span className="text-xs font-bold text-primary uppercase">{launch.region}</span>
-                    <Link href={`/new-launches/${launch.id}`} className="text-xs font-bold text-gray-900 flex items-center hover:text-primary">
+                <div className="p-6 sm:w-3/5 flex flex-col justify-center">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{launch.title}</h3>
+                  <p className="text-gray-500 text-sm mb-5 leading-relaxed">{launch.description}</p>
+                  <div className="flex justify-between items-center border-t border-gray-100 pt-4 mt-auto">
+                    <span className="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1">
+                      <HardHat className="w-3 h-3 text-primary" /> {launch.region}
+                    </span>
+                    <Link href={`/new-launches/${launch.id}`} className="text-xs font-bold text-primary flex items-center hover:text-gray-900 transition-colors">
                       VIEW SPECS <ArrowUpRight className="ml-1 w-3 h-3" />
                     </Link>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
+          )}
         </Container>
       </div>
 
       {/* Core Values Section */}
-      <div className="text-center mb-10 pt-8">
-        <span className="text-accent text-sm font-bold uppercase tracking-[0.2em] block mb-4">
-          Our Values
-        </span>
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-          Core Values That Drive Us
-        </h2>
+      <div className="py-20 bg-white relative">
+        <Container>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
+            className="text-center mb-12"
+          >
+            <p className="text-primary text-sm font-bold uppercase tracking-[0.2em] mb-4">
+              Our DNA
+            </p>
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
+              Core Values That Drive Us
+            </h2>
+          </motion.div>
+
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            {values.map((item, index) => (
+              <motion.div 
+                variants={fadeInUp}
+                key={index} 
+                className="bg-gray-50 p-6 rounded-md flex flex-col items-start transition-all duration-300 hover:-translate-y-1 hover:shadow-md border border-transparent hover:border-primary/20 group"
+              >
+                <div className="bg-primary/10 text-primary p-3 rounded-md mb-5 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                  {item.icon}
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">
+                  {item.title}
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {item.description}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </Container>
       </div>
 
-      {/* Values Grid */}
-      <Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-        {values.map((item, index) => (
-          <div 
-            key={index} 
-            className="bg-gray-50 p-8 rounded-md flex flex-col items-start transition-all duration-300 hover:shadow-lg hover:border-primary/20 border border-transparent"
-          >
-            <div className="bg-primary p-3 rounded-md mb-6 flex items-center justify-center">
-              {item.icon}
-            </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-3">
-              {item.title}
-            </h3>
-            <p className="text-gray-600 text-sm leading-relaxed">
-              {item.description}
-            </p>
-          </div>
-        ))}
-      </Container>
-
+      
+      <TestimonialsSection />
 
       {/* Stakeholder Portal System */}
-      <div className="py-20 lg:py-24 bg-white">
+      <div className="py-20 bg-gray-50 border-t border-gray-200">
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
-            <div className="lg:col-span-1">
-              <p className="text-secondary text-sm font-bold uppercase tracking-[0.2em] mb-4">
-                Stakeholder Portal
-              </p>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight">
-                Connect with<br/>Our Ecosystem
-              </h2>
-              <p className="text-gray-600 mb-8 max-w-md">
-                We simplify our partnerships and hiring through streamlined digital intake. 
-                Select your category below to be redirected to our secure registration form.
-              </p>
-            </div>
-            
-            <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                { title: "Contractors", desc: "Project tenders & site management", icon: <HardHat className="w-6 h-6" />, type: "Intake Form", href: "/stakeholder/contractor" },
-                { title: "Vendors", desc: "Supply chain & material procurement", icon: <ShieldCheck className="w-6 h-6" />, type: "Registration", href: "/stakeholder/vendor" },
-                { title: "Job Seekers", desc: "Career opportunities & applications", icon: <ArrowUpRight className="w-6 h-6" />, type: "Apply Now", href: "/careers" }
-              ].map((portal, idx) => (
-                <Link key={idx} href={portal.href} className="bg-gray-50 border border-gray-100 p-8 rounded-md hover:border-primary/30 hover:shadow-xl transition-all group relative block">
-                  <div className="bg-white w-14 h-14 flex items-center justify-center rounded-md mb-6 shadow-sm group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                    {portal.icon}
-                  </div>
-                  <h4 className="font-bold text-gray-900 text-lg mb-3">{portal.title}</h4>
-                  <p className="text-sm text-gray-500 mb-8 leading-relaxed">{portal.desc}</p>
-                  <span className="text-xs font-bold text-primary group-hover:translate-x-1 transition-all flex items-center gap-2">
-                    {portal.type.toUpperCase()} <ArrowUpRight className="w-3 h-3" />
-                  </span>
-                </Link>
-              ))}
+          <div className="bg-white rounded-md p-8 md:p-10 shadow-sm border border-gray-200 relative overflow-hidden">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-center relative z-10">
+              <div className="lg:col-span-1">
+                <p className="text-primary text-sm font-bold uppercase tracking-[0.2em] mb-4">
+                  Portal
+                </p>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-5 leading-tight">
+                  Connect with<br/>Our Ecosystem
+                </h2>
+                <p className="text-gray-600 mb-6 text-sm md:text-base">
+                  We simplify our partnerships and hiring through streamlined digital intake. 
+                </p>
+              </div>
+              
+              <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-5">
+                {[
+                  { title: "Contractors", desc: "Project tenders & site management", icon: <HardHat className="w-5 h-5" />, type: "Intake Form", href: "/stakeholder/contractor" },
+                  { title: "Vendors", desc: "Supply chain & material procurement", icon: <ShieldCheck className="w-5 h-5" />, type: "Registration", href: "/stakeholder/vendor" },
+                  { title: "Careers", desc: "Job opportunities & applications", icon: <ArrowUpRight className="w-5 h-5" />, type: "Apply Now", href: "/careers" }
+                ].map((portal, idx) => (
+                  <Link key={idx} href={portal.href} className="bg-gray-50 border border-gray-200 p-6 rounded-md hover:border-primary/40 hover:shadow-md transition-all duration-300 group relative block">
+                    <div className="bg-white w-12 h-12 flex items-center justify-center rounded-md mb-5 shadow-sm group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                      {portal.icon}
+                    </div>
+                    <h4 className="font-bold text-gray-900 text-lg mb-2">{portal.title}</h4>
+                    <p className="text-sm text-gray-500 mb-6 leading-relaxed">{portal.desc}</p>
+                    <span className="text-xs font-bold text-primary group-hover:translate-x-1 transition-transform flex items-center gap-2">
+                      {portal.type.toUpperCase()} <ArrowUpRight className="w-3 h-3" />
+                    </span>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </Container>
       </div>
 
-      
-      
-
       <SiteCta />
-
       <FaqSection />
 
       {/* Map Section */}
-      <div className="bg-gray-100 py-16">
+      <div className="bg-white py-20">
         <Container>
-          <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Find Us</h2>
-            <p className="text-gray-600 mt-2">Visit both our head office and workshop locations in Assam</p>
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
+            className="text-center mb-12"
+          >
+            <p className="text-primary text-sm font-bold uppercase tracking-[0.2em] mb-4">
+              Locations
+            </p>
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">Find Us</h2>
+            <p className="text-gray-600 mt-3 text-base">Visit our head office and manufacturing facility</p>
+          </motion.div>
+          
           <div className="grid gap-6 md:grid-cols-2">
-            <div className="bg-white rounded-lg p-4 border border-gray-200">
-              <div className="mb-4">
-                <h3 className="text-lg font-bold text-gray-900">Head Office</h3>
-                <p className="text-sm text-gray-600">Christian Basti, Guwahati, Assam</p>
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
+              className="bg-white rounded-md p-5 border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
+            >
+              <div className="mb-4 flex justify-between items-start">
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900">Head Office</h3>
+                  <p className="text-gray-500 text-sm mt-1">Christian Basti, Guwahati, Assam</p>
+                </div>
+                <div className="w-10 h-10 bg-gray-50 border border-gray-100 rounded-md flex items-center justify-center">
+                  <ShieldCheck className="w-5 h-5 text-primary" />
+                </div>
               </div>
-              <div className="bg-gray-200 rounded-lg h-100 overflow-hidden">
+              <div className="bg-gray-100 rounded-md h-[250px] overflow-hidden">
                 <iframe 
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4509.166628943781!2d91.7755516!3d26.1569559!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a59003ad2c8c3%3A0x45df74d231f0e84c!2sStructro%20Infra%20Tech!5e1!3m2!1sen!2sin!4v1776015415897!5m2!1sen!2sin" 
                   width="100%" 
@@ -437,13 +580,24 @@ export default function Page() {
                   referrerPolicy="no-referrer-when-downgrade"
                 ></iframe>
               </div>
-            </div>
-            <div className="bg-white rounded-lg p-4 border border-gray-200">
-              <div className="mb-4">
-                <h3 className="text-lg font-bold text-gray-900">Workshop</h3>
-                <p className="text-sm text-gray-600">Rani, Guwahati, Assam</p>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
+              className="bg-white rounded-md p-5 border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
+            >
+              <div className="mb-4 flex justify-between items-start">
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900">Workshop</h3>
+                  <p className="text-gray-500 text-sm mt-1">Rani, Guwahati, Assam</p>
+                </div>
+                <div className="w-10 h-10 bg-gray-50 border border-gray-100 rounded-md flex items-center justify-center">
+                  <HardHat className="w-5 h-5 text-primary" />
+                </div>
               </div>
-              <div className="bg-gray-200 rounded-lg h-100 overflow-hidden">
+              <div className="bg-gray-100 rounded-md h-[250px] overflow-hidden">
                 <iframe 
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4102.698420047236!2d91.5887681!3d26.0463064!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a410007764fb1%3A0x269c33cf41adcb77!2sStructro%20Infra%20Tech%20Rani%20(%20Workshop%20)!5e1!3m2!1sen!2sin!4v1778258046366!5m2!1sen!2sin"
                   width="100%" 
@@ -454,7 +608,7 @@ export default function Page() {
                   referrerPolicy="no-referrer-when-downgrade"
                 ></iframe>
               </div>
-            </div>
+            </motion.div>
           </div>
         </Container>
       </div>
