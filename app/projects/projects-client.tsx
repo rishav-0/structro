@@ -183,7 +183,7 @@ export function ProjectsClient() {
         <Container>
           <div className="bg-white rounded-lg p-8 md:p-12 border border-gray-200">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-              <div>
+              <div className="flex flex-col items-center md:items-start text-center md:text-left">
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
                   Serving All of Northeast India
                 </h2>
@@ -193,7 +193,7 @@ export function ProjectsClient() {
                   climatic conditions makes us the preferred choice for infrastructure development 
                   in the region.
                 </p>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap justify-center md:justify-start gap-2">
                   {["Guwahati", "Assam", "Meghalaya", "Nagaland", "Manipur", "Tripura", "Mizoram", "Arunachal Pradesh"].map((region) => (
                     <span key={region} className="bg-primary/10 text-primary px-3 py-1 text-sm font-medium rounded-sm">
                       {region}
