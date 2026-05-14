@@ -211,168 +211,212 @@ function buildSearchIndex(data: ReturnType<typeof useChatbotDataSafe>): Searchab
   return items;
 }
 
-function searchItems(query: string, items: SearchableItem[], limit = 6): SearchableItem[] {
-  const normalized = normalizeText(query);
-  const queryWords = normalized.split(" ").filter((w) => w.length > 2 && !STOP_WORDS.has(w));
-  
-  if (queryWords.length === 0) return [];
+function detectIntent(query: string): { intent: string; keywords: string[] } {
+  const n = normalizeText(query);
+  const kw = extractKeywords(query);
 
-  // Check for explicit intent
-  const intentProduct = queryWords.some(w => w.includes("product"));
-  const intentService = queryWords.some(w => w.includes("service"));
-  const intentProject = queryWords.some(w => w.includes("project"));
-  const intentContact = queryWords.some(w => /contact|office|address|location|where|reach|call|email|phone/.test(w));
-  const intentCompany = queryWords.some(w => /company|about|who|structro/.test(w));
+  // Greetings
+  if (/^(hi|hello|hey|good\s?(morning|afternoon|evening)|namaste|namaskar)/.test(n)) return { intent: "greeting", keywords: kw };
+  // Thanks
+  if (/thank|thanks|dhanyavaad/.test(n)) return { intent: "thanks", keywords: kw };
+  // Contact / Location
+  if (/(contact|phone|email|whatsapp|call|reach|office|address|location|where|situated|based|visit)/.test(n)) return { intent: "contact", keywords: kw };
+  // Pricing
+  if (/(price|pricing|cost|rate|charge|quote|quotation|estimate|budget|how\s*much|expensive|cheap|afford)/.test(n)) return { intent: "pricing", keywords: kw };
+  // Process / How you work
+  if (/(process|workflow|step|phase|how.*work|procedure|method|approach|timeline|duration|long.*take)/.test(n)) return { intent: "process", keywords: kw };
+  // All services
+  if (/(service|offer|provide|what.*do|capable|specializ|expertise)/.test(n)) return { intent: "services", keywords: kw };
+  // All products
+  if (/(product|buy|purchase|portable|movable|container|staircase|shed|house|residential)/.test(n)) return { intent: "products", keywords: kw };
+  // Projects
+  if (/(project|portfolio|completed|built|past.*work|experience|track\s*record|client)/.test(n)) return { intent: "projects", keywords: kw };
+  // Company / About
+  if (/(company|about|who|structro|history|founded|team|employee|staff|iso|certified|quality|value|mission|vision|philosophy)/.test(n)) return { intent: "company", keywords: kw };
+  // Bridge specific
+  if (/(bridge|owg|rob|fob|girder|arch|suspension|cable|truss|railway.*bridge|foot.*over)/.test(n)) return { intent: "bridge", keywords: kw };
+  // PEB specific
+  if (/(peb|pre.*engineer|warehouse|factory|shed|industrial.*build|hangar|cold.*storage)/.test(n)) return { intent: "peb", keywords: kw };
+  // Steel specific
+  if (/(steel.*struct|fabricat|welding|metal|stainless|inconel|special.*metal)/.test(n)) return { intent: "steel", keywords: kw };
+  // Design specific
+  if (/(design|drawing|3d|model|survey|estimation|certification|cad|blueprint)/.test(n)) return { intent: "design", keywords: kw };
+  // FAQ
+  if (/(faq|question|ask|doubt|query|help)/.test(n)) return { intent: "faq", keywords: kw };
 
-  const scored = items.map((item) => {
-    let score = 0;
-    const titleNorm = normalizeText(item.title);
-    const descNorm = normalizeText(item.description);
-    
-    // Boost for explicit intent
-    if (intentProduct && item.type === "product") score += 20;
-    if (intentService && item.type === "service") score += 20;
-    if (intentProject && item.type === "project") score += 20;
+  return { intent: "search", keywords: kw };
+}
 
-    // Boost for contact intent
-    if (intentContact && item.id.includes("contact")) score += 50;
-    if (intentContact && item.type === "company") score += 10;
-    
-    // Boost for company intent
-    if (intentCompany && item.id === "company") score += 30;
-    
-    // Title exact matches
-    if (titleNorm === normalized) score += 50;
+function generateResponse(query: string, _results: SearchableItem[], companyGetter: ReturnType<typeof useChatbotDataSafe>["getCompany"], allItems: SearchableItem[]): string {
+  const { intent, keywords } = detectIntent(query);
+  const companyInfo = companyGetter();
+  const name = companyInfo?.name || "Structro Infratech";
+  const contact = companyInfo?.contact;
 
-    for (const qw of queryWords) {
-      if (titleNorm.includes(qw)) {
-        score += 10;
-      } else if (item.keywords.some((kw) => fuzzyMatch(kw, qw))) {
-        score += 5;
-      }
-      
-      if (descNorm.includes(qw)) {
-        score += 3;
-      }
-      
-      if (item.keywords.includes(qw)) {
-        score += 7;
-      }
+  const allServices = allItems.filter(i => i.type === "service");
+  const allProducts = allItems.filter(i => i.type === "product");
+  const allProjects = allItems.filter(i => i.type === "project");
+  const allFaqs = allItems.filter(i => i.type === "faq");
+  const processItems = allItems.filter(i => i.type === "process");
+
+  switch (intent) {
+    case "greeting":
+      return `Hello! 👋 Welcome to **${name}**.\n\nI can help you with:\n• Our **services** (bridges, PEB, steel, design)\n• Our **products** (portable homes, sheds, containers)\n• **Project portfolio** & experience\n• **Contact details** & office location\n• **Company info** & certifications\n\nWhat would you like to know?`;
+
+    case "thanks":
+      return `You're welcome! 😊 Feel free to ask anything else.\n\n📞 **Call:** ${contact?.phones?.[0] || "+91-9678027684"}\n📧 **Email:** ${contact?.email || "structro.infratech@gmail.com"}`;
+
+    case "contact": {
+      if (!contact) return "Please visit our [Contact Page](/contact) for details.";
+      return `📍 **${name} – Contact & Location**\n\n🏠 **Head Office:** ${contact.headOffice}\n🏢 **Workshop:** ${contact.workshop}\n\n📞 **Phone:** ${contact.phones.join(", ")}\n📧 **Email:** ${contact.email}\n💬 **WhatsApp:** ${contact.whatsapp}\n\n⏰ **Hours:** ${contact.hours}\n\n👉 Visit our [Contact Page](/contact) for directions.`;
     }
-    
-    return { item, score };
-  });
 
-  return scored
-    .filter((r) => r.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit)
-    .map((r) => r.item);
-}
+    case "pricing":
+      return `💰 **Pricing Information**\n\nOur pricing depends on the project scope, materials, and site conditions. We offer **competitive rates** with no hidden costs.\n\n**To get a free quote:**\n📞 Call: ${contact?.phones?.[0] || "+91-9678027684"}\n📧 Email: ${contact?.email || "structro.infratech@gmail.com"}\n💬 WhatsApp: ${contact?.whatsapp || "+91-9678027684"}\n\nOr visit our [Contact Page](/contact) to submit an enquiry. We typically respond within 24 hours.`;
 
-function groupByType(results: SearchableItem[]): Map<"service" | "product" | "project" | "faq" | "company" | "process", SearchableItem[]> {
-  const groups = new Map<"service" | "product" | "project" | "faq" | "company" | "process", SearchableItem[]>();
-  
-  results.forEach((item) => {
-    const type = item.type;
-    const existing = groups.get(type) || [];
-    groups.set(type, [...existing, item]);
-  });
-  
-  return groups;
-}
-
-function generateResponse(query: string, results: SearchableItem[], company: ReturnType<typeof useChatbotDataSafe>["getCompany"]): string {
-  const normalized = normalizeText(query);
-  const companyInfo = company();
-  
-  const isGreeting = /^(hi|hello|hey|good|morning|afternoon|evening|namaste|namaskar)/.test(normalized);
-  if (isGreeting) {
-    return `Hello! 👋 Welcome to **${companyInfo?.name || "Structro Infratech"}**.\n\nI'm here to help you learn about our services, projects, company, and more.\n\nWhat would you like to know?`;
-  }
-
-  // Specific check for office/contact info
-  const isAskingLocation = /(office|address|location|where|situated|based)/.test(normalized);
-  const isAskingContact = /(contact|phone|email|whatsapp|call|reach)/.test(normalized);
-  
-  if (isAskingLocation || isAskingContact) {
-    const contact = companyInfo?.contact;
-    if (contact) {
-      let msg = `📍 **Our Office & Contact Details:**\n\n`;
-      if (isAskingLocation || !isAskingContact) msg += `🏠 **Head Office:** ${contact.headOffice}\n🏢 **Workshop:** ${contact.workshop}\n\n`;
-      if (isAskingContact || !isAskingLocation) msg += `📞 **Phone:** ${contact.phones.join(", ")}\n📧 **Email:** [${contact.email}](mailto:${contact.email})\n💬 **WhatsApp:** ${contact.whatsapp}\n\n`;
-      msg += `⏰ **Hours:** ${contact.hours}`;
+    case "process": {
+      const steps = processItems.filter(i => i.id.startsWith("process-"));
+      let msg = `⚙️ **Our 5-Phase Construction Process:**\n\n`;
+      if (steps.length > 0) {
+        steps.forEach(s => {
+          const d = s.data as { num?: string; title?: string; desc?: string; tags?: string[] };
+          msg += `**${d.num || ""}. ${s.title}** – ${s.description}\n`;
+        });
+      } else {
+        msg += "Consultation → Engineering & Design → Approval & Procurement → Construction → Final Handoff\n";
+      }
+      msg += `\n👉 Learn more on our [Process Page](/process).`;
       return msg;
     }
-  }
-  
-  const isThanks = /thank|thanks|dhanyavaad/.test(normalized);
-  if (isThanks) {
-    return `You're welcome! 😊 If you have more questions, feel free to ask. You can also contact us at **${companyInfo?.contact?.phones?.[0] || "+91-9678027684"}** or visit our [Contact Page](/contact).`;
-  }
-  
-  if (results.length === 0) {
-    return `I didn't quite catch that. Could you rephrase or try a different question?`;
-  }
-  
-  const groups = groupByType(results);
-  let response = "";
-  
-  // Only include top 1 most relevant type to keep responses concise
-  const topTypes = new Set(results.slice(0, 1).map((r) => r.type));
-  for (const type of Array.from(groups.keys())) {
-    if (!topTypes.has(type)) {
-      groups.delete(type);
+
+    case "services": {
+      let msg = `🔧 **Our Services:**\n\nWe offer **${allServices.length} core services:**\n\n`;
+      allServices.forEach(s => {
+        const feats = (s.data as { features?: string[] }).features;
+        const featStr = feats && feats.length > 0 ? ` _(${feats.slice(0, 3).join(", ")})_` : "";
+        msg += `• **${s.title}**${featStr}\n`;
+      });
+      msg += `\n👉 Visit our [Services Page](/services) for details. Ask me about any specific service!`;
+      return msg;
+    }
+
+    case "products": {
+      let msg = `📦 **Our Products:**\n\n`;
+      allProducts.forEach(p => {
+        const specs = (p.data as { specs?: string }).specs || "";
+        msg += `• **${p.title}** – ${specs}\n`;
+      });
+      msg += `\n👉 See all products on our [Products Page](/products).`;
+      return msg;
+    }
+
+    case "projects": {
+      const top = allProjects.slice(0, 5);
+      let msg = `🏗️ **Project Portfolio** (${allProjects.length}+ completed)\n\n`;
+      top.forEach(p => {
+        const d = p.data as { client?: string; location?: string; quantity?: string };
+        msg += `• **${p.title}** – ${d.location || ""}${d.client ? ` (${d.client})` : ""}${d.quantity ? ` | ${d.quantity}` : ""}\n`;
+      });
+      if (allProjects.length > 5) msg += `• _...and ${allProjects.length - 5} more_\n`;
+      msg += `\n👉 View all on our [Projects Page](/projects).`;
+      return msg;
+    }
+
+    case "company": {
+      if (!companyInfo) return "We are Structro Infratech – a leading steel engineering company in Northeast India.";
+      const stats = companyInfo.stats;
+      return `🏢 **About ${name}**\n\n${companyInfo.description}\n\n📊 **Key Stats:**\n• **${stats.projects}** Projects Completed\n• **${stats.years}** Years Experience\n• **${stats.team}** Team Members\n• **${stats.satisfaction}** Client Satisfaction\n\n🏅 **${companyInfo.iso}**\n📍 Founded: ${companyInfo.founded} | Registered: ${companyInfo.registered}\n\n💡 _"${companyInfo.philosophy}"_\n\n👉 Learn more on our [About Page](/about).`;
+    }
+
+    case "bridge": {
+      const svc = allServices.find(s => s.id === "bridge");
+      if (!svc) return "We specialize in bridge engineering. Visit our [Services Page](/services) for details.";
+      const d = svc.data as { description?: string; features?: string[]; catalog?: { title: string; description: string }[] };
+      let msg = `🌉 **Bridge Engineering**\n\n${d.description || svc.description}\n\n**Bridge Types We Build:**\n`;
+      if (d.catalog) d.catalog.forEach(c => { msg += `• **${c.title}** – ${c.description}\n`; });
+      else if (d.features) d.features.forEach(f => { msg += `• ${f}\n`; });
+      msg += `\n👉 See our [Bridge Projects](/services) or ask about specific bridge types!`;
+      return msg;
+    }
+
+    case "peb": {
+      const svc = allServices.find(s => s.id === "peb");
+      if (!svc) return "We offer PEB solutions. Visit our [Services Page](/services).";
+      const d = svc.data as { description?: string; features?: string[]; applications?: { category: string; items: string[] }[] };
+      let msg = `🏭 **PEB (Pre-Engineered Buildings)**\n\n${d.description || svc.description}\n\n**Key Advantages:**\n`;
+      if (d.features) d.features.forEach(f => { msg += `• ${f}\n`; });
+      if (d.applications) {
+        msg += `\n**Applications:** `;
+        msg += d.applications.map(a => `${a.category} (${a.items.slice(0, 3).join(", ")})`).join(" | ");
+        msg += "\n";
+      }
+      msg += `\n👉 Learn more on our [Services Page](/services).`;
+      return msg;
+    }
+
+    case "steel": {
+      const svc = allServices.find(s => s.id === "steel") || allServices.find(s => s.id === "special-metal");
+      if (!svc) return "We offer steel & special metal structures. Visit our [Services Page](/services).";
+      const d = svc.data as { description?: string; features?: string[] };
+      let msg = `🔩 **Steel & Metal Structures**\n\n${d.description || svc.description}\n\n**Capabilities:**\n`;
+      if (d.features) d.features.forEach(f => { msg += `• ${f}\n`; });
+      const special = allServices.find(s => s.id === "special-metal");
+      if (special && svc.id !== "special-metal") {
+        const sd = special.data as { features?: string[] };
+        msg += `\n**Special Metals:** ${sd.features?.join(", ") || "SS, Inconel fabrication"}\n`;
+      }
+      msg += `\n👉 Visit our [Services Page](/services) for more.`;
+      return msg;
+    }
+
+    case "design": {
+      const svc = allServices.find(s => s.id === "design");
+      if (!svc) return "We provide engineering design services. Visit our [Services Page](/services).";
+      const d = svc.data as { description?: string; features?: string[] };
+      let msg = `📐 **Design & Engineering Services**\n\n${d.description || svc.description}\n\n**What We Offer:**\n`;
+      if (d.features) d.features.forEach(f => { msg += `• ${f}\n`; });
+      msg += `\n👉 Visit our [Services Page](/services) for details.`;
+      return msg;
+    }
+
+    case "faq": {
+      if (allFaqs.length === 0) return "We don't have FAQs loaded right now. Feel free to ask me any question directly!";
+      let msg = `❓ **Frequently Asked Questions:**\n\n`;
+      allFaqs.slice(0, 4).forEach(f => {
+        msg += `**Q: ${f.title}**\n${f.description.length > 120 ? f.description.slice(0, 120) + "..." : f.description}\n\n`;
+      });
+      return msg;
+    }
+
+    default: {
+      // Keyword-based search fallback
+      const scored = allItems.map(item => {
+        let score = 0;
+        const tn = normalizeText(item.title);
+        const dn = normalizeText(item.description);
+        for (const kw of keywords) {
+          if (tn.includes(kw)) score += 10;
+          if (dn.includes(kw)) score += 3;
+          if (item.keywords.some(k => fuzzyMatch(k, kw))) score += 5;
+        }
+        return { item, score };
+      }).filter(r => r.score > 0).sort((a, b) => b.score - a.score);
+
+      if (scored.length === 0) {
+        return `I'm not sure about that. Here's what I can help with:\n\n• Our **services** – bridges, PEB, steel, design\n• Our **products** – portable homes, sheds, containers\n• **Project portfolio**\n• **Contact & location**\n• **Company info**\n\nTry asking about any of these!`;
+      }
+
+      const top = scored.slice(0, 3);
+      let msg = "";
+      top.forEach(({ item }) => {
+        const icon = item.type === "service" ? "🔧" : item.type === "product" ? "📦" : item.type === "project" ? "🏗️" : item.type === "faq" ? "❓" : item.type === "company" ? "🏢" : "⚙️";
+        const desc = item.description.length > 150 ? item.description.slice(0, 150) + "..." : item.description;
+        msg += `${icon} **${item.title}**\n${desc}\n\n`;
+      });
+      if (scored.length > 3) msg += `_${scored.length - 3} more results found. Try a more specific question._`;
+      return msg.trim();
     }
   }
-
-  const truncate = (text: string, len: number) => text.length > len ? text.slice(0, len) + "..." : text;
-
-  if (groups.has("company")) {
-    const companyItems = groups.get("company")!;
-    response += `🏢 **Company:**\n\n`;
-    companyItems.slice(0, 1).forEach((item) => {
-      response += `${truncate(item.description, 200)}\n\n`;
-    });
-    groups.delete("company");
-  }
-  
-  if (groups.has("process")) {
-    const processItems = groups.get("process")!;
-    response += `⚙️ **Our Process:**\n\n`;
-    processItems.slice(0, 1).forEach((item) => {
-      response += `${truncate(item.description, 60)}\n\n`;
-    });
-    groups.delete("process");
-  }
-  
-  if (groups.has("service")) {
-    const services = groups.get("service")!;
-    response += `🔧 **Services:**\n\n`;
-    services.slice(0, 1).forEach((service) => {
-      response += `• **${service.title}** – ${truncate(service.description, 50)}\n`;
-    });
-    groups.delete("service");
-  }
-  
-  if (groups.has("product")) {
-    const products = groups.get("product")!;
-    response += `📦 **Products:**\n\n`;
-    products.slice(0, 1).forEach((product) => {
-      response += `• **${product.title}** – ${truncate(product.description, 50)}\n`;
-    });
-    groups.delete("product");
-  }
-  
-  if (groups.has("project")) {
-    const projects = groups.get("project")!;
-    response += `🏗️ **Projects:**\n\n`;
-    projects.slice(0, 1).forEach((project) => {
-      response += `• **${project.title}** – ${truncate(project.description, 50)}\n`;
-    });
-  }
-  
-  return response.trim();
 }
 
 function renderMarkdown(text: string): React.ReactNode {
@@ -400,7 +444,7 @@ function renderMarkdown(text: string): React.ReactNode {
         );
       }
       
-      const italicParts = part.split(/(«ITALIC».*?�\/ITALIC»)/g);
+      const italicParts = part.split(/(«ITALIC».*?«\/ITALIC»)/g);
       return italicParts.map((ip, k) => {
         if (ip.startsWith("«ITALIC»") && ip.endsWith("«/ITALIC»")) {
           const content = ip.replace("«ITALIC»", "").replace("«/ITALIC»", "");
@@ -411,7 +455,7 @@ function renderMarkdown(text: string): React.ReactNode {
           );
         }
         
-        const linkParts = ip.split(/(«LINK».*?�\/LINK»)/g);
+        const linkParts = ip.split(/(«LINK».*?«\/LINK»)/g);
         return linkParts.map((lp, l) => {
           if (lp.startsWith("«LINK»") && lp.endsWith("«/LINK»")) {
             const linkContent = lp.replace("«LINK»", "").replace("«/LINK»", "");
@@ -494,8 +538,7 @@ const Chatbot = () => {
       setIsTyping(true);
       
       setTimeout(() => {
-        const results = searchItems(msg, searchIndex);
-        const response = generateResponse(msg, results, getCompany);
+        const response = generateResponse(msg, [], getCompany, searchIndex);
         setMessages((prev) => [...prev, { role: "bot", text: response }]);
         setIsTyping(false);
       }, 400 + Math.random() * 600);
@@ -561,21 +604,23 @@ const Chatbot = () => {
                 {isLoading ? "Loading data..." : error ? "Using cached data" : "Ask me anything"}
               </p>
             </div>
-            <button
-              onClick={refresh}
-              className="relative text-white/60 hover:text-white transition-colors p-1"
-              aria-label="Refresh data"
-              title="Refresh data"
-            >
-              <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
-            </button>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="relative text-white/60 hover:text-white transition-colors"
-              aria-label="Minimize chat"
-            >
-              <ChevronDown className="w-5 h-5" />
-            </button>
+            <div className="flex items-center gap-1 relative">
+              <button
+                onClick={refresh}
+                className="w-8 h-8 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-all"
+                aria-label="Refresh data"
+                title="Refresh data"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
+              </button>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="w-8 h-8 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-all"
+                aria-label="Minimize chat"
+              >
+                <ChevronDown className="w-5 h-5" />
+              </button>
+            </div>
           </div>
 
           <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 bg-gray-50/50 chatbot-scroll">
@@ -600,7 +645,7 @@ const Chatbot = () => {
                   )}
                 </div>
                 <div
-                  className={`max-w-[80%] px-4 py-3 text-sm rounded-2xl ${
+                  className={`max-w-[80%] px-4 py-3 text-sm rounded-2xl break-words ${
                     msg.role === "user"
                       ? "bg-gray-800 text-white rounded-br-md"
                       : "bg-white text-gray-700 rounded-bl-md border border-gray-100 shadow-sm"
