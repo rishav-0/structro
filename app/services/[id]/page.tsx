@@ -41,7 +41,7 @@ export default async function ServicePage({ params }: { params: Promise<{ id: st
         <Container>
           <div className="grid grid-cols-1 items-center gap-8 py-12 md:py-16 lg:grid-cols-2 lg:gap-16">
             <div>
-             
+              
               <h1 className="mb-4 text-4xl font-extrabold uppercase leading-tight tracking-tighter text-gray-900 md:text-6xl">
                 {service.title}
               </h1>

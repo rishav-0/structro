@@ -86,6 +86,14 @@ export const metadata: Metadata = {
     alternateLocale: 'en_US',
     siteName: 'Structro Infratech',
     url: siteUrl.toString(),
+    images: [
+      {
+        url: '/images/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'Structro Infratech Logo',
+      },
+    ],
   },
   robots: {
     index: true,
@@ -100,6 +108,11 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'google-site-verification-code',
+  },
+  icons: {
+    icon: '/images/logo.png',
+    shortcut: '/images/logo.png',
+    apple: '/images/logo.png',
   },
 }
 

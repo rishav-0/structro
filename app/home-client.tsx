@@ -125,7 +125,7 @@ export function HomeClient({
     <div className="bg-white overflow-x-hidden">
       <HeroTwo />
 
-      <div className="w-full bg-white py-16 border-b border-gray-100 relative z-10 shadow-sm">
+      <div className="w-full bg-white pt-16  relative z-10 ">
         {/* Experience Numbers Section */}
         <Container className="mb-12">
           <motion.div 

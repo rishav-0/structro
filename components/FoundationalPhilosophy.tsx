@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 
 export default function FoundationalPhilosophy() {
   return (
-    <div className="bg-gray-50 py-24 overflow-hidden relative border-y border-gray-200">
+    <div className="bg-gray-50 py-24 overflow-hidden relative">
       <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
           
           <div className="relative order-2 lg:order-1 h-[450px] sm:h-[500px]">
             {/* Card 1 */}
@@ -44,14 +44,14 @@ export default function FoundationalPhilosophy() {
             <p className="text-[#ea8000] text-sm font-bold uppercase tracking-[0.2em] mb-4">
               Foundational Philosophy
             </p>
-            <h2 className="text-3xl md:text-5xl font-bold text-[#001e40] mb-6 leading-tight">
+            <h2 className="text-3xl md:text-5xl font-bold text-[#001e40] mb-4 leading-tight">
               Construction shouldn&apos;t be a headache.
             </h2>
-            <p className="text-gray-600 text-lg mb-10 leading-relaxed">
+            <p className="text-gray-600 text-lg mb-6 leading-relaxed">
               We bring corporate-grade engineering and absolute predictability to heavy infrastructure projects across Assam and Northeast India. No excuses, just results.
             </p>
 
-            <div className="space-y-8 text-left">
+            <div className="space-y-6 text-left">
               <div className="flex gap-4">
                 <div className="mt-1">
                   <CheckCircle2 className="w-6 h-6 text-[#ea8000]" />

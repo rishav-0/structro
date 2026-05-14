@@ -213,17 +213,27 @@ function buildSearchIndex(data: ReturnType<typeof useChatbotDataSafe>): Searchab
   return items;
 }
 
-function searchItems(query: string, items: SearchableItem[], limit = 10): SearchableItem[] {
+function searchItems(query: string, items: SearchableItem[], limit = 6): SearchableItem[] {
   const normalized = normalizeText(query);
-  const queryWords = normalized.split(" ").filter((w) => w.length > 2);
+  const queryWords = normalized.split(" ").filter((w) => w.length > 2 && !STOP_WORDS.has(w));
   
   if (queryWords.length === 0) return [];
+
+  // Check for explicit intent
+  const intentProduct = queryWords.some(w => w.includes("product"));
+  const intentService = queryWords.some(w => w.includes("service"));
+  const intentProject = queryWords.some(w => w.includes("project"));
 
   const scored = items.map((item) => {
     let score = 0;
     const titleNorm = normalizeText(item.title);
     const descNorm = normalizeText(item.description);
     
+    // Boost for explicit intent
+    if (intentProduct && item.type === "product") score += 20;
+    if (intentService && item.type === "service") score += 20;
+    if (intentProject && item.type === "project") score += 20;
+
     for (const qw of queryWords) {
       if (titleNorm.includes(qw)) {
         score += 10;
@@ -250,8 +260,8 @@ function searchItems(query: string, items: SearchableItem[], limit = 10): Search
     .map((r) => r.item);
 }
 
-function groupByType(results: SearchableItem[]): Map<string, SearchableItem[]> {
-  const groups = new Map<string, SearchableItem[]>();
+function groupByType(results: SearchableItem[]): Map<"service" | "product" | "project" | "faq" | "company" | "process", SearchableItem[]> {
+  const groups = new Map<"service" | "product" | "project" | "faq" | "company" | "process", SearchableItem[]>();
   
   results.forEach((item) => {
     const type = item.type;
@@ -277,26 +287,27 @@ function generateResponse(query: string, results: SearchableItem[], company: Ret
   }
   
   if (results.length === 0) {
-    return `I appreciate your question! Here's how I can help you:\n\n🔧 **Services** – Ask about bridge construction, PEB buildings, steel structures\n📦 **Products** – View our portable houses, containers, staircases\n🏗️ **Projects** – See our completed projects\n📞 **Contact** – Get our phone, email, or address\n🏢 **Company** – Learn about our history and values\n🔍 **Process** – Understand our workflow\n\nOr call us at **${companyInfo?.contact?.phones?.[0] || "+91-9678027684"}** for personalized assistance!`;
+    return `I didn't quite catch that. Could you rephrase or try a different question?`;
   }
   
   const groups = groupByType(results);
   let response = "";
   
-  if (groups.has("faq") && groups.get("faq")!.length > 0) {
-    const faqs = groups.get("faq")!;
-    response += `📋 **FAQ:**\n\n`;
-    faqs.slice(0, 3).forEach((faq) => {
-      response += `**Q:** ${faq.title}\n**A:** ${faq.description}\n\n`;
-    });
-    groups.delete("faq");
+  // Only include top 1 most relevant type to keep responses concise
+  const topTypes = new Set(results.slice(0, 1).map((r) => r.type));
+  for (const type of Array.from(groups.keys())) {
+    if (!topTypes.has(type)) {
+      groups.delete(type);
+    }
   }
-  
+
+  const truncate = (text: string, len: number) => text.length > len ? text.slice(0, len) + "..." : text;
+
   if (groups.has("company")) {
     const companyItems = groups.get("company")!;
     response += `🏢 **Company:**\n\n`;
-    companyItems.slice(0, 2).forEach((item) => {
-      response += `${item.description}\n\n`;
+    companyItems.slice(0, 1).forEach((item) => {
+      response += `${truncate(item.description, 80)}\n\n`;
     });
     groups.delete("company");
   }
@@ -305,7 +316,7 @@ function generateResponse(query: string, results: SearchableItem[], company: Ret
     const processItems = groups.get("process")!;
     response += `⚙️ **Our Process:**\n\n`;
     processItems.slice(0, 1).forEach((item) => {
-      response += `${item.description}\n\n`;
+      response += `${truncate(item.description, 60)}\n\n`;
     });
     groups.delete("process");
   }
@@ -313,30 +324,27 @@ function generateResponse(query: string, results: SearchableItem[], company: Ret
   if (groups.has("service")) {
     const services = groups.get("service")!;
     response += `🔧 **Services:**\n\n`;
-    services.slice(0, 4).forEach((service) => {
-      response += `• **${service.title}** – ${service.description.slice(0, 100)}...\n`;
+    services.slice(0, 1).forEach((service) => {
+      response += `• **${service.title}** – ${truncate(service.description, 50)}\n`;
     });
-    response += `\n[View all services](/services)\n\n`;
     groups.delete("service");
   }
   
   if (groups.has("product")) {
     const products = groups.get("product")!;
     response += `📦 **Products:**\n\n`;
-    products.slice(0, 4).forEach((product) => {
-      response += `• **${product.title}** – ${product.description}\n`;
+    products.slice(0, 1).forEach((product) => {
+      response += `• **${product.title}** – ${truncate(product.description, 50)}\n`;
     });
-    response += `\n[View all products](/products)\n\n`;
     groups.delete("product");
   }
   
   if (groups.has("project")) {
     const projects = groups.get("project")!;
     response += `🏗️ **Projects:**\n\n`;
-    projects.slice(0, 5).forEach((project) => {
-      response += `• **${project.title}** – ${project.description}\n`;
+    projects.slice(0, 1).forEach((project) => {
+      response += `• **${project.title}** – ${truncate(project.description, 50)}\n`;
     });
-    response += `\n[View all projects](/projects)\n\n`;
   }
   
   return response.trim();
