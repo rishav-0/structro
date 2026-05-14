@@ -1,12 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link as LinkIcon, Check, Share2, Facebook, Twitter, Linkedin } from "lucide-react";
 import { toast } from "sonner"; // Assuming sonner is used, if not I'll check
 
 export function ShareButtons({ title }: { title: string }) {
   const [copied, setCopied] = useState(false);
+  const [isShareSupported, setIsShareSupported] = useState(false);
+
+  useEffect(() => {
+    if (typeof navigator !== "undefined" && !!navigator.share) {
+      setIsShareSupported(true);
+    }
+  }, []);
 
   const handleCopyLink = async () => {
     try {
@@ -26,7 +33,7 @@ export function ShareButtons({ title }: { title: string }) {
   };
 
   const handleNativeShare = async () => {
-    if (navigator.share) {
+    if (isShareSupported) {
       try {
         await navigator.share(shareData);
       } catch (err) {
@@ -57,7 +64,7 @@ export function ShareButtons({ title }: { title: string }) {
       </Button>
 
       {/* Native Share for Mobile */}
-      {typeof navigator !== "undefined" && navigator.share && (
+      {isShareSupported && (
         <Button 
           variant="outline" 
           size="sm" 
