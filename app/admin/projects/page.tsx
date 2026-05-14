@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plus, Pencil, Trash2, Search, MapPin, Building, Calendar } from "lucide-react";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { AdminPagination } from "@/components/admin-pagination";
 
 interface Project {
   id: string;
@@ -55,11 +56,14 @@ const serviceOptions = [
   { value: "design", label: "Design Services" },
 ];
 
+const ITEMS_PER_PAGE = 10;
+
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(initialForm);
@@ -180,6 +184,16 @@ export default function ProjectsPage() {
     const matchesType = typeFilter === "all" || p.type === typeFilter;
     return matchesSearch && matchesType;
   });
+
+  const totalPages = Math.ceil(filteredProjects.length / ITEMS_PER_PAGE);
+  const paginatedProjects = filteredProjects.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, typeFilter]);
 
   return (
     <>
@@ -383,45 +397,54 @@ export default function ProjectsPage() {
           ) : filteredProjects.length === 0 ? (
             <div className="p-8 text-center text-neutral-400">No projects found</div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow className="border-white/5 hover:bg-transparent">
-                  <TableHead className="text-neutral-400">Title</TableHead>
-                  <TableHead className="text-neutral-400">Type</TableHead>
-                  <TableHead className="text-neutral-400">Location</TableHead>
-                  <TableHead className="text-neutral-400">Category</TableHead>
-                  <TableHead className="text-right text-neutral-400">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredProjects.map((project) => (
-                  <TableRow key={project.id} className="border-white/5">
-                    <TableCell className="font-medium">{project.title}</TableCell>
-                    <TableCell>
-                      <Badge variant={project.type === "ongoing" ? "default" : "secondary"}>
-                        {project.type}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1">
-                        <MapPin className="size-3" /> {project.location}
-                      </div>
-                    </TableCell>
-                    <TableCell>{project.category}</TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <Button variant="ghost" size="icon" onClick={() => handleEdit(project)}>
-                          <Pencil className="size-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(project.id)}>
-                          <Trash2 className="size-4 text-red-400" />
-                        </Button>
-                      </div>
-                    </TableCell>
+            <>
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-white/5 hover:bg-transparent">
+                    <TableHead className="text-neutral-400">Title</TableHead>
+                    <TableHead className="text-neutral-400">Type</TableHead>
+                    <TableHead className="text-neutral-400">Location</TableHead>
+                    <TableHead className="text-neutral-400">Category</TableHead>
+                    <TableHead className="text-right text-neutral-400">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {paginatedProjects.map((project) => (
+                    <TableRow key={project.id} className="border-white/5">
+                      <TableCell className="font-medium max-w-[200px] truncate">{project.title}</TableCell>
+                      <TableCell>
+                        <Badge variant={project.type === "ongoing" ? "default" : "secondary"}>
+                          {project.type}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1 max-w-[150px] truncate">
+                          <MapPin className="size-3 shrink-0" /> {project.location}
+                        </div>
+                      </TableCell>
+                      <TableCell className="max-w-[150px] truncate">{project.category}</TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <Button variant="ghost" size="icon" onClick={() => handleEdit(project)}>
+                            <Pencil className="size-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" onClick={() => handleDelete(project.id)}>
+                            <Trash2 className="size-4 text-red-400" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <AdminPagination 
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                totalItems={filteredProjects.length}
+                itemsPerPage={ITEMS_PER_PAGE}
+              />
+            </>
           )}
         </CardContent>
       </div>

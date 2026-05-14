@@ -52,10 +52,15 @@ const initialForm: NewLaunchForm = {
   status: "active",
 };
 
+import { AdminPagination } from "@/components/admin-pagination";
+
+const ITEMS_PER_PAGE = 10;
+
 export default function NewLaunchesAdminPage() {
   const [launches, setLaunches] = useState<NewLaunch[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(initialForm);
@@ -238,6 +243,16 @@ export default function NewLaunchesAdminPage() {
       launch.region.toLowerCase().includes(search.toLowerCase()) ||
       launch.status.toLowerCase().includes(search.toLowerCase())
   );
+
+  const totalPages = Math.ceil(filteredLaunches.length / ITEMS_PER_PAGE);
+  const paginatedLaunches = filteredLaunches.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
 
   return (
     <>
@@ -431,87 +446,96 @@ export default function NewLaunchesAdminPage() {
           ) : filteredLaunches.length === 0 ? (
             <div className="p-8 text-center text-neutral-400">No launches found</div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow className="border-white/5 hover:bg-transparent">
-                  <TableHead className="text-neutral-400">Title</TableHead>
-                  <TableHead className="text-neutral-400">Type</TableHead>
-                  <TableHead className="text-neutral-400">Region</TableHead>
-                  <TableHead className="text-neutral-400">Status</TableHead>
-                  <TableHead className="text-neutral-400">Updated</TableHead>
-                  <TableHead className="text-right text-neutral-400">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredLaunches.map((launch) => (
-                  <TableRow key={launch.id} className="border-white/5">
-                    <TableCell>
-                      <div className="flex items-start gap-3">
-                        <div className="h-14 w-20 overflow-hidden rounded-md border border-white/10 bg-neutral-900">
-                          {launch.image ? (
-                            <div className="relative h-full w-full">
-                              <Image
-                                src={launch.image}
-                                alt={launch.title}
-                                fill
-                                sizes="80px"
-                                className="object-cover"
-                              />
-                            </div>
-                          ) : null}
-                        </div>
-                        <div>
-                          <div className="font-medium text-white">{launch.title}</div>
-                          <div className="mt-1 line-clamp-2 text-sm text-neutral-400">{launch.description}</div>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1 text-neutral-300">
-                        <Tag className="size-3 text-neutral-500" />
-                        {launch.type}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1 text-neutral-300">
-                        <MapPin className="size-3 text-neutral-500" />
-                        {launch.region}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={launch.status === "active" ? "default" : "outline"} className={launch.status === "active" ? "bg-green-500" : ""}>
-                        {launch.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-neutral-400">
-                      {launch.updatedAt ? new Date(launch.updatedAt).toLocaleDateString() : "-"}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => showConfirm(
-                            launch.status === "active" ? "Deactivate Launch?" : "Activate Launch?",
-                            `Set "${launch.title}" to ${launch.status === "active" ? "inactive" : "active"}?`,
-                            () => toggleStatus(launch)
-                          )}
-                          title={launch.status === "active" ? "Deactivate" : "Activate"}
-                        >
-                          <Power className="size-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleEdit(launch)}>
-                          <Pencil className="size-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(launch.id)}>
-                          <Trash2 className="size-4 text-red-400" />
-                        </Button>
-                      </div>
-                    </TableCell>
+            <>
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-white/5 hover:bg-transparent">
+                    <TableHead className="text-neutral-400">Title</TableHead>
+                    <TableHead className="text-neutral-400">Type</TableHead>
+                    <TableHead className="text-neutral-400">Region</TableHead>
+                    <TableHead className="text-neutral-400">Status</TableHead>
+                    <TableHead className="text-neutral-400">Updated</TableHead>
+                    <TableHead className="text-right text-neutral-400">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {paginatedLaunches.map((launch) => (
+                    <TableRow key={launch.id} className="border-white/5">
+                      <TableCell>
+                        <div className="flex items-start gap-3">
+                          <div className="h-14 w-20 overflow-hidden rounded-md border border-white/10 bg-neutral-900">
+                            {launch.image ? (
+                              <div className="relative h-full w-full">
+                                <Image
+                                  src={launch.image}
+                                  alt={launch.title}
+                                  fill
+                                  sizes="80px"
+                                  className="object-cover"
+                                />
+                              </div>
+                            ) : null}
+                          </div>
+                          <div>
+                            <div className="font-medium text-white max-w-[200px] truncate">{launch.title}</div>
+                            <div className="mt-1 line-clamp-2 text-sm text-neutral-400">{launch.description}</div>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1 text-neutral-300">
+                          <Tag className="size-3 text-neutral-500" />
+                          {launch.type}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1 text-neutral-300">
+                          <MapPin className="size-3 text-neutral-500" />
+                          {launch.region}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={launch.status === "active" ? "default" : "outline"} className={launch.status === "active" ? "bg-green-500" : ""}>
+                          {launch.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-neutral-400">
+                        {launch.updatedAt ? new Date(launch.updatedAt).toLocaleDateString() : "-"}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => showConfirm(
+                              launch.status === "active" ? "Deactivate Launch?" : "Activate Launch?",
+                              `Set "${launch.title}" to ${launch.status === "active" ? "inactive" : "active"}?`,
+                              () => toggleStatus(launch)
+                            )}
+                            title={launch.status === "active" ? "Deactivate" : "Activate"}
+                          >
+                            <Power className="size-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" onClick={() => handleEdit(launch)}>
+                            <Pencil className="size-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" onClick={() => handleDelete(launch.id)}>
+                            <Trash2 className="size-4 text-red-400" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <AdminPagination 
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                totalItems={filteredLaunches.length}
+                itemsPerPage={ITEMS_PER_PAGE}
+              />
+            </>
           )}
         </CardContent>
       </div>

@@ -1,11 +1,23 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Mail, Facebook, Instagram, Twitter, Phone, MapPin, Award } from 'lucide-react';
 import { Container } from './ui/container';
 import { Button } from './ui/button';
+import { getPublicCollectionData } from '@/lib/public-db-server';
 
-const Footer = () => {
+interface Service {
+  id: string;
+  title: string;
+}
+
+export default async function Footer() {
+  let services: Service[] = [];
+  try {
+    services = await getPublicCollectionData<Service>("services");
+  } catch (error) {
+    console.error("Error fetching services for footer:", error);
+  }
+
   return (
     <footer className="font-sans bg-[#0A0A0A] text-white">
       <Container className="py-16">
@@ -69,10 +81,21 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-lg mb-6 uppercase tracking-wide">Services</h4>
             <ul className="space-y-4 text-gray-400 text-sm">
-              <li><Link href="/services#bridge" className="hover:text-primary transition-colors">Bridge Engineering</Link></li>
-              <li><Link href="/services#peb" className="hover:text-primary transition-colors">PEB Buildings</Link></li>
-              <li><Link href="/services#steel" className="hover:text-primary transition-colors">Steel Structures</Link></li>
-
+              {services.length > 0 ? (
+                services.map((service) => (
+                  <li key={service.id}>
+                    <Link href={`/services/${service.id}`} className="hover:text-primary transition-colors">
+                      {service.title}
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <>
+                  <li><Link href="/services" className="hover:text-primary transition-colors">Bridge Engineering</Link></li>
+                  <li><Link href="/services" className="hover:text-primary transition-colors">PEB Buildings</Link></li>
+                  <li><Link href="/services" className="hover:text-primary transition-colors">Steel Structures</Link></li>
+                </>
+              )}
             </ul>
           </div>
 
@@ -80,24 +103,34 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-lg mb-6 uppercase tracking-wide">Office Address</h4>
             <div className="space-y-6">
-              <div>
+              <a 
+                href="https://www.google.com/maps/search/?api=1&query=Silver+Square+Guwahati+Structro+Infra+Tech" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="block group"
+              >
                 <div className="flex items-start gap-2 text-gray-300 text-sm mb-2">
-                  <MapPin size={16} className="text-accent mt-0.5 flex-shrink-0" />
+                  <MapPin size={16} className="text-accent mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform" />
                   <div>
-                    <p className="font-medium text-white">Head Office:</p>
+                    <p className="font-medium text-white group-hover:text-primary transition-colors">Head Office:</p>
                     <p className="text-gray-400">1st Floor, Silver Square, Christian Basti, G.S Road, Guwahati, Assam - 781005</p>
                   </div>
                 </div>
-              </div>
-              <div>
+              </a>
+              <a 
+                href="https://www.google.com/maps/search/?api=1&query=Structro+Infra+Tech+Rani+Guwahati+Workshop" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="block group"
+              >
                 <div className="flex items-start gap-2 text-gray-300 text-sm">
-                  <MapPin size={16} className="text-accent mt-0.5 flex-shrink-0" />
+                  <MapPin size={16} className="text-accent mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform" />
                   <div>
-                    <p className="font-medium text-white">Workshop:</p>
+                    <p className="font-medium text-white group-hover:text-primary transition-colors">Workshop:</p>
                     <p className="text-gray-400">Guwahati-Accoland-Rani Rd, South Rani, Guwahati-31</p>
                   </div>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
         </div>
@@ -108,9 +141,9 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-lg mb-6 uppercase tracking-wide">Stakeholder Portal</h4>
             <ul className="space-y-4 text-gray-400 text-sm">
-              <li><a href="#" className="hover:text-primary transition-colors flex items-center gap-2">Contractors <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded">Form</span></a></li>
-              <li><a href="#" className="hover:text-primary transition-colors flex items-center gap-2">Vendors <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded">Form</span></a></li>
-              <li><a href="#" className="hover:text-primary transition-colors flex items-center gap-2">Job Seekers <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded">Apply</span></a></li>
+              <li><Link href="/stakeholder/contractor" className="hover:text-primary transition-colors flex items-center gap-2">Contractors <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded">Form</span></Link></li>
+              <li><Link href="/stakeholder/vendor" className="hover:text-primary transition-colors flex items-center gap-2">Vendors <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded">Form</span></Link></li>
+              <li><Link href="/careers" className="hover:text-primary transition-colors flex items-center gap-2">Job Seekers <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded">Apply</span></Link></li>
             </ul>
           </div>
 
@@ -143,13 +176,12 @@ const Footer = () => {
             © {new Date().getFullYear()} Structro Infratech. All rights reserved.
           </p>
           <div className="flex gap-6 text-xs text-gray-500">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
           </div>
         </div>
       </Container>
     </footer>
   );
-};
+}
 
-export default Footer;

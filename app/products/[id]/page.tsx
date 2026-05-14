@@ -1,7 +1,4 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { getCollectionData } from "@/lib/data-merge";
+import { getPublicCollectionData } from "@/lib/public-db-server";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
@@ -18,29 +15,17 @@ interface Product {
   image: string;
 }
 
-export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
+export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  let product: Product | null = null;
+  
+  try {
+    const dbProducts = await getPublicCollectionData<Product>("products");
+    product = dbProducts.find((productItem) => productItem.id === id) || null;
+  } catch (e) {
+    console.error("Error fetching product:", e);
+  }
 
-  useEffect(() => {
-    async function fetchProduct() {
-      const { id } = await params;
-
-      try {
-        const dbProducts = await getCollectionData<Product>("products");
-        const fromDb = dbProducts.find((productItem) => productItem.id === id) || null;
-        setProduct(fromDb);
-      } catch (e) {
-        console.error("Error fetching product:", e);
-        setProduct(null);
-      }
-
-      setLoading(false);
-    }
-    fetchProduct();
-  }, [params]);
-
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-white text-gray-700">Loading...</div>;
   if (!product) return notFound();
 
   return (

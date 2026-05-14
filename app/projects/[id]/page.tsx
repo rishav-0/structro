@@ -1,7 +1,4 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { getCollectionData } from "@/lib/data-merge";
+import { getPublicCollectionData } from "@/lib/public-db-server";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
@@ -38,27 +35,17 @@ function buildProjectNarrative(project: Project) {
   return `${context}${scale}`;
 }
 
-export default function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
-  const [project, setProject] = useState<Project | null>(null);
-  const [loading, setLoading] = useState(true);
+export default async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  let project: Project | null = null;
+  
+  try {
+    const dbProjects = (await getPublicCollectionData("projects")) as Project[];
+    project = dbProjects.find((projectItem) => String(projectItem.id) === id) || null;
+  } catch (e) {
+    console.error("Error fetching from DB:", e);
+  }
 
-  useEffect(() => {
-    async function fetchProject() {
-      const { id } = await params;
-      try {
-        const dbProjects = (await getCollectionData("projects")) as Project[];
-        const found = dbProjects.find((projectItem) => String(projectItem.id) === id) || null;
-        setProject(found);
-      } catch (e) {
-        console.error("Error fetching from DB:", e);
-        setProject(null);
-      }
-      setLoading(false);
-    }
-    fetchProject();
-  }, [params]);
-
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-white text-gray-700">Loading...</div>;
   if (!project) return notFound();
 
   const projectNarrative = buildProjectNarrative(project);

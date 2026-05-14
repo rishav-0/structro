@@ -29,7 +29,7 @@ export default function StructuralAdvantage() {
           
           <div className="relative">
             {/* Background Number */}
-            <div className="absolute -top-10 -left-10 text-[200px] font-bold text-white/5 leading-none select-none pointer-events-none">
+            <div className="absolute -top-10 -left-10 text-[120px] md:text-[200px] font-bold text-white/5 leading-none select-none pointer-events-none">
               STRUCTRO
             </div>
             

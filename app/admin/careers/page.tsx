@@ -36,10 +36,15 @@ const initialForm: Omit<Career, "id" | "createdAt" | "updatedAt"> = {
   status: "open",
 };
 
+import { AdminPagination } from "@/components/admin-pagination";
+
+const ITEMS_PER_PAGE = 10;
+
 export default function CareersPage() {
   const [careers, setCareers] = useState<Career[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(initialForm);
@@ -168,6 +173,16 @@ export default function CareersPage() {
       career.location.toLowerCase().includes(search.toLowerCase())
   );
 
+  const totalPages = Math.ceil(filteredCareers.length / ITEMS_PER_PAGE);
+  const paginatedCareers = filteredCareers.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
+
   return (
     <>
       <div className="mb-8 flex items-center justify-between">
@@ -182,7 +197,7 @@ export default function CareersPage() {
               Add Job
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-5xl bg-neutral-900 text-white border-neutral-800">
+          <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-neutral-900 text-white border-neutral-800">
             <DialogHeader>
               <DialogTitle>{editingId ? "Edit Job Opening" : "Create Job Opening"}</DialogTitle>
             </DialogHeader>
@@ -306,74 +321,83 @@ export default function CareersPage() {
           ) : filteredCareers.length === 0 ? (
             <div className="p-8 text-center text-neutral-400">No job openings found</div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow className="border-white/5 hover:bg-transparent">
-                  <TableHead className="text-neutral-400">Title</TableHead>
-                  <TableHead className="text-neutral-400">Location</TableHead>
-                  <TableHead className="text-neutral-400">Type</TableHead>
-                  <TableHead className="text-neutral-400">Status</TableHead>
-                  <TableHead className="text-neutral-400">Posted</TableHead>
-                  <TableHead className="text-right text-neutral-400">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredCareers.map((career) => (
-                  <TableRow key={career.id} className="border-white/5">
-                    <TableCell className="font-medium">{career.title}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1 text-neutral-400">
-                        <MapPin className="size-3" />
-                        {career.location}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1">
-                        <Briefcase className="size-3 text-neutral-400" />
-                        {career.jobType}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={career.status === "open" ? "default" : "outline"}
-                        className={career.status === "open" ? "bg-green-500" : ""}
-                      >
-                        {career.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-neutral-400">
-                      {career.createdAt ? new Date(career.createdAt).toLocaleDateString() : "-"}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => showConfirm(
-                            career.status === "open" ? "Close Position?" : "Open Position?",
-                            `Set "${career.title}" to ${career.status === "open" ? "closed" : "open"}?`,
-                            () => toggleStatus(career)
-                          )}
-                          title={career.status === "open" ? "Close" : "Open"}
-                        >
-                          {career.status === "open" ? (
-                            <span className="text-xs text-red-400">Close</span>
-                          ) : (
-                            <span className="text-xs text-green-400">Open</span>
-                          )}
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleEdit(career)}>
-                          <Pencil className="size-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(career.id)}>
-                          <Trash2 className="size-4 text-red-400" />
-                        </Button>
-                      </div>
-                    </TableCell>
+            <>
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-white/5 hover:bg-transparent">
+                    <TableHead className="text-neutral-400">Title</TableHead>
+                    <TableHead className="text-neutral-400">Location</TableHead>
+                    <TableHead className="text-neutral-400">Type</TableHead>
+                    <TableHead className="text-neutral-400">Status</TableHead>
+                    <TableHead className="text-neutral-400">Posted</TableHead>
+                    <TableHead className="text-right text-neutral-400">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {paginatedCareers.map((career) => (
+                    <TableRow key={career.id} className="border-white/5">
+                      <TableCell className="font-medium max-w-[200px] truncate">{career.title}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1 text-neutral-400">
+                          <MapPin className="size-3" />
+                          {career.location}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <Briefcase className="size-3 text-neutral-400" />
+                          {career.jobType}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={career.status === "open" ? "default" : "outline"}
+                          className={career.status === "open" ? "bg-green-500" : ""}
+                        >
+                          {career.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-neutral-400">
+                        {career.createdAt ? new Date(career.createdAt).toLocaleDateString() : "-"}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => showConfirm(
+                              career.status === "open" ? "Close Position?" : "Open Position?",
+                              `Set "${career.title}" to ${career.status === "open" ? "closed" : "open"}?`,
+                              () => toggleStatus(career)
+                            )}
+                            title={career.status === "open" ? "Close" : "Open"}
+                          >
+                            {career.status === "open" ? (
+                              <span className="text-xs text-red-400">Close</span>
+                            ) : (
+                              <span className="text-xs text-green-400">Open</span>
+                            )}
+                          </Button>
+                          <Button variant="ghost" size="icon" onClick={() => handleEdit(career)}>
+                            <Pencil className="size-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" onClick={() => handleDelete(career.id)}>
+                            <Trash2 className="size-4 text-red-400" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <AdminPagination 
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                totalItems={filteredCareers.length}
+                itemsPerPage={ITEMS_PER_PAGE}
+              />
+            </>
           )}
         </CardContent>
       </div>

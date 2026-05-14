@@ -44,11 +44,16 @@ const initialForm: Omit<Vendor, "id" | "createdAt" | "updatedAt"> = {
   status: "active",
 };
 
+import { AdminPagination } from "@/components/admin-pagination";
+
+const ITEMS_PER_PAGE = 10;
+
 export default function VendorsPage() {
   const [vendors, setVendors] = useState<Vendor[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(initialForm);
@@ -183,6 +188,16 @@ export default function VendorsPage() {
         vendor.category.toLowerCase().includes(search.toLowerCase())
     )
     .filter((vendor) => categoryFilter === "all" || vendor.category === categoryFilter);
+
+  const totalPages = Math.ceil(filteredVendors.length / ITEMS_PER_PAGE);
+  const paginatedVendors = filteredVendors.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, categoryFilter]);
 
   const renderStars = (rating: number) => {
     return (
@@ -396,82 +411,91 @@ export default function VendorsPage() {
           ) : filteredVendors.length === 0 ? (
             <div className="p-8 text-center text-neutral-400">No vendors found</div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow className="border-white/5 hover:bg-transparent">
-                  <TableHead className="text-neutral-400">Company</TableHead>
-                  <TableHead className="text-neutral-400">Contact</TableHead>
-                  <TableHead className="text-neutral-400">Category</TableHead>
-                  <TableHead className="text-neutral-400">GST</TableHead>
-                  <TableHead className="text-neutral-400">Rating</TableHead>
-                  <TableHead className="text-neutral-400">Status</TableHead>
-                  <TableHead className="text-right text-neutral-400">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredVendors.map((vendor) => (
-                  <TableRow key={vendor.id} className="border-white/5">
-                    <TableCell className="font-medium">{vendor.companyName}</TableCell>
-                    <TableCell>
-                      <div className="space-y-1">
-                        <div className="text-sm">{vendor.contactPerson}</div>
-                        <div className="flex items-center gap-2 text-xs text-neutral-400">
-                          <Phone className="size-3" />
-                          {vendor.phone}
-                        </div>
-                        <div className="flex items-center gap-2 text-xs text-neutral-400">
-                          <Mail className="size-3" />
-                          {vendor.email}
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="capitalize">
-                        {vendor.category}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="font-mono text-xs text-neutral-400">
-                      {vendor.gstNumber || "-"}
-                    </TableCell>
-                    <TableCell>{renderStars(vendor.rating)}</TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={vendor.status === "active" ? "default" : "outline"}
-                        className={vendor.status === "active" ? "bg-green-500" : ""}
-                      >
-                        {vendor.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => showConfirm(
-                            vendor.status === "active" ? "Deactivate Vendor?" : "Activate Vendor?",
-                            `Set "${vendor.companyName}" to ${vendor.status === "active" ? "inactive" : "active"}?`,
-                            () => toggleStatus(vendor)
-                          )}
-                          title={vendor.status === "active" ? "Deactivate" : "Activate"}
-                        >
-                          {vendor.status === "active" ? (
-                            <span className="text-xs text-red-400">Off</span>
-                          ) : (
-                            <span className="text-xs text-green-400">On</span>
-                          )}
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleEdit(vendor)}>
-                          <Pencil className="size-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(vendor.id)}>
-                          <Trash2 className="size-4 text-red-400" />
-                        </Button>
-                      </div>
-                    </TableCell>
+            <>
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-white/5 hover:bg-transparent">
+                    <TableHead className="text-neutral-400">Company</TableHead>
+                    <TableHead className="text-neutral-400">Contact</TableHead>
+                    <TableHead className="text-neutral-400">Category</TableHead>
+                    <TableHead className="text-neutral-400">GST</TableHead>
+                    <TableHead className="text-neutral-400">Rating</TableHead>
+                    <TableHead className="text-neutral-400">Status</TableHead>
+                    <TableHead className="text-right text-neutral-400">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {paginatedVendors.map((vendor) => (
+                    <TableRow key={vendor.id} className="border-white/5">
+                      <TableCell className="font-medium max-w-[150px] truncate">{vendor.companyName}</TableCell>
+                      <TableCell>
+                        <div className="space-y-1">
+                          <div className="text-sm">{vendor.contactPerson}</div>
+                          <div className="flex items-center gap-2 text-xs text-neutral-400">
+                            <Phone className="size-3" />
+                            {vendor.phone}
+                          </div>
+                          <div className="flex items-center gap-2 text-xs text-neutral-400">
+                            <Mail className="size-3" />
+                            {vendor.email}
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className="capitalize">
+                          {vendor.category}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="font-mono text-xs text-neutral-400">
+                        {vendor.gstNumber || "-"}
+                      </TableCell>
+                      <TableCell>{renderStars(vendor.rating)}</TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={vendor.status === "active" ? "default" : "outline"}
+                          className={vendor.status === "active" ? "bg-green-500" : ""}
+                        >
+                          {vendor.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => showConfirm(
+                              vendor.status === "active" ? "Deactivate Vendor?" : "Activate Vendor?",
+                              `Set "${vendor.companyName}" to ${vendor.status === "active" ? "inactive" : "active"}?`,
+                              () => toggleStatus(vendor)
+                            )}
+                            title={vendor.status === "active" ? "Deactivate" : "Activate"}
+                          >
+                            {vendor.status === "active" ? (
+                              <span className="text-xs text-red-400">Off</span>
+                            ) : (
+                              <span className="text-xs text-green-400">On</span>
+                            )}
+                          </Button>
+                          <Button variant="ghost" size="icon" onClick={() => handleEdit(vendor)}>
+                            <Pencil className="size-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" onClick={() => handleDelete(vendor.id)}>
+                            <Trash2 className="size-4 text-red-400" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <AdminPagination 
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                totalItems={filteredVendors.length}
+                itemsPerPage={ITEMS_PER_PAGE}
+              />
+            </>
           )}
         </CardContent>
       </div>

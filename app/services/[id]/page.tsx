@@ -1,7 +1,4 @@
-"use client";
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowUpRight, CheckCircle, Target } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,7 +6,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { companyVision } from "@/lib/data";
-import { getCollectionData } from "@/lib/data-merge";
+import { getPublicCollectionData } from "@/lib/public-db-server";
 
 interface Service {
   id: string;
@@ -24,27 +21,17 @@ interface Service {
   catalog: { title: string; description: string }[];
 }
 
-export default function ServicePage({ params }: { params: Promise<{ id: string }> }) {
-  const [service, setService] = useState<Service | null>(null);
-  const [loading, setLoading] = useState(true);
+export default async function ServicePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  let service: Service | null = null;
+  
+  try {
+    const dbServices = await getPublicCollectionData("services") as any[];
+    service = dbServices.find((serviceItem) => serviceItem.id === id) as any || null;
+  } catch (e) {
+    console.error("Error fetching service from DB:", e);
+  }
 
-  useEffect(() => {
-    async function fetchService() {
-      const { id } = await params;
-      try {
-        const dbServices = await getCollectionData("services") as any[];
-        const found = dbServices.find((serviceItem) => serviceItem.id === id) as any;
-        setService(found || null);
-      } catch (e) {
-        console.error("Error fetching service from DB:", e);
-        setService(null);
-      }
-      setLoading(false);
-    }
-    fetchService();
-  }, [params]);
-
-  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   if (!service) return notFound();
 
   return (
@@ -54,10 +41,7 @@ export default function ServicePage({ params }: { params: Promise<{ id: string }
         <Container>
           <div className="grid grid-cols-1 items-center gap-8 py-12 md:py-16 lg:grid-cols-2 lg:gap-16">
             <div>
-              <Link href="/services" className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-stone-600 transition-colors hover:text-stone-900">
-                <ArrowLeft className="w-4 h-4" />
-                Back to Services
-              </Link>
+             
               <h1 className="mb-4 text-4xl font-extrabold uppercase leading-tight tracking-tighter text-gray-900 md:text-6xl">
                 {service.title}
               </h1>

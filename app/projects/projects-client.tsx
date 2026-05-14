@@ -1,13 +1,13 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ArrowUpRight, Play } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
 import { Container } from "@/components/ui/container";
-import { getCollectionData } from "@/lib/data-merge";
 
 interface Project {
   id: string | number;
@@ -25,24 +25,21 @@ interface Project {
   type?: "ongoing" | "completed";
 }
 
-export function ProjectsClient() {
-  const [activeTab, setActiveTab] = useState<"ongoing" | "completed">("completed");
-  const [projects, setProjects] = useState<{ ongoing: Project[]; completed: Project[]; homeProjects: Project[] }>({ ongoing: [], completed: [], homeProjects: [] });
+export function ProjectsClient({ initialProjects }: { initialProjects: { ongoing: Project[]; completed: Project[]; homeProjects: Project[] } }) {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+  
+  const tabFromUrl = searchParams.get("tab") as "ongoing" | "completed" | null
+  const activeTab = tabFromUrl === "ongoing" ? "ongoing" : "completed"
 
-  useEffect(() => {
-    async function loadProjects() {
-      try {
-        const dbProjects = await getCollectionData<Project>("projects");
-        const dbOngoing = dbProjects.filter((project) => project.type === "ongoing");
-        const dbCompleted = dbProjects.filter((project) => project.type === "completed");
+  const setActiveTab = (tab: "ongoing" | "completed") => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set("tab", tab)
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+  }
 
-        setProjects({ ongoing: dbOngoing, completed: dbCompleted, homeProjects: [] });
-      } catch (error) {
-        console.error("Error fetching projects:", error);
-      }
-    }
-    loadProjects();
-  }, []);
+  const [projects] = useState(initialProjects)
 
   return (
     <div className="">

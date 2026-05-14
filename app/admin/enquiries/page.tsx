@@ -37,12 +37,17 @@ const statusConfig = {
   resolved: { label: "Resolved", color: "bg-green-500" },
 };
 
+import { AdminPagination } from "@/components/admin-pagination";
+
+const ITEMS_PER_PAGE = 10;
+
 export default function EnquiriesPage() {
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [typeFilter, setTypeFilter] = useState<EnquiryType>("lead");
+  const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
   const [followUpNotes, setFollowUpNotes] = useState("");
@@ -146,6 +151,16 @@ export default function EnquiriesPage() {
         enquiry.service.toLowerCase().includes(search.toLowerCase())
     )
     .filter((enquiry) => statusFilter === "all" || enquiry.status === statusFilter);
+
+  const totalPages = Math.ceil(filteredEnquiries.length / ITEMS_PER_PAGE);
+  const paginatedEnquiries = filteredEnquiries.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, statusFilter, typeFilter]);
 
   const typeFilteredEnquiries = enquiries.filter((e) => (e.type || "lead") === typeFilter);
   const stats = {
@@ -253,63 +268,72 @@ export default function EnquiriesPage() {
           ) : filteredEnquiries.length === 0 ? (
             <div className="p-8 text-center text-neutral-400">No enquiries found</div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow className="border-white/5 hover:bg-transparent">
-                  <TableHead className="text-neutral-400">Name</TableHead>
-                  <TableHead className="text-neutral-400">Contact</TableHead>
-                  <TableHead className="text-neutral-400">Service</TableHead>
-                  <TableHead className="text-neutral-400">Message</TableHead>
-                  <TableHead className="text-neutral-400">Status</TableHead>
-                  <TableHead className="text-neutral-400">Date</TableHead>
-                  <TableHead className="text-right text-neutral-400">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredEnquiries.map((enquiry) => (
-                  <TableRow key={enquiry.id} className="border-white/5">
-                    <TableCell>
-                      <div className="font-medium">{enquiry.name}</div>
-                      <div className="text-xs text-neutral-400">{enquiry.company || "-"}</div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2 text-xs">
-                        <Mail className="size-3 text-neutral-400" />
-                        {enquiry.email}
-                      </div>
-                      <div className="flex items-center gap-2 text-xs">
-                        <Phone className="size-3 text-neutral-400" />
-                        {enquiry.phone}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{enquiry.service}</Badge>
-                    </TableCell>
-                    <TableCell className="max-w-[200px]">
-                      <p className="truncate text-sm text-neutral-400">{enquiry.message}</p>
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={statusConfig[enquiry.status]?.color}>
-                        {statusConfig[enquiry.status]?.label || enquiry.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-neutral-400">
-                      {enquiry.createdAt ? new Date(enquiry.createdAt).toLocaleDateString() : "-"}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <Button variant="ghost" size="icon" onClick={() => handleView(enquiry)}>
-                          <Eye className="size-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(enquiry.id)}>
-                          <Trash2 className="size-4 text-red-400" />
-                        </Button>
-                      </div>
-                    </TableCell>
+            <>
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-white/5 hover:bg-transparent">
+                    <TableHead className="text-neutral-400">Name</TableHead>
+                    <TableHead className="text-neutral-400">Contact</TableHead>
+                    <TableHead className="text-neutral-400">Service</TableHead>
+                    <TableHead className="text-neutral-400">Message</TableHead>
+                    <TableHead className="text-neutral-400">Status</TableHead>
+                    <TableHead className="text-neutral-400">Date</TableHead>
+                    <TableHead className="text-right text-neutral-400">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {paginatedEnquiries.map((enquiry) => (
+                    <TableRow key={enquiry.id} className="border-white/5">
+                      <TableCell>
+                        <div className="font-medium max-w-[150px] truncate">{enquiry.name}</div>
+                        <div className="text-xs text-neutral-400">{enquiry.company || "-"}</div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2 text-xs">
+                          <Mail className="size-3 text-neutral-400" />
+                          {enquiry.email}
+                        </div>
+                        <div className="flex items-center gap-2 text-xs">
+                          <Phone className="size-3 text-neutral-400" />
+                          {enquiry.phone}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{enquiry.service}</Badge>
+                      </TableCell>
+                      <TableCell className="max-w-[200px]">
+                        <p className="truncate text-sm text-neutral-400">{enquiry.message}</p>
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={statusConfig[enquiry.status]?.color}>
+                          {statusConfig[enquiry.status]?.label || enquiry.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-neutral-400">
+                        {enquiry.createdAt ? new Date(enquiry.createdAt).toLocaleDateString() : "-"}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <Button variant="ghost" size="icon" onClick={() => handleView(enquiry)}>
+                            <Eye className="size-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" onClick={() => handleDelete(enquiry.id)}>
+                            <Trash2 className="size-4 text-red-400" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <AdminPagination 
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                totalItems={filteredEnquiries.length}
+                itemsPerPage={ITEMS_PER_PAGE}
+              />
+            </>
           )}
         </CardContent>
       </div>

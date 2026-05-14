@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils";
 import type { Metadata } from 'next';
 import { getSiteUrl } from "@/lib/site";
 import ClientLayout from "./client-layout";
+import { Header } from "@/components/ui/header-3";
+import Footer from "@/components/Footer";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'})
 
@@ -117,7 +119,9 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
-        <ClientLayout>{children}</ClientLayout>
+        <ClientLayout header={<Header />} footer={<Footer />}>
+          {children}
+        </ClientLayout>
       </body>
     </html>
   )

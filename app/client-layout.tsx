@@ -1,8 +1,6 @@
 "use client"
 
 import { useEffect } from "react"
-import { Header } from "@/components/ui/header-3"
-import Footer from "@/components/Footer"
 import WhatsAppButton from "@/components/WhatsAppButton"
 import Chatbot from "@/components/Chatbot"
 import { usePathname } from "next/navigation"
@@ -10,8 +8,12 @@ import { ChatbotProvider } from "./chatbot-provider"
 
 export default function ClientLayout({
   children,
+  header,
+  footer,
 }: {
   children: React.ReactNode
+  header: React.ReactNode
+  footer: React.ReactNode
 }) {
   const pathname = usePathname()
   const isAdminRoute = pathname?.startsWith("/admin")
@@ -26,9 +28,9 @@ export default function ClientLayout({
 
   return (
     <>
-      {!isAdminRoute && <Header />}
+      {!isAdminRoute && header}
       {children}
-      {!isAdminRoute && <Footer />}
+      {!isAdminRoute && footer}
       {!isAdminRoute && <WhatsAppButton />}
       {!isAdminRoute && (
         <ChatbotProvider autoRefreshInterval={180000}>

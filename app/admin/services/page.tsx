@@ -45,10 +45,15 @@ const initialForm: Omit<Service, "id" | "createdAt" | "updatedAt"> = {
   catalog: [],
 };
 
+import { AdminPagination } from "@/components/admin-pagination";
+
+const ITEMS_PER_PAGE = 10;
+
 export default function ServicesPage() {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(initialForm);
@@ -172,6 +177,16 @@ export default function ServicesPage() {
     s.title.toLowerCase().includes(search.toLowerCase()) ||
     s.subtitle?.toLowerCase().includes(search.toLowerCase())
   );
+
+  const totalPages = Math.ceil(filteredServices.length / ITEMS_PER_PAGE);
+  const paginatedServices = filteredServices.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
 
   return (
     <>
@@ -358,35 +373,44 @@ export default function ServicesPage() {
           ) : filteredServices.length === 0 ? (
             <div className="p-8 text-center text-neutral-400">No services found</div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow className="border-white/5 hover:bg-transparent">
-                  <TableHead className="text-neutral-400">Title</TableHead>
-                  <TableHead className="text-neutral-400">Subtitle</TableHead>
-                  <TableHead className="text-neutral-400">Description</TableHead>
-                  <TableHead className="text-right text-neutral-400">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredServices.map((service) => (
-                  <TableRow key={service.id} className="border-white/5">
-                    <TableCell className="font-medium">{service.title}</TableCell>
-                    <TableCell>{service.subtitle}</TableCell>
-                    <TableCell className="max-w-xs truncate">{service.description}</TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <Button variant="ghost" size="icon" onClick={() => handleEdit(service)}>
-                          <Pencil className="size-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(service.id)}>
-                          <Trash2 className="size-4 text-red-400" />
-                        </Button>
-                      </div>
-                    </TableCell>
+            <>
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-white/5 hover:bg-transparent">
+                    <TableHead className="text-neutral-400">Title</TableHead>
+                    <TableHead className="text-neutral-400">Subtitle</TableHead>
+                    <TableHead className="text-neutral-400">Description</TableHead>
+                    <TableHead className="text-right text-neutral-400">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {paginatedServices.map((service) => (
+                    <TableRow key={service.id} className="border-white/5">
+                      <TableCell className="font-medium max-w-[200px] truncate">{service.title}</TableCell>
+                      <TableCell>{service.subtitle}</TableCell>
+                      <TableCell className="max-w-xs truncate">{service.description}</TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <Button variant="ghost" size="icon" onClick={() => handleEdit(service)}>
+                            <Pencil className="size-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" onClick={() => handleDelete(service.id)}>
+                            <Trash2 className="size-4 text-red-400" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <AdminPagination 
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                totalItems={filteredServices.length}
+                itemsPerPage={ITEMS_PER_PAGE}
+              />
+            </>
           )}
         </CardContent>
       </div>

@@ -37,10 +37,15 @@ const initialForm: Omit<Blog, "id" | "createdAt" | "updatedAt"> = {
   status: "published",
 };
 
+import { AdminPagination } from "@/components/admin-pagination";
+
+const ITEMS_PER_PAGE = 10;
+
 export default function BlogsPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(initialForm);
@@ -173,6 +178,16 @@ export default function BlogsPage() {
       blog.tags?.toString().toLowerCase().includes(search.toLowerCase())
   );
 
+  const totalPages = Math.ceil(filteredBlogs.length / ITEMS_PER_PAGE);
+  const paginatedBlogs = filteredBlogs.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
+
   return (
     <>
       <div className="mb-8 flex items-center justify-between">
@@ -187,7 +202,7 @@ export default function BlogsPage() {
               New Blog
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-5xl bg-neutral-900 text-white border-neutral-800">
+          <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-neutral-900 text-white border-neutral-800">
             <DialogHeader>
               <DialogTitle>{editingId ? "Edit Blog Post" : "Create Blog Post"}</DialogTitle>
             </DialogHeader>
@@ -306,80 +321,89 @@ export default function BlogsPage() {
           ) : filteredBlogs.length === 0 ? (
             <div className="p-8 text-center text-neutral-400">No blog posts found</div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow className="border-white/5 hover:bg-transparent">
-                  <TableHead className="text-neutral-400">Title</TableHead>
-                  <TableHead className="text-neutral-400">Author</TableHead>
-                  <TableHead className="text-neutral-400">Tags</TableHead>
-                  <TableHead className="text-neutral-400">Status</TableHead>
-                  <TableHead className="text-neutral-400">Date</TableHead>
-                  <TableHead className="text-right text-neutral-400">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredBlogs.map((blog) => (
-                  <TableRow key={blog.id} className="border-white/5">
-                    <TableCell className="font-medium">{blog.title}</TableCell>
-                    <TableCell>{blog.author}</TableCell>
-                    <TableCell>
-                      <div className="flex flex-wrap gap-1">
-                        {Array.isArray(blog.tags)
-                          ? blog.tags.slice(0, 2).map((tag, i) => (
-                              <Badge key={i} variant="secondary" className="text-xs">
-                                {tag}
-                              </Badge>
-                            ))
-                          : typeof blog.tags === "string"
-                            ? blog.tags.split(",").slice(0, 2).map((tag, i) => (
+            <>
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-white/5 hover:bg-transparent">
+                    <TableHead className="text-neutral-400">Title</TableHead>
+                    <TableHead className="text-neutral-400">Author</TableHead>
+                    <TableHead className="text-neutral-400">Tags</TableHead>
+                    <TableHead className="text-neutral-400">Status</TableHead>
+                    <TableHead className="text-neutral-400">Date</TableHead>
+                    <TableHead className="text-right text-neutral-400">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {paginatedBlogs.map((blog) => (
+                    <TableRow key={blog.id} className="border-white/5">
+                      <TableCell className="font-medium max-w-[200px] md:max-w-xs truncate">{blog.title}</TableCell>
+                      <TableCell>{blog.author}</TableCell>
+                      <TableCell>
+                        <div className="flex flex-wrap gap-1">
+                          {Array.isArray(blog.tags)
+                            ? blog.tags.slice(0, 2).map((tag, i) => (
                                 <Badge key={i} variant="secondary" className="text-xs">
-                                  {tag.trim()}
+                                  {tag}
                                 </Badge>
                               ))
-                            : null}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={blog.status === "published" ? "default" : "outline"}
-                        className={blog.status === "published" ? "bg-green-500" : ""}
-                      >
-                        {blog.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-neutral-400">
-                      {blog.publishDate || (blog.createdAt ? new Date(blog.createdAt).toLocaleDateString() : "-")}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => showConfirm(
-                            blog.status === "published" ? "Unpublish Post?" : "Publish Post?",
-                            `Set "${blog.title}" to ${blog.status === "published" ? "draft" : "published"}?`,
-                            () => toggleStatus(blog)
-                          )}
-                          title={blog.status === "published" ? "Unpublish" : "Publish"}
+                            : typeof blog.tags === "string"
+                              ? blog.tags.split(",").slice(0, 2).map((tag, i) => (
+                                  <Badge key={i} variant="secondary" className="text-xs">
+                                    {tag.trim()}
+                                  </Badge>
+                                ))
+                              : null}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={blog.status === "published" ? "default" : "outline"}
+                          className={blog.status === "published" ? "bg-green-500" : ""}
                         >
-                          {blog.status === "published" ? (
-                            <EyeOff className="size-4" />
-                          ) : (
-                            <Eye className="size-4" />
-                          )}
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleEdit(blog)}>
-                          <Pencil className="size-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(blog.id)}>
-                          <Trash2 className="size-4 text-red-400" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                          {blog.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-neutral-400">
+                        {blog.publishDate || (blog.createdAt ? new Date(blog.createdAt).toLocaleDateString() : "-")}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => showConfirm(
+                              blog.status === "published" ? "Unpublish Post?" : "Publish Post?",
+                              `Set "${blog.title}" to ${blog.status === "published" ? "draft" : "published"}?`,
+                              () => toggleStatus(blog)
+                            )}
+                            title={blog.status === "published" ? "Unpublish" : "Publish"}
+                          >
+                            {blog.status === "published" ? (
+                              <EyeOff className="size-4" />
+                            ) : (
+                              <Eye className="size-4" />
+                            )}
+                          </Button>
+                          <Button variant="ghost" size="icon" onClick={() => handleEdit(blog)}>
+                            <Pencil className="size-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" onClick={() => handleDelete(blog.id)}>
+                            <Trash2 className="size-4 text-red-400" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <AdminPagination 
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                totalItems={filteredBlogs.length}
+                itemsPerPage={ITEMS_PER_PAGE}
+              />
+            </>
           )}
         </CardContent>
       </div>
