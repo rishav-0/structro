@@ -23,12 +23,10 @@ const STOP_WORDS = new Set([
   "a", "an", "the", "is", "are", "was", "were", "be", "been", "being",
   "have", "has", "had", "do", "does", "did", "will", "would", "could",
   "should", "may", "might", "must", "can", "this", "that", "these", "those",
-  "i", "you", "he", "she", "it", "we", "they", "what", "which", "who",
-  "whom", "whose", "where", "when", "why", "how", "of", "in", "to", "for",
+  "i", "you", "he", "she", "it", "we", "they", "of", "in", "to", "for",
   "on", "with", "at", "by", "from", "up", "about", "into", "through", "during",
   "before", "after", "above", "below", "between", "under", "again", "further",
-  "then", "once", "here", "there", "all", "each", "few", "more", "most",
-  "other", "some", "such", "no", "nor", "not", "only", "own", "same",
+  "then", "once", "here", "there", "all", "each", "few", "no", "nor", "not", "only", "own", "same",
   "so", "than", "too", "very", "just", "also", "now", "and", "or", "but",
   "if", "because", "as", "until", "while", "of", "let", "your", "my",
   "our", "their", "its", "me", "him", "her", "us", "them", "want", "like",
@@ -223,6 +221,8 @@ function searchItems(query: string, items: SearchableItem[], limit = 6): Searcha
   const intentProduct = queryWords.some(w => w.includes("product"));
   const intentService = queryWords.some(w => w.includes("service"));
   const intentProject = queryWords.some(w => w.includes("project"));
+  const intentContact = queryWords.some(w => /contact|office|address|location|where|reach|call|email|phone/.test(w));
+  const intentCompany = queryWords.some(w => /company|about|who|structro/.test(w));
 
   const scored = items.map((item) => {
     let score = 0;
@@ -233,6 +233,16 @@ function searchItems(query: string, items: SearchableItem[], limit = 6): Searcha
     if (intentProduct && item.type === "product") score += 20;
     if (intentService && item.type === "service") score += 20;
     if (intentProject && item.type === "project") score += 20;
+
+    // Boost for contact intent
+    if (intentContact && item.id.includes("contact")) score += 50;
+    if (intentContact && item.type === "company") score += 10;
+    
+    // Boost for company intent
+    if (intentCompany && item.id === "company") score += 30;
+    
+    // Title exact matches
+    if (titleNorm === normalized) score += 50;
 
     for (const qw of queryWords) {
       if (titleNorm.includes(qw)) {
@@ -280,6 +290,21 @@ function generateResponse(query: string, results: SearchableItem[], company: Ret
   if (isGreeting) {
     return `Hello! 👋 Welcome to **${companyInfo?.name || "Structro Infratech"}**.\n\nI'm here to help you learn about our services, projects, company, and more.\n\nWhat would you like to know?`;
   }
+
+  // Specific check for office/contact info
+  const isAskingLocation = /(office|address|location|where|situated|based)/.test(normalized);
+  const isAskingContact = /(contact|phone|email|whatsapp|call|reach)/.test(normalized);
+  
+  if (isAskingLocation || isAskingContact) {
+    const contact = companyInfo?.contact;
+    if (contact) {
+      let msg = `📍 **Our Office & Contact Details:**\n\n`;
+      if (isAskingLocation || !isAskingContact) msg += `🏠 **Head Office:** ${contact.headOffice}\n🏢 **Workshop:** ${contact.workshop}\n\n`;
+      if (isAskingContact || !isAskingLocation) msg += `📞 **Phone:** ${contact.phones.join(", ")}\n📧 **Email:** [${contact.email}](mailto:${contact.email})\n💬 **WhatsApp:** ${contact.whatsapp}\n\n`;
+      msg += `⏰ **Hours:** ${contact.hours}`;
+      return msg;
+    }
+  }
   
   const isThanks = /thank|thanks|dhanyavaad/.test(normalized);
   if (isThanks) {
@@ -307,7 +332,7 @@ function generateResponse(query: string, results: SearchableItem[], company: Ret
     const companyItems = groups.get("company")!;
     response += `🏢 **Company:**\n\n`;
     companyItems.slice(0, 1).forEach((item) => {
-      response += `${truncate(item.description, 80)}\n\n`;
+      response += `${truncate(item.description, 200)}\n\n`;
     });
     groups.delete("company");
   }
