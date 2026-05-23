@@ -15,12 +15,23 @@ export default async function ProjectsPage() {
     return [];
   }) as any[];
   
+  const dbServices = await getPublicCollectionData("services").catch((error) => {
+    console.error("Error fetching services:", error);
+    return [];
+  }) as any[];
+  
+  // We make them uppercase to match the design and our filtering logic
+  const fetchedCategories = dbServices.map((s: any) => s.title?.toUpperCase()).filter(Boolean);
+  
   const dbOngoing = dbProjects.filter((project: any) => project.type === "ongoing");
   const dbCompleted = dbProjects.filter((project: any) => project.type === "completed");
   
   return (
     <Suspense fallback={<div className="min-h-screen bg-white"></div>}>
-      <ProjectsClient initialProjects={{ ongoing: dbOngoing, completed: dbCompleted, homeProjects: [] }} />
+      <ProjectsClient 
+        initialProjects={{ ongoing: dbOngoing, completed: dbCompleted, homeProjects: [] }} 
+        availableCategories={fetchedCategories}
+      />
     </Suspense>
   );
 }

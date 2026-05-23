@@ -88,14 +88,8 @@ export function HomeClient({
 
   const stats = [
     { label: "Projects Completed", value: "500+" },
-    { label: "Years Experience", value: "25+" },
     { label: "Team Members", value: "400+" },
     { label: "Client Satisfaction", value: "95%" },
-  ];
-
-  const marqueeItems = [
-    "Bridge Engineering", "PEB Buildings", "Steel Structures",
-    "Industrial Sheds", "Infrastructure", "Railway Bridges"
   ];
 
   const values = [
@@ -148,19 +142,6 @@ export function HomeClient({
           </motion.div>
         </Container>
 
-        {/* Solid Primary Background Marquee Section */}
-        <div className="bg-primary py-5 overflow-hidden relative shadow-inner">
-          <div className="flex whitespace-nowrap animate-marquee relative z-10">
-            {[...marqueeItems, ...marqueeItems, ...marqueeItems].map((item, idx) => (
-              <div key={idx} className="flex items-center mx-10">
-                <span className="w-2 h-2 bg-accent rounded-full mr-4"></span>
-                <span className="text-white text-lg md:text-xl font-bold uppercase tracking-wider whitespace-nowrap">
-                  {item}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
 
       <FoundationalPhilosophy />

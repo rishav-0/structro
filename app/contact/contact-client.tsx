@@ -275,7 +275,7 @@ export function ContactClient() {
               <h3 className="font-bold text-gray-900 text-xl mb-4">Why Work With Us?</h3>
               <div className="space-y-4">
                 {[
-                  "25+ years of industry experience",
+
                   "ISO 9001:2015 certified",
                   "500+ successful projects delivered",
                   "Expert team of 400+ professionals",

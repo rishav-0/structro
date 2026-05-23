@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { ArrowUpRight, Play } from "lucide-react";
+import { ArrowUpRight, Play, Filter, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
@@ -25,7 +25,34 @@ interface Project {
   type?: "ongoing" | "completed";
 }
 
-export function ProjectsClient({ initialProjects }: { initialProjects: { ongoing: Project[]; completed: Project[]; homeProjects: Project[] } }) {
+const clientsList = [
+  { name: "NORTHEAST FRONTIER RAILWAY", acronym: "NF" },
+  { name: "EAST CENTRAL RAILWAY", acronym: "EC" },
+  { name: "INDIAN RAILWAYS", acronym: "IR" },
+  { name: "RDSO", acronym: "RD" },
+  { name: "NHAI", acronym: "NH" },
+  { name: "ASSAM POLICE HOUSING", acronym: "AP" },
+  { name: "CPWD", acronym: "CP" },
+  { name: "INDIAN OIL", acronym: "IO" },
+  { name: "L&T CONSTRUCTION", acronym: "LT" },
+  { name: "NRL", acronym: "NR" },
+  { name: "THYSSENKRUPP", acronym: "TK" },
+  { name: "BRO", acronym: "BR" },
+  { name: "KEC INTERNATIONAL", acronym: "KE" },
+  { name: "PWD ASSAM", acronym: "PW" },
+  { name: "TATA BLUESCOPE STEEL", acronym: "TA" },
+  { name: "OIL INDIA LIMITED", acronym: "OI" },
+  { name: "ABCI INFRASTRUCTURE", acronym: "AB" },
+  { name: "POWER GRID CORPORATION", acronym: "PG" },
+  { name: "AIDC", acronym: "AI" },
+  { name: "ASSAM GAS COMPANY", acronym: "AG" },
+  { name: "BCPL", acronym: "BC" },
+  { name: "ONGC", acronym: "ON" },
+  { name: "GAIL", acronym: "GA" },
+  { name: "BRIDGE & ROOF CO.", acronym: "BR" }
+];
+
+export function ProjectsClient({ initialProjects, availableCategories = [] }: { initialProjects: { ongoing: Project[]; completed: Project[]; homeProjects: Project[] }, availableCategories?: string[] }) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
@@ -40,6 +67,21 @@ export function ProjectsClient({ initialProjects }: { initialProjects: { ongoing
   }
 
   const [projects] = useState(initialProjects)
+  const [selectedCategory, setSelectedCategory] = useState("ALL PROJECTS")
+  const [showMobileFilters, setShowMobileFilters] = useState(false)
+
+  const categories = [
+    "ALL PROJECTS",
+    ...availableCategories
+  ]
+
+  const filteredProjects = useMemo(() => {
+    let list = projects[activeTab];
+    if (selectedCategory !== "ALL PROJECTS") {
+      list = list.filter(p => p.category?.toUpperCase() === selectedCategory);
+    }
+    return list;
+  }, [projects, activeTab, selectedCategory]);
 
   return (
     <div className="">
@@ -49,57 +91,85 @@ export function ProjectsClient({ initialProjects }: { initialProjects: { ongoing
         description="Explore our portfolio of successful projects spanning bridge engineering, PEB buildings, and industrial infrastructure."
       />
 
-      {/* Projects Stats */}
-      <div className="bg-white py-12 border-b border-gray-100">
-        <Container>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { label: "Total Projects", value: "500+" },
-              { label: "Completed", value: "45" },
-              { label: "Ongoing", value: "3" },
-              { label: "Regions", value: "North East" }
-            ].map((stat, index) => (
-              <div key={index} className="text-center">
-                <h2 className="text-3xl md:text-4xl font-bold text-primary mb-1">
-                  {stat.value}
-                </h2>
-                <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">
-                  {stat.label}
-                </p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </div>
+    
+      {/* Filters Container */}
+      <div className="md:sticky md:top-16 z-40">
+        {/* Mobile Filter Toggle Button */}
+        <div className="md:hidden bg-white py-4 border-b border-gray-200 sticky top-16 z-50">
+          <Container>
+            <Button 
+              onClick={() => setShowMobileFilters(!showMobileFilters)}
+              variant="outline"
+              className="w-full flex items-center text-xs justify-center gap-2"
+            >
+              {showMobileFilters ? <X size={16} /> : <Filter size={16} />}
+              {showMobileFilters ? "Close Filters" : "Filter Projects"}
+            </Button>
+          </Container>
+        </div>
 
-      {/* Tab Navigation */}
-      <div className="bg-gray-50 py-8 sticky top-16 z-40 border-b border-gray-200">
-        <Container>
-          <div className="flex justify-center gap-4">
-            <Button
-              onClick={() => setActiveTab("ongoing")}
-              variant={activeTab === "ongoing" ? "saffron" : "outline"}
-              size="lg"
-              className="px-8"
-            >
-              Ongoing Projects
-            </Button>
-            <Button
-              onClick={() => setActiveTab("completed")}
-              variant={activeTab === "completed" ? "saffron" : "outline"}
-              size="lg"
-              className="px-8"
-            >
-              Completed Projects
-            </Button>
+        {/* Filters Content */}
+        <div className={`${showMobileFilters ? "block" : "hidden"} md:block bg-white shadow-xl md:shadow-none absolute md:static left-0 right-0 z-40 border-b md:border-b-0 border-gray-200`}>
+          {/* Tab Navigation */}
+          <div className="bg-gray-50 py-6 md:py-8 border-b border-gray-200">
+            <Container>
+              <div className="flex flex-col sm:flex-row justify-center gap-3 md:gap-4">
+                <Button
+                  onClick={() => {
+                    setActiveTab("ongoing");
+                    if (window.innerWidth < 768) setShowMobileFilters(false);
+                  }}
+                  variant={activeTab === "ongoing" ? "saffron" : "outline"}
+                  size="sm"
+                  className="px-8 w-full sm:w-auto text-xs md:text-base"
+                >
+                  Ongoing Projects
+                </Button>
+                <Button
+                  onClick={() => {
+                    setActiveTab("completed");
+                    if (window.innerWidth < 768) setShowMobileFilters(false);
+                  }}
+                  variant={activeTab === "completed" ? "saffron" : "outline"}
+                  size="sm"
+                  className="px-8 w-full sm:w-auto text-xs md:text-base"
+                >
+                  Completed Projects
+                </Button>
+              </div>
+            </Container>
           </div>
-        </Container>
+
+          {/* Category Filter */}
+          <div className="bg-white py-4 border-b border-gray-100">
+            <Container>
+              <div className="flex flex-wrap justify-center gap-3 md:gap-10">
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => {
+                      setSelectedCategory(category);
+                      if (window.innerWidth < 768) setShowMobileFilters(false);
+                    }}
+                    className={`text-xs  font-bold tracking-wider transition-colors duration-300 pb-2 border-b-2 ${
+                      selectedCategory === category
+                        ? "text-primary border-primary"
+                        : "text-gray-400  border-transparent hover:text-gray-900"
+                    }`}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            </Container>
+          </div>
+        </div>
       </div>
 
       {/* Projects Grid */}
       <Container className="py-16" id={activeTab}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects[activeTab].map((project) => (
+          {filteredProjects.map((project) => (
             <div 
               key={project.id}
               className="group relative bg-white rounded-lg overflow-hidden border border-gray-200 hover:border-primary/30 hover:shadow-xl transition-all duration-300"
@@ -168,12 +238,42 @@ export function ProjectsClient({ initialProjects }: { initialProjects: { ongoing
           ))}
         </div>
         
-        {projects[activeTab].length === 0 && (
+        {filteredProjects.length === 0 && (
           <div className="text-center py-16">
-            <p className="text-gray-500 text-lg">No {activeTab} projects at the moment.</p>
+            <p className="text-gray-500 text-lg">No {activeTab} projects found in this category.</p>
           </div>
         )}
       </Container>
+
+      
+      {/* Clients Section */}
+      <div className="bg-gray-50 py-24 border-t border-gray-200 overflow-hidden relative">
+        <Container>
+          <div className="text-center mb-16 relative z-10">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 uppercase tracking-tight mb-4 inline-block relative">
+              OUR ESTEEMED CLIENTS
+              <span className="absolute -bottom-4 left-0 w-full h-1 bg-accent"></span>
+            </h2>
+            <p className="text-gray-500 text-sm font-bold uppercase tracking-[0.2em] mt-8">
+              TRUSTED BY INDUSTRY LEADERS & GOVERNMENT DEPARTMENTS
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 relative z-10">
+            {clientsList.map((client, i) => (
+              <div 
+                key={i} 
+                className="bg-white rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300 aspect-[4/3]"
+              >
+                <span className="text-accent text-xs font-bold mb-3">{client.acronym}</span>
+                <h3 className="text-[10px] md:text-xs font-bold text-gray-800 tracking-wider uppercase leading-snug">
+                  {client.name}
+                </h3>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </div>
 
       {/* Regional Projects Info */}
       <div className="bg-gray-50 py-16">
@@ -198,20 +298,21 @@ export function ProjectsClient({ initialProjects }: { initialProjects: { ongoing
                   ))}
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
                 <div className="bg-primary p-6 rounded-lg text-center shadow-inner">
-                  <h3 className="text-3xl font-bold text-primary-foreground mb-2">Regional</h3>
-                  <p className="text-primary-foreground/70 text-sm font-medium">Projects across Assam</p>
+                  <h3 className="text-2xl md:text-3xl font-bold text-primary-foreground mb-2">Regional</h3>
+                  <p className="text-primary-foreground/70 text-xs md:text-sm font-medium">Projects across Assam</p>
                 </div>
                 <div className="bg-accent p-6 rounded-lg text-center shadow-inner">
-                  <h3 className="text-3xl font-bold text-accent-foreground mb-2">National</h3>
-                  <p className="text-accent-foreground/70 text-sm font-medium">Pan-India Presence</p>
+                  <h3 className="text-2xl md:text-3xl font-bold text-accent-foreground mb-2">National</h3>
+                  <p className="text-accent-foreground/70 text-xs md:text-sm font-medium">Pan-India Presence</p>
                 </div>
               </div>
             </div>
           </div>
         </Container>
       </div>
+
 
       {/* CTA Section */}
       <Container className="py-16">

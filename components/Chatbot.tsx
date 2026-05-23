@@ -325,7 +325,7 @@ function generateResponse(query: string, _results: SearchableItem[], companyGett
     case "company": {
       if (!companyInfo) return "We are Structro Infratech – a leading steel engineering company in Northeast India.";
       const stats = companyInfo.stats;
-      return `🏢 **About ${name}**\n\n${companyInfo.description}\n\n📊 **Key Stats:**\n• **${stats.projects}** Projects Completed\n• **${stats.years}** Years Experience\n• **${stats.team}** Team Members\n• **${stats.satisfaction}** Client Satisfaction\n\n🏅 **${companyInfo.iso}**\n📍 Founded: ${companyInfo.founded} | Registered: ${companyInfo.registered}\n\n💡 _"${companyInfo.philosophy}"_\n\n👉 Learn more on our [About Page](/about).`;
+      return `🏢 **About ${name}**\n\n${companyInfo.description}\n\n📊 **Key Stats:**\n• **${stats.projects}** Projects Completed\n• **${stats.team}** Team Members\n• **${stats.satisfaction}** Client Satisfaction\n\n🏅 **${companyInfo.iso}**\n📍 Founded: ${companyInfo.founded} | Registered: ${companyInfo.registered}\n\n💡 _"${companyInfo.philosophy}"_\n\n👉 Learn more on our [About Page](/about).`;
     }
 
     case "bridge": {

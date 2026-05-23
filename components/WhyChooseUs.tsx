@@ -23,8 +23,8 @@ const WhyChooseUs = () => {
   const features = [
     {
       icon: <Trophy className="w-6 h-6 text-accent" />,
-      title: "24+ Years Excellence",
-      desc: "Founded by 4 industry veterans, connecting dreams since 2000.",
+      title: "Award-Winning Excellence",
+      desc: "Recognized industry leaders delivering exceptional engineering solutions.",
     },
     {
       icon: <ShieldCheck className="w-6 h-6 text-accent" />,
@@ -119,7 +119,7 @@ const WhyChooseUs = () => {
               className="relative aspect-[4/5] rounded-md overflow-hidden border-8 border-white shadow-2xl"
             >
               <Image
-                src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2070"
+                src="/images/exp.png"
                 alt="Construction"
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-700"
@@ -129,9 +129,9 @@ const WhyChooseUs = () => {
               {/* Floating Stat Badge */}
               <div className="absolute bottom-6 left-6 right-6 p-6 bg-primary text-white shadow-xl rounded-md">
                 <div className="flex items-center gap-4">
-                  <div className="text-5xl font-black">24+</div>
+                  <div className="text-5xl font-black">100%</div>
                   <div className="text-xs uppercase tracking-[0.2em] font-bold leading-tight">
-                    Years of heavy <br /> engineering legacy
+                    Commitment to <br /> engineering excellence
                   </div>
                 </div>
               </div>

@@ -15,6 +15,7 @@ import {
   Scale,
   GitMerge,
   DraftingCompass,
+  Factory,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,7 +27,7 @@ const processSteps = [
   {
     num: "01",
     title: "Consultation",
-    desc: "We analyze your vision, constraints, and site conditions to eliminate uncertainty early.",
+    desc: "We analyze your vision, constraints, and site conditions to eliminate uncertainty early. Our engineering team conducts comprehensive geotechnical assessments and feasibility studies to ensure your structural requirements are perfectly aligned with optimal budgeting strategies from day one.",
     icon: Search,
     tags: ["Survey", "Budget", "Alignment"],
     img: "/images/process/a.jpeg",
@@ -34,7 +35,7 @@ const processSteps = [
   {
     num: "02",
     title: "Engineering & Design",
-    desc: "Advanced CAD + structural simulations tailored for seismic conditions.",
+    desc: "Advanced CAD + structural simulations tailored for seismic conditions. We utilize highly detailed 3D modeling and Finite Element Analysis (FEA) to validate load paths, wind resistance, and structural integrity before a single piece of steel is cut, guaranteeing precision.",
     icon: DraftingCompass,
     tags: ["Blueprints", "3D Models", "Seismic"],
     img: "/images/process/b.jpeg",
@@ -42,71 +43,83 @@ const processSteps = [
   {
     num: "03",
     title: "Approval & Procurement",
-    desc: "Permits, compliance, and sourcing high-grade materials.",
+    desc: "Permits, compliance, and sourcing high-grade materials. Our procurement specialists navigate regional regulations and strictly vet all raw materials, securing high-tensile steel and ensuring every component meets rigorous IS and international quality standards.",
     icon: ClipboardCheck,
     tags: ["Permits", "Sourcing", "QA"],
     img: "/images/process/c.jpeg",
   },
   {
     num: "04",
-    title: "Construction",
-    desc: "Execution with strict monitoring, safety, and quality control.",
-    icon: Construction,
-    tags: ["Fabrication", "Safety", "Execution"],
+    title: "Manufacturing",
+    desc: "Precision fabrication with strict monitoring and quality control. At our state-of-the-art facility, we leverage automated CNC plasma cutting and Submerged Arc Welding (SAW) to manufacture structural components with millimetric accuracy and zero defects.",
+    icon: Factory,
+    tags: ["Fabrication", "Quality", "Precision"],
     img: "/images/process/d.jpeg",
   },
   {
     num: "05",
+    title: "Installation",
+    desc: "Safe and efficient on-site assembly and erection of structures. Our certified installation crews execute the build using heavy lifting equipment, strictly adhering to our zero-incident safety protocols and precise timelines to bring the engineered blueprints to life.",
+    icon: Construction,
+    tags: ["Assembly", "Safety", "Erection"],
+    img: "/images/process/e.jpeg",
+  },
+  {
+    num: "06",
     title: "Final Handoff",
-    desc: "Audit, certification, and delivery of a ready-to-use structure.",
+    desc: "Audit, certification, and delivery of a ready-to-use structure. The project undergoes a final multi-point quality inspection by our senior engineers, ensuring absolute compliance with safety parameters before we hand over the keys to a durable, legacy-grade facility.",
     icon: Key,
     tags: ["Audit", "Certification", "Delivery"],
-    img: "/images/process/e.jpeg",
+    img: "/images/process/f.jpeg",
   },
 ];
 
 const deepTechData = [
   {
-    title: "Elastic Resilience",
-    desc: "Structures absorb seismic stress without failure.",
+    title: "ELASTIC RESILIENCE",
+    desc: "Every steel member is rated for specific Young's Modulus values, ensuring the structure can absorb and dissipate seismic energy without catastrophic failure.",
     icon: Zap,
+    tag: "SEISMIC TECH"
   },
   {
-    title: "Tensile Integrity",
-    desc: "High-strength welded joints exceed load requirements.",
+    title: "TENSILE INTEGRITY",
+    desc: "We utilize Submerged Arc Welding (SAW) to achieve deep-penetration joints that exceed standard load-bearing requirements by 40%.",
     icon: Scale,
+    tag: "LOAD RATING"
   },
   {
-    title: "Corrosion Resistance",
-    desc: "Multi-stage coating for humid environments.",
+    title: "ATMOSPHERIC SHIELDING",
+    desc: "Our three-stage surface preparation involves high-velocity shot-blasting and epoxy coating to fight the high humidity and corrosion of Northeast India.",
     icon: ShieldCheck,
+    tag: "CORROSION RES."
   },
   {
-    title: "Precision Geometry",
-    desc: "Laser-aligned fabrication with FEA validation.",
+    title: "PRECISION GEOMETRY",
+    desc: "Millimetric tolerance checks using 3D laser scanners ensure that every beam aligns perfectly with the FEA (Finite Element Analysis) models.",
     icon: GitMerge,
+    tag: "FEA VERIFICATION"
   },
 ];
 
 const regulatoryData = [
   {
-    title: "Safety Standards",
-    desc: "Zero-incident policy with full PPE enforcement.",
+    title: "SAFETY STANDARDS",
+    desc: "Strict 'Zero-Incident' policy enforced with full PPE compliance, frequent drills, and OSHA-aligned site management.",
     icon: ShieldCheck,
   },
   {
-    title: "Building Laws",
-    desc: "Strict compliance with zoning & FAR rules.",
+    title: "BUILDING LAWS",
+    desc: "Full verification of land usage, municipal setbacks, and Floor Area Ratio (FAR) as per local town planning authorities.",
     icon: Scale,
   },
   {
-    title: "IS Codes",
-    desc: "Aligned with national engineering standards.",
+    title: "IS GUIDELINES",
+    desc: "Engineering at parity with IS 800:2007 (Steel) and IS 456:2000 (RCC) to maintain national infrastructure benchmarks.",
     icon: Zap,
   },
   {
-    title: "Project Audits",
-    desc: "Transparent audits for stakeholders.",
+    title: "PROJECT AUDITS",
+    desc: "Biannual internal auditing and transparency reports provided to stakeholders for high-value industrial assets.",
     icon: ClipboardCheck,
   },
 ];
@@ -219,26 +232,39 @@ const ProcessClient = () => {
       </section>
 
       {/* ---------------- DEEP TECH ---------------- */}
-      <section className="py-28 bg-white">
+      <section className="py-28 bg-white border-y border-gray-100">
         <Container>
-          <div className="grid lg:grid-cols-2 gap-16">
-
-            <div>
-              <h2 className="text-4xl md:text-6xl font-bold mb-6">
-                Deep Engineering
-              </h2>
-              <p className="text-gray-500">
-                We engineer materials and structures for long-term durability in extreme environments.
+          <div className="grid lg:grid-cols-12 gap-16 items-start">
+            
+            <div className="lg:col-span-4 sticky top-32">
+              <p className="text-[#ea8000] text-sm font-bold uppercase tracking-[0.2em] mb-4">
+                Deep Tech
               </p>
+              <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-[#001e40] leading-tight">
+                THE MECHANICS<br />OF MATERIALS.
+              </h2>
+              <p className="text-gray-500 mb-10 leading-relaxed">
+                We move beyond blueprints into molecular integrity. Our selection and processing of materials determine the lifespan of your asset in the variable climate of Assam.
+              </p>
+              
+              <div className="inline-flex items-center gap-3 bg-gray-50 px-5 py-3 border-l-4 border-[#ea8000]">
+                <GitMerge className="w-5 h-5 text-[#ea8000]" />
+                <span className="text-xs font-bold uppercase tracking-widest text-[#001e40]">Physics-Driven Construction</span>
+              </div>
             </div>
 
-            <div className="grid sm:grid-cols-2 gap-6">
+            <div className="lg:col-span-8 grid md:grid-cols-2 gap-px bg-gray-200 border border-gray-200">
               {deepTechData.map((item, i) => (
-                <div key={i} className="p-6 bg-white/70 backdrop-blur rounded-sm border hover:shadow-xl transition">
-                  <item.icon className="w-6 h-6 text-primary mb-4" />
-
-                  <h3 className="font-bold mb-2">{item.title}</h3>
-                  <p className="text-sm text-gray-500">{item.desc}</p>
+                <div key={i} className="bg-white p-10 hover:bg-gray-50 transition duration-300 group">
+                  <div className="flex justify-between items-start mb-12">
+                    <div className="w-12 h-12 bg-gray-50 flex items-center justify-center rounded-sm group-hover:bg-[#ea8000]/10 transition-colors duration-300">
+                      <item.icon className="w-6 h-6 text-[#ea8000]" />
+                    </div>
+                    <span className="text-[10px] font-bold text-[#ea8000] uppercase tracking-widest">{item.tag}</span>
+                  </div>
+                  
+                  <h3 className="text-xl font-bold mb-4 text-[#001e40]">{item.title}</h3>
+                  <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -248,20 +274,35 @@ const ProcessClient = () => {
       </section>
 
       {/* ---------------- REGULATORY ---------------- */}
-      <section className="border-y border-gray-200 bg-gray-50 py-28 text-gray-900">
-        <Container>
-
-          <h2 className="mb-16 text-5xl font-bold">
-            Compliance & Safety
-          </h2>
+      <section className="bg-[#00142e] py-28 text-white relative overflow-hidden">
+        <Container className="relative z-10">
+          
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-20 gap-8">
+            <div>
+              <p className="text-[#ea8000] text-sm font-bold uppercase tracking-[0.2em] mb-4">
+                Regulatory Rigor
+              </p>
+              <h2 className="text-5xl md:text-7xl font-extrabold leading-[1.1] tracking-tight">
+                LEGAL & <br />
+                SAFETY <br />
+                COMPLIANCE.
+              </h2>
+            </div>
+            
+            <div className="lg:max-w-md">
+              <p className="text-gray-300 text-lg leading-relaxed border-l-2 border-[#ea8000] pl-6">
+                We operate at 100% adherence to national building codes and regional municipal laws, ensuring Zero-Liability for our clients.
+              </p>
+            </div>
+          </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {regulatoryData.map((item, i) => (
-              <div key={i} className="rounded-sm border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-2 hover:shadow-lg">
-                <item.icon className="mb-4 text-primary" />
+              <div key={i} className="border border-white/10 bg-[#001a3b] p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:border-white/20 hover:bg-[#001e40] group cursor-pointer">
+                <item.icon className="mb-8 text-[#ea8000] w-8 h-8 opacity-80 group-hover:opacity-100 transition-opacity group-hover:scale-110 duration-300" strokeWidth={1.5} />
 
-                <h3 className="font-bold mb-2">{item.title}</h3>
-                <p className="text-sm text-gray-600">{item.desc}</p>
+                <h3 className="text-xl font-bold mb-4">{item.title}</h3>
+                <p className="text-sm text-gray-400 leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>

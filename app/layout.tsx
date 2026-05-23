@@ -62,7 +62,7 @@ const organizationSchema = {
 export const metadata: Metadata = {
   metadataBase: siteUrl,
   title: 'Structro Infratech | Steel Engineering Company Guwahati | Bridge Construction Assam',
-  description: 'Structro Infratech is a leading steel engineering company in Guwahati, Assam. Specializing in bridge engineering, PEB buildings, and steel structures. ISO 9001:2015 certified. Since 2000.',
+  description: 'Structro Infratech is a leading steel engineering company in Guwahati, Assam. Specializing in bridge engineering, PEB buildings, and steel structures. ISO 9001:2015 certified.',
   keywords: [
     'Steel Engineering Company Guwahati',
     'Bridge Construction Assam',

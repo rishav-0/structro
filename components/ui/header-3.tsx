@@ -94,15 +94,6 @@ export function Header() {
 								<NavigationMenuLink className={cn("px-4 text-xs font-bold uppercase tracking-widest transition-colors", 
 									isTransparent ? "text-white hover:text-accent" : "text-foreground hover:text-primary"
 								)} asChild>
-									<Link href="/">
-										Home
-									</Link>
-								</NavigationMenuLink>
-							</NavigationMenuItem>
-							<NavigationMenuItem>
-								<NavigationMenuLink className={cn("px-4 text-xs font-bold uppercase tracking-widest transition-colors", 
-									isTransparent ? "text-white hover:text-accent" : "text-foreground hover:text-primary"
-								)} asChild>
 									<Link href="/services">
 										Services
 									</Link>
@@ -112,8 +103,8 @@ export function Header() {
 								<NavigationMenuLink className={cn("px-4 text-xs font-bold uppercase tracking-widest transition-colors", 
 									isTransparent ? "text-white hover:text-accent" : "text-foreground hover:text-primary"
 								)} asChild>
-									<Link href="/products">
-										Products
+									<Link href="/process">
+										Process
 									</Link>
 								</NavigationMenuLink>
 							</NavigationMenuItem>
@@ -130,8 +121,8 @@ export function Header() {
 								<NavigationMenuLink className={cn("px-4 text-xs font-bold uppercase tracking-widest transition-colors", 
 									isTransparent ? "text-white hover:text-accent" : "text-foreground hover:text-primary"
 								)} asChild>
-									<Link href="/process">
-										Process
+									<Link href="/products">
+										Products
 									</Link>
 								</NavigationMenuLink>
 							</NavigationMenuItem>
@@ -208,11 +199,10 @@ export function Header() {
 			<MobileMenu open={open} className="flex flex-col justify-between gap-3 overflow-y-auto">
 				<NavigationMenu className="max-w-full">
 					<div className="flex w-full flex-col gap-y-2">
-						<ListItem title="Home" href="/" icon={Home} description="Back to main" onNavigate={() => setOpen(false)} />
 						<ListItem title="Services" href="/services" icon={Building2} description="View our core services" onNavigate={() => setOpen(false)} />
-						<ListItem title="Products" href="/products" icon={Package} description="Browse fabricated product solutions" onNavigate={() => setOpen(false)} />
-						<ListItem title="Projects" href="/projects" icon={FolderOpen} description="Browse our project portfolio" onNavigate={() => setOpen(false)} />
 						<ListItem title="Process" href="/process" icon={Waypoints} description="Discover our engineering workflow" onNavigate={() => setOpen(false)} />
+						<ListItem title="Projects" href="/projects" icon={FolderOpen} description="Browse our project portfolio" onNavigate={() => setOpen(false)} />
+						<ListItem title="Products" href="/products" icon={Package} description="Browse fabricated product solutions" onNavigate={() => setOpen(false)} />
 						<ListItem title="About Us" href="/about" icon={Info} description="Learn our story and values" onNavigate={() => setOpen(false)} />
 						<ListItem title="Careers" href="/careers" icon={Briefcase} description="Join our team" onNavigate={() => setOpen(false)} />
 						<ListItem title="Blog" href="/blogs" icon={FileText} description="Latest updates and insights" onNavigate={() => setOpen(false)} />

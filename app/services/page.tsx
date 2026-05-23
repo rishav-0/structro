@@ -91,11 +91,7 @@ export default async function ServicesPage() {
 
               {/* Content */}
               <div className="w-full lg:w-1/2 order-2 text-center lg:text-left">
-                <div className="inline-flex items-center gap-3 mb-4 px-4 py-1.5 bg-accent/10 rounded-full">
-                  <span className="text-accent text-xs font-black uppercase tracking-[0.25em]">
-                    {service.subtitle}
-                  </span>
-                </div>
+                
 
                 <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
                   {service.title}

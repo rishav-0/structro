@@ -54,7 +54,6 @@ export interface ChatbotCompany {
   principles: string[];
   stats: {
     projects: string;
-    years: string;
     team: string;
     satisfaction: string;
   };
@@ -243,15 +242,14 @@ function buildCompanyInfo(): ChatbotCompany {
     tagline: companyVision.philosophy,
     description:
       "A leading steel engineering company in Northeast India, specializing in bridge construction, PEB buildings, and industrial infrastructure.",
-    founded: "Early 2000s",
     registered: "July 6, 2018",
     iso: "ISO 9001:2015 Certified",
-    foundedBy: "4 experienced professionals",
+    foundedBy: "4 professionals",
     philosophy: companyVision.philosophy,
     principles: companyVision.principles,
     stats: {
       projects: "500+",
-      years: "25+",
+
       team: "400+",
       satisfaction: "95%",
     },

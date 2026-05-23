@@ -35,13 +35,10 @@ export default async function Footer() {
               </div>
             </div>
             
-            {/* Since 2000 Tagline */}
-            <p className="text-gray-300 text-sm font-medium">
-              Connecting dreams through quality construction since 2000
-            </p>
+           
             
             <p className="text-gray-400 text-sm leading-relaxed max-w-[280px]">
-              A leading steel engineering company in Northeast India, specializing in bridge construction, PEB buildings, and industrial infrastructure.
+              The leading steel engineering company in Northeast India, specializing in bridge construction, PEB buildings, and industrial infrastructure.
             </p>
             
             {/* Contact Info */}

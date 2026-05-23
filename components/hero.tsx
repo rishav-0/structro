@@ -14,11 +14,7 @@ const Hero = () => {
                             <span className="text-3xl font-bold text-primary tracking-tighter">48+</span>
                             <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Projects Done</span>
                         </div>
-                        <div className="w-px h-8 bg-border hidden sm:block"></div>
-                        <div className="flex flex-col">
-                            <span className="text-3xl font-bold text-primary tracking-tighter">25+</span>
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Years Experience</span>
-                        </div>
+
                         <div className="w-px h-8 bg-border hidden sm:block"></div>
                         <div className="bg-primary/5 border border-secondary/30 rounded-sm px-3 py-1.5 flex flex-col relative overflow-hidden group">
                             <div className="absolute top-0 right-0 w-1 h-full bg-secondary opacity-50"></div>
