@@ -16,7 +16,7 @@ export default function StructuralAdvantage() {
     },
     null, // for the empty slot 03
     {
-      number: "04",
+      number: "03",
       title: "Local Insight",
       description: "Decades of experience navigating Assam's unique soil conditions, monsoon challenges, and logistical constraints."
     }

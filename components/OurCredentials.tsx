@@ -117,7 +117,7 @@ const OurCredentials = () => {
               variants={fadeUp}
               className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight"
             >
-              Our Gov Clients
+              Our Expertise Departments
             </motion.h2>
           </motion.div>
           
