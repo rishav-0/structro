@@ -43,6 +43,10 @@ const publicCollectionConfigs: Record<string, PublicCollectionConfig> = {
     orderDirection: "asc" as const,
     filters: [{ field: "status", value: "active" }],
   },
+  brochures: {
+    orderByField: "createdAt",
+    orderDirection: "desc" as const,
+  },
 };
 
 type PublicCollectionName = keyof typeof publicCollectionConfigs;

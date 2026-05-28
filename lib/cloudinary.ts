@@ -72,3 +72,39 @@ export async function uploadAdminImage({
     uploadStream.end(buffer);
   });
 }
+
+export async function uploadAdminFile({
+  buffer,
+  folder,
+}: {
+  buffer: Buffer;
+  folder: string;
+}): Promise<UploadApiResponse> {
+  configureCloudinary();
+
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: `structro/${sanitizeUploadFolder(folder)}`,
+        resource_type: "raw", // PDFs must use "raw" — "auto" may classify them as "image" causing 401 Unauthorized on public access
+        use_filename: true,
+        unique_filename: true,
+      },
+      (error, result) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+
+        if (!result) {
+          reject(new Error("Cloudinary did not return an upload result."));
+          return;
+        }
+
+        resolve(result);
+      }
+    );
+
+    uploadStream.end(buffer);
+  });
+}

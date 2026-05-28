@@ -242,6 +242,7 @@ function buildCompanyInfo(): ChatbotCompany {
     tagline: companyVision.philosophy,
     description:
       "A leading steel engineering company in Northeast India, specializing in bridge construction, PEB buildings, and industrial infrastructure.",
+    founded: "July 6, 2018",
     registered: "July 6, 2018",
     iso: "ISO 9001:2015 Certified",
     foundedBy: "4 professionals",

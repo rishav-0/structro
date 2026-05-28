@@ -33,3 +33,26 @@ export async function submitEnquiry(data: EnquiryData) {
     updatedAt: Date.now(),
   });
 }
+
+interface BrochureDownloadData {
+  name: string;
+  phone: string;
+  email: string;
+  interest?: string;
+  address?: string;
+}
+
+export async function submitBrochureDownload(data: BrochureDownloadData) {
+  if (!data.name || !data.phone || !data.email) {
+    throw new Error("Name, phone, and email are required");
+  }
+
+  await adminDb.collection("brochure-downloads").add({
+    name: data.name,
+    phone: data.phone,
+    email: data.email,
+    interest: data.interest || "",
+    address: data.address || "",
+    createdAt: Date.now(),
+  });
+}

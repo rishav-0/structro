@@ -87,9 +87,10 @@ export function HomeClient({
   const [launches] = useState<HomeLaunch[]>(initialLaunches);
 
   const stats = [
-    { label: "Projects Completed", value: "500+" },
-    { label: "Team Members", value: "400+" },
-    { label: "Client Satisfaction", value: "95%" },
+    { label: "DISTRICTS COVERED", value: "32+" },
+    { label: "VERIFIED PROJECTS", value: "500+" },
+    { label: "TONNAGE FABRICATED", value: "100K+" },
+    { label: "STATES COVERED", value: "7+" },
   ];
 
   const values = [

@@ -4,18 +4,36 @@ import { Mail, Facebook, Instagram, Twitter, Phone, MapPin, Award } from 'lucide
 import { Container } from './ui/container';
 import { Button } from './ui/button';
 import { getPublicCollectionData } from '@/lib/public-db-server';
+import { DownloadBrochureButton } from './download-brochure-modal';
 
 interface Service {
   id: string;
   title: string;
 }
 
+interface Brochure {
+  id: string;
+  title: string;
+  fileUrl: string;
+}
+
 export default async function Footer() {
   let services: Service[] = [];
+  let brochureUrl = "";
+  let brochureTitle = "our brochure";
   try {
     services = await getPublicCollectionData<Service>("services");
   } catch (error) {
     console.error("Error fetching services for footer:", error);
+  }
+  try {
+    const brochures = await getPublicCollectionData<Brochure>("brochures");
+    if (brochures.length > 0) {
+      brochureUrl = brochures[0].fileUrl;
+      brochureTitle = brochures[0].title;
+    }
+  } catch (error) {
+    console.error("Error fetching brochures for footer:", error);
   }
 
   return (
@@ -70,6 +88,9 @@ export default async function Footer() {
               <li><Link href="/projects" className="hover:text-primary transition-colors">Our Projects</Link></li>
               <li><Link href="/services" className="hover:text-primary transition-colors">Services</Link></li>
               <li><Link href="/contact" className="hover:text-primary transition-colors">Contact Us</Link></li>
+              <li>
+                <DownloadBrochureButton brochureUrl={brochureUrl} brochureTitle={brochureTitle} />
+              </li>
               <li><Link href="/admin" className="hover:text-primary transition-colors">Admin</Link></li>
             </ul>
           </div>

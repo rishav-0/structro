@@ -15,7 +15,7 @@ export default function AboutPage() {
   
   const stats = [
     { label: "DISTRICTS COVERED", value: "32+" },
-    { label: "VERIFIED PROJECTS", value: "300+" },
+    { label: "VERIFIED PROJECTS", value: "500+" },
     { label: "TONNAGE FABRICATED", value: "100K+" },
     { label: "STATES COVERED", value: "7+" },
   ];
@@ -208,7 +208,7 @@ export default function AboutPage() {
                 S. K. Baruah brings extensive specialized technical expertise to the structural landscape of Northeast India. As the driving energy behind Structro Infra Tech, he has transitioned the organization from a four-person visionary mission to an industry benchmark for seismic-resilient construction today.
               </p>
               <p>
-                His leadership is defined by an uncompromising "Engineering-First" philosophy, where every joint, weld, and foundation is treated as a critical link in regional safety. Under his tenure, the firm has delivered over 300+ projects, consistently bridging the gap between sophisticated corporate-grade engineering and the unique geotechnical complexities of the Brahmaputra valley.
+                His leadership is defined by an uncompromising "Engineering-First" philosophy, where every joint, weld, and foundation is treated as a critical link in regional safety. Under his tenure, the firm has delivered over 500+ projects, consistently bridging the gap between sophisticated corporate-grade engineering and the unique geotechnical complexities of the Brahmaputra valley.
               </p>
             </div>
             <div className="flex gap-12 border-t border-gray-200 pt-8">
