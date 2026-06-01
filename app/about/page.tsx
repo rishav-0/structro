@@ -4,6 +4,7 @@ import Image from "next/image";
 import type { Metadata } from 'next';
 import SiteCta from "@/components/SiteCta";
 import { CheckCircle2, Target, ShieldCheck, Factory, Settings, Flame, Activity } from "lucide-react";
+import { StatsCounter } from "@/components/StatsCounter";
 
 export const metadata: Metadata = {
   title: 'About Us | Structro Infra Tech',
@@ -14,10 +15,10 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   
   const stats = [
-    { label: "DISTRICTS COVERED", value: "32+" },
-    { label: "VERIFIED PROJECTS", value: "500+" },
-    { label: "TONNAGE FABRICATED", value: "100K+" },
-    { label: "STATES COVERED", value: "7+" },
+    { label: "DISTRICTS COVERED", end: 32, suffix: "+" },
+    { label: "VERIFIED PROJECTS", end: 500, suffix: "+" },
+    { label: "TONNAGE FABRICATED", end: 100, suffix: "K+" },
+    { label: "STATES COVERED", end: 7, suffix: "+" },
   ];
 
   const capabilities = [
@@ -170,9 +171,9 @@ export default function AboutPage() {
         <Container>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-white/20">
             {stats.map((stat, index) => (
-              <div key={index} className="text-center px-4">
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-2">
-                  {stat.value}
+              <div key={index} className="text-center px-4 flex flex-col items-center">
+                <h2 className="text-4xl md:text-5xl font-bold text-white mb-2 flex items-center justify-center">
+                  <StatsCounter end={stat.end} suffix={stat.suffix} />
                 </h2>
                 <p className="text-primary-foreground/80 text-sm font-medium uppercase tracking-wide">
                   {stat.label}

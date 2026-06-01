@@ -9,6 +9,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import HeroTwo from "@/components/HeroTwo";
 import { motion, Variants } from "framer-motion";
+import CountUp from "react-countup";
 
 const BlogSection = dynamic(() => import("@/components/BlogSection"), { ssr: true });
 const TestimonialsSection = dynamic(() => import("@/components/TestimonialsSection"), { ssr: true });
@@ -89,10 +90,10 @@ export function HomeClient({
   const [launches] = useState<HomeLaunch[]>(initialLaunches);
 
   const stats = [
-    { label: "DISTRICTS COVERED", value: "32+" },
-    { label: "VERIFIED PROJECTS", value: "500+" },
-    { label: "TONNAGE FABRICATED", value: "100K+" },
-    { label: "STATES COVERED", value: "7+", since: "Across Northeast India" },
+    { label: "DISTRICTS COVERED", end: 32, suffix: "+" },
+    { label: "VERIFIED PROJECTS", end: 500, suffix: "+" },
+    { label: "TONNAGE FABRICATED", end: 100, suffix: "K+" },
+    { label: "STATES COVERED", end: 7, suffix: "+", since: "Across Northeast India" },
   ];
 
   const values = [
@@ -135,7 +136,13 @@ export function HomeClient({
             {stats.map((stat, index) => (
               <motion.div variants={fadeInUp} key={index} className="flex flex-col items-center">
                 <h2 className="text-5xl md:text-6xl font-bold text-primary mb-3">
-                  {stat.value}
+                  <CountUp
+                    end={stat.end}
+                    suffix={stat.suffix}
+                    duration={2.5}
+                    enableScrollSpy
+                    scrollSpyOnce
+                  />
                 </h2>
                 <p className="text-sm text-gray-500 font-bold uppercase tracking-wide">
                   {stat.label}
