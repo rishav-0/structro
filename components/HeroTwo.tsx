@@ -30,6 +30,7 @@ const SLIDES = [
 export default function HeroTwo() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(1); // 1 for next, -1 for prev
+  const [isMounted, setIsMounted] = useState(false);
 
   const handleNext = useCallback(() => {
     setDirection(1);
@@ -42,6 +43,7 @@ export default function HeroTwo() {
   }, []);
 
   useEffect(() => {
+    setIsMounted(true);
     const timer = setInterval(() => {
       handleNext();
     }, 6000);
@@ -51,16 +53,19 @@ export default function HeroTwo() {
   return (
     <section className="relative h-[90vh] min-h-[600px] w-full bg-[#001e40] flex items-center overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          poster="/hero/frame-1.png"
-          className="w-full h-full object-cover opacity-20 mix-blend-overlay"
-        >
-          <source src="/hero/WA_1778356649487.mp4" type="video/mp4" />
-        </video>
+        {isMounted && (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="none"
+            poster="/hero/frame-1.png"
+            className="w-full h-full object-cover opacity-20 mix-blend-overlay"
+          >
+            <source src="/hero/WA_1778356649487.mp4" type="video/mp4" />
+          </video>
+        )}
         <div className="absolute inset-0 bg-gradient-to-r from-[#001e40] via-[#001e40]/80 to-transparent" />
         <div className="absolute inset-0 shadow-[inset_0_0_150px_rgba(0,30,64,0.8)]" />
       </div>

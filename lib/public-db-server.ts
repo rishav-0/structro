@@ -1,6 +1,7 @@
 import "server-only";
 
 import { adminDb } from "./firebase-admin";
+import { cache } from "react";
 
 type PublicCollectionConfig = {
   orderByField: string;
@@ -55,9 +56,9 @@ function isPublicCollectionName(collectionName: string): collectionName is Publi
   return collectionName in publicCollectionConfigs;
 }
 
-export async function getPublicCollectionData<T = Record<string, unknown>>(
-  collectionName: string
-): Promise<T[]> {
+export const getPublicCollectionData = cache(async function getPublicCollectionData<
+  T = Record<string, unknown>,
+>(collectionName: string): Promise<T[]> {
   if (!isPublicCollectionName(collectionName)) {
     throw new Error(`Unsupported public collection: ${collectionName}`);
   }
@@ -94,4 +95,4 @@ export async function getPublicCollectionData<T = Record<string, unknown>>(
   });
 
   return filteredDocs as T[];
-}
+});

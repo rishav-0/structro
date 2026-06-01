@@ -2,9 +2,15 @@
 
 import { useEffect } from "react"
 import WhatsAppButton from "@/components/WhatsAppButton"
-import Chatbot from "@/components/Chatbot"
+import dynamic from "next/dynamic"
 import { usePathname } from "next/navigation"
 import { ChatbotProvider } from "./chatbot-provider"
+
+const Chatbot = dynamic(() => import("@/components/Chatbot"), {
+  ssr: false,
+  loading: () => null,
+})
+
 
 export default function ClientLayout({
   children,

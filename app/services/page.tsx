@@ -8,6 +8,8 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { getPublicCollectionData } from "@/lib/public-db-server";
 
+export const revalidate = 3600; // Cache page static response for 1 hour
+
 // Scale signals per service — tells buyers minimum project scope at a glance
 const serviceScaleSignals: Record<string, string> = {
   bridge: "Span range 20m to 500m+ corridors",

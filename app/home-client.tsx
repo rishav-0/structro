@@ -6,16 +6,18 @@ import { ArrowUpRight, Award, ShieldCheck, Leaf, HardHat, ChevronRight } from "l
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import HeroTwo from "@/components/HeroTwo";
-import BlogSection from "@/components/BlogSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import WhyChooseUs from "@/components/WhyChooseUs";
-import FoundationalPhilosophy from "@/components/FoundationalPhilosophy";
-import StructuralAdvantage from "@/components/StructuralAdvantage";
-import FaqSection from "@/components/FaqSection";
-import OurCredentials from "@/components/OurCredentials";
-import SiteCta from "@/components/SiteCta";
 import { motion, Variants } from "framer-motion";
+
+const BlogSection = dynamic(() => import("@/components/BlogSection"), { ssr: true });
+const TestimonialsSection = dynamic(() => import("@/components/TestimonialsSection"), { ssr: true });
+const WhyChooseUs = dynamic(() => import("@/components/WhyChooseUs"), { ssr: true });
+const FoundationalPhilosophy = dynamic(() => import("@/components/FoundationalPhilosophy"), { ssr: true });
+const StructuralAdvantage = dynamic(() => import("@/components/StructuralAdvantage"), { ssr: true });
+const FaqSection = dynamic(() => import("@/components/FaqSection"), { ssr: true });
+const OurCredentials = dynamic(() => import("@/components/OurCredentials"), { ssr: true });
+const SiteCta = dynamic(() => import("@/components/SiteCta"), { ssr: true });
 
 type HomeService = {
   id: string;

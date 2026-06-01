@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { getPublicCollectionData } from "@/lib/public-db-server";
 
+export const revalidate = 3600; // Cache page static response for 1 hour
+
 type Product = {
   id: string;
   title: string;
