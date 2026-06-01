@@ -65,6 +65,14 @@ const servicesData = [
         description:
           "Specifically designed for safe crossing of railway tracks (near stations) or for aesthetic/functional use in urban areas and parks.",
       },
+      {
+        title: "Open Web Bridges",
+        description: "Latticed open web steel girder bridges suitable for railway and highway applications."
+      },
+      {
+        title: "Baily Bridges",
+        description: "Modular portable military/emergency bridges for rapid deployment in remote and flood-affected areas."
+      }
     ],
     createdAt: Date.now(),
     updatedAt: Date.now(),
@@ -143,7 +151,7 @@ const servicesData = [
       },
       {
         category: "Institutional",
-        items: ["Schools", "Hospitals", "Auditoriums", "Theaters", "Museums", "Libraries", "Exhibition Halls"],
+        items: ["Schools", "Hospitals", "Auditoriums", "Theaters (on request)", "Museums (on request)", "Libraries (on request)", "Exhibition Halls (on request)"],
       },
       {
         category: "Other",
@@ -194,6 +202,12 @@ const servicesData = [
     catalog: [
       { title: "Heavy Structural Works", description: "Large-scale steel frames and supports." },
       { title: "Factory Sheds", description: "Customized sheds for manufacturing units." },
+      { title: "Industrial Warehouses", description: "Durable high-capacity storage facilities customized for industrial logistics." },
+      { title: "Conventional Sheds", description: "Traditional steel frame sheds built for general utility and agricultural storage." },
+      { title: "Commercial Complexes", description: "High-strength multi-story structural steel frames for offices and retail hubs." },
+      { title: "Aircraft Hangars", description: "Extra-wide clear-span structural frames designed for hangar housing." },
+      { title: "Military / Defence Structures", description: "Blast-resilient and secure heavy steel facilities for emergency operations." },
+      { title: "Custom Steel Fabrication", description: "Tailored structural welding, built-up girders, and machinery frame engineering." }
     ],
     createdAt: Date.now(),
     updatedAt: Date.now(),
@@ -216,6 +230,8 @@ const servicesData = [
     navDescription: "Stainless Steel, Inconel...",
     catalog: [
       { title: "SS Fabrication", description: "High-grade stainless steel structural work." },
+      { title: "Inconel Fabrication", description: "Superalloy structural works specialized for aerospace, gas turbine, and high-heat environments." },
+      { title: "Custom Metal Fabrication", description: "High-precision alloy welding, plate working, and specialty steel assemblies." }
     ],
     createdAt: Date.now(),
     updatedAt: Date.now(),
@@ -240,6 +256,10 @@ const servicesData = [
     navDescription: "Engineering Drawings, 3D Modeling...",
     catalog: [
       { title: "3D Modeling", description: "Advanced visualization and structural modeling." },
+      { title: "Engineering Drawings", description: "Precise structural blueprinting, shop drawings, and steel detailing (IS 800 compliant)." },
+      { title: "Testing & Load Analysis", description: "Component-level hydraulic testing, stress verification, and seismic vulnerability reports." },
+      { title: "Survey & Site Reports", description: "Comprehensive geotechnical, structural auditing, and hydrological site assessments." },
+      { title: "Estimation & BOQ Certification", description: "Detailed cost estimation and Bills of Quantities (BOQ) with government certification." }
     ],
     createdAt: Date.now(),
     updatedAt: Date.now(),

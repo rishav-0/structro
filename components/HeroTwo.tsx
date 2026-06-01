@@ -8,7 +8,7 @@ import Link from "next/link";
 
 const SLIDES = [
   {
-    tag: "Pioneering Since 2000 | Northeast India",
+    tag: "Pioneering | Northeast India",
     titlePrefix: "Structural",
     titleHighlight: "Solutions.",
     description: "Northeast India's leading firm for high-precision engineering, turnkey construction, and seismic-resilient infrastructure.",

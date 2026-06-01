@@ -26,30 +26,31 @@ interface Project {
 }
 
 const clientsList = [
-  { name: "NORTHEAST FRONTIER RAILWAY", acronym: "NF" },
-  { name: "EAST CENTRAL RAILWAY", acronym: "EC" },
-  { name: "INDIAN RAILWAYS", acronym: "IR" },
-  { name: "RDSO", acronym: "RD" },
-  { name: "NHAI", acronym: "NH" },
-  { name: "ASSAM POLICE HOUSING", acronym: "AP" },
-  { name: "CPWD", acronym: "CP" },
-  { name: "INDIAN OIL", acronym: "IO" },
-  { name: "L&T CONSTRUCTION", acronym: "LT" },
-  { name: "NRL", acronym: "NR" },
-  { name: "THYSSENKRUPP", acronym: "TK" },
-  { name: "BRO", acronym: "BR" },
-  { name: "KEC INTERNATIONAL", acronym: "KE" },
-  { name: "PWD ASSAM", acronym: "PW" },
-  { name: "TATA BLUESCOPE STEEL", acronym: "TA" },
-  { name: "OIL INDIA LIMITED", acronym: "OI" },
-  { name: "ABCI INFRASTRUCTURE", acronym: "AB" },
-  { name: "POWER GRID CORPORATION", acronym: "PG" },
-  { name: "AIDC", acronym: "AI" },
-  { name: "ASSAM GAS COMPANY", acronym: "AG" },
-  { name: "BCPL", acronym: "BC" },
-  { name: "ONGC", acronym: "ON" },
-  { name: "GAIL", acronym: "GA" },
-  { name: "BRIDGE & ROOF CO.", acronym: "BR" }
+  { name: "INDIAN RAILWAYS", logo: "/clients/indianrailway.png" },
+  { name: "NORTHEAST FRONTIER RAILWAY", logo: "/clients/northeastrailway.png" },
+  { name: "EAST CENTRAL RAILWAY", logo: "/clients/eastcentralrailway.png" },
+  { name: "RDSO", logo: "/clients/rdso.png" },
+  { name: "NHAI", logo: "/clients/nhai.png" },
+  { name: "ASSAM POLICE HOUSING", logo: "/clients/assampolice.png" },
+  { name: "CPWD", logo: "/clients/cpwd.png" },
+  { name: "INDIAN OIL", logo: "/clients/indianoil.png" },
+  { name: "L&T CONSTRUCTION", logo: "/clients/lnt.png" },
+  { name: "NRL", logo: "/clients/nrl.png" },
+  { name: "THYSSENKRUPP", logo: "/clients/thyssenkrupp.png" },
+  { name: "BRO", logo: "/clients/bro.png" },
+  { name: "KEC INTERNATIONAL", logo: "/clients/kec.png" },
+  { name: "PWD ASSAM", logo: "/clients/pwd.png" },
+  { name: "TATA BLUESCOPE STEEL", logo: "/clients/bluescope.png" },
+  { name: "OIL INDIA LIMITED", logo: "/clients/oilindialimited.png" },
+  { name: "ABCI INFRASTRUCTURE", logo: "/clients/abci.png" },
+  { name: "POWER GRID CORPORATION", logo: "/clients/powergrid.png" },
+  { name: "AIDC", logo: "/clients/aidc.png" },
+  { name: "ASSAM GAS COMPANY", logo: "/clients/agcl.png" },
+  { name: "BCPL", logo: "/clients/bcpl.png" },
+  { name: "BPCL", logo: "/clients/bpcl.png" },
+  { name: "ONGC", logo: "/clients/ongc.png" },
+  { name: "GAIL", logo: "/clients/gail.png" },
+  { name: "BRIDGE & ROOF CO.", logo: "/clients/bridgeandroofco.png" },
 ];
 
 export function ProjectsClient({ initialProjects, availableCategories = [] }: { initialProjects: { ongoing: Project[]; completed: Project[]; homeProjects: Project[] }, availableCategories?: string[] }) {
@@ -263,10 +264,20 @@ export function ProjectsClient({ initialProjects, availableCategories = [] }: { 
             {clientsList.map((client, i) => (
               <div 
                 key={i} 
-                className="bg-white rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300 aspect-[4/3]"
+                className="bg-white rounded-lg p-5 flex flex-col items-center justify-center text-center shadow-sm border border-gray-100 hover:shadow-lg hover:border-primary/30 hover:-translate-y-1 transition-all duration-300 aspect-[4/3] group"
+                title={client.name}
               >
-                <span className="text-accent text-xs font-bold mb-3">{client.acronym}</span>
-                <h3 className="text-[10px] md:text-xs font-bold text-gray-800 tracking-wider uppercase leading-snug">
+                <div className="relative w-full h-14 md:h-16 mb-3 flex items-center justify-center">
+                  <Image
+                    src={client.logo}
+                    alt={`${client.name} Logo`}
+                    width={100}
+                    height={64}
+                    className="object-contain w-auto h-auto max-w-full max-h-full transition-all duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                </div>
+                <h3 className="text-[9px] md:text-[10px] font-bold text-gray-500 group-hover:text-gray-800 tracking-wider uppercase leading-snug transition-colors duration-300">
                   {client.name}
                 </h3>
               </div>
@@ -279,8 +290,8 @@ export function ProjectsClient({ initialProjects, availableCategories = [] }: { 
       <div className="bg-gray-50 py-16">
         <Container>
           <div className="bg-white rounded-lg p-8 md:p-12 border border-gray-200">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-              <div className="flex flex-col items-center md:items-start text-center md:text-left">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
                   Serving All of Northeast India
                 </h2>
@@ -290,7 +301,7 @@ export function ProjectsClient({ initialProjects, availableCategories = [] }: { 
                   climatic conditions makes us the preferred choice for infrastructure development 
                   in the region.
                 </p>
-                <div className="flex flex-wrap justify-center md:justify-start gap-2">
+                <div className="flex flex-wrap justify-center lg:justify-start gap-2">
                   {["Guwahati", "Assam", "Meghalaya", "Nagaland", "Manipur", "Tripura", "Mizoram", "Arunachal Pradesh"].map((region) => (
                     <span key={region} className="bg-primary/10 text-primary px-3 py-1 text-sm font-medium rounded-sm">
                       {region}
@@ -300,11 +311,11 @@ export function ProjectsClient({ initialProjects, availableCategories = [] }: { 
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
                 <div className="bg-primary p-6 rounded-lg text-center shadow-inner">
-                  <h3 className="text-2xl md:text-3xl font-bold text-primary-foreground mb-2">Regional</h3>
+                  <h3 className="text-xl sm:text-2xl lg:text-xl xl:text-3xl font-bold text-primary-foreground mb-2">Regional</h3>
                   <p className="text-primary-foreground/70 text-xs md:text-sm font-medium">Projects across Assam</p>
                 </div>
                 <div className="bg-accent p-6 rounded-lg text-center shadow-inner">
-                  <h3 className="text-2xl md:text-3xl font-bold text-accent-foreground mb-2">National</h3>
+                  <h3 className="text-xl sm:text-2xl lg:text-xl xl:text-3xl font-bold text-accent-foreground mb-2">National</h3>
                   <p className="text-accent-foreground/70 text-xs md:text-sm font-medium">Pan-India Presence</p>
                 </div>
               </div>

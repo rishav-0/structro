@@ -10,8 +10,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogT
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Pencil, Trash2, Search, MapPin, Briefcase } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, MapPin, Briefcase, ArrowUpRight } from "lucide-react";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { AdminPagination } from "@/components/admin-pagination";
 
 interface Career {
   id: string;
@@ -26,6 +27,20 @@ interface Career {
   updatedAt: number;
 }
 
+interface CareerApplication {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  position: string;
+  experience: string;
+  resumeUrl: string;
+  message: string;
+  status: "new" | "reviewed" | "archived";
+  createdAt: number;
+  updatedAt?: number;
+}
+
 const initialForm: Omit<Career, "id" | "createdAt" | "updatedAt"> = {
   title: "",
   description: "",
@@ -36,13 +51,13 @@ const initialForm: Omit<Career, "id" | "createdAt" | "updatedAt"> = {
   status: "open",
 };
 
-import { AdminPagination } from "@/components/admin-pagination";
-
 const ITEMS_PER_PAGE = 10;
 
 export default function CareersPage() {
   const [careers, setCareers] = useState<Career[]>([]);
+  const [applications, setApplications] = useState<CareerApplication[]>([]);
   const [loading, setLoading] = useState(true);
+  const [appsLoading, setAppsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
@@ -87,6 +102,7 @@ export default function CareersPage() {
 
   useEffect(() => {
     fetchCareers();
+    fetchApplications();
   }, []);
 
   const fetchCareers = async () => {
@@ -97,6 +113,17 @@ export default function CareersPage() {
       console.error("Error fetching careers:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchApplications = async () => {
+    try {
+      const data = await getAdminDocs("career-applications", "createdAt") as CareerApplication[];
+      setApplications(data);
+    } catch (error) {
+      console.error("Error fetching applications:", error);
+    } finally {
+      setAppsLoading(false);
     }
   };
 
@@ -154,6 +181,35 @@ export default function CareersPage() {
     );
   };
 
+  const handleAppStatusChange = async (app: CareerApplication, newStatus: "new" | "reviewed" | "archived") => {
+    try {
+      await updateAdminDoc("career-applications", app.id, {
+        status: newStatus,
+        updatedAt: Date.now()
+      });
+      fetchApplications();
+    } catch (error) {
+      console.error("Error updating application status:", error);
+    }
+  };
+
+  const handleAppDelete = (id: string) => {
+    showConfirm(
+      "Delete Candidate Application",
+      "Are you sure you want to delete this candidate application record?",
+      async () => {
+        try {
+          await deleteAdminDoc("career-applications", id);
+          fetchApplications();
+        } catch (error) {
+          console.error("Error deleting application:", error);
+        }
+      },
+      "Delete",
+      true
+    );
+  };
+
   const toggleStatus = async (career: Career) => {
     try {
       const newStatus = career.status === "open" ? "closed" : "open";
@@ -187,8 +243,8 @@ export default function CareersPage() {
     <>
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Career Updates</h1>
-          <p className="mt-1 text-neutral-400">Manage job openings</p>
+          <h1 className="text-3xl font-bold">Recruitment Portal</h1>
+          <p className="mt-1 text-neutral-400">Manage job openings and review candidate applications</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
@@ -311,7 +367,8 @@ export default function CareersPage() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-white/10 bg-white/5">
+      {/* Job Openings Card */}
+      <div className="rounded-xl border border-white/10 bg-white/5 mb-12">
         <CardHeader className="border-b border-white/10">
           <CardTitle>All Job Openings</CardTitle>
         </CardHeader>
@@ -352,7 +409,7 @@ export default function CareersPage() {
                       <TableCell>
                         <Badge
                           variant={career.status === "open" ? "default" : "outline"}
-                          className={career.status === "open" ? "bg-green-500" : ""}
+                          className={career.status === "open" ? "bg-green-500 text-white border-none" : ""}
                         >
                           {career.status}
                         </Badge>
@@ -401,6 +458,92 @@ export default function CareersPage() {
           )}
         </CardContent>
       </div>
+
+      {/* Submitted Candidate Applications Card */}
+      <div className="rounded-xl border border-white/10 bg-white/5">
+        <CardHeader className="border-b border-white/10 flex flex-row items-center justify-between">
+          <CardTitle>Submitted Candidate Applications</CardTitle>
+          <Badge className="bg-primary text-primary-foreground">{applications.length} total</Badge>
+        </CardHeader>
+        <CardContent className="p-0">
+          {appsLoading ? (
+            <div className="p-8 text-center text-neutral-400">Loading applications...</div>
+          ) : applications.length === 0 ? (
+            <div className="p-8 text-center text-neutral-400">No applications received yet</div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow className="border-white/5 hover:bg-transparent">
+                  <TableHead className="text-neutral-400">Candidate Name</TableHead>
+                  <TableHead className="text-neutral-400">Contact Info</TableHead>
+                  <TableHead className="text-neutral-400">Position Applied</TableHead>
+                  <TableHead className="text-neutral-400">Experience</TableHead>
+                  <TableHead className="text-neutral-400">Resume Link</TableHead>
+                  <TableHead className="text-neutral-400">Cover Note</TableHead>
+                  <TableHead className="text-neutral-400">Status</TableHead>
+                  <TableHead className="text-right text-neutral-400">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {applications.map((app) => (
+                  <TableRow key={app.id} className="border-white/5">
+                    <TableCell className="font-semibold text-white">{app.name}</TableCell>
+                    <TableCell className="text-sm">
+                      <div className="text-white">{app.phone}</div>
+                      <div className="text-neutral-400 text-xs">{app.email}</div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="secondary" className="bg-neutral-800 text-neutral-200">
+                        {app.position}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-sm text-neutral-300">{app.experience}</TableCell>
+                    <TableCell>
+                      {app.resumeUrl ? (
+                        <a 
+                          href={app.resumeUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="inline-flex items-center text-xs text-primary hover:underline font-bold"
+                        >
+                          View Resume
+                          <ArrowUpRight className="ml-1 size-3" />
+                        </a>
+                      ) : (
+                        <span className="text-neutral-500 text-xs">No Link</span>
+                      )}
+                    </TableCell>
+                    <TableCell className="text-sm text-neutral-400 max-w-[200px] truncate" title={app.message}>
+                      {app.message || "-"}
+                    </TableCell>
+                    <TableCell>
+                      <Select
+                        value={app.status || "new"}
+                        onValueChange={(val: "new" | "reviewed" | "archived") => handleAppStatusChange(app, val)}
+                      >
+                        <SelectTrigger className="w-[120px] bg-neutral-800 border-neutral-700 h-8 text-xs">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-neutral-800 border-neutral-700">
+                          <SelectItem value="new">New</SelectItem>
+                          <SelectItem value="reviewed">Reviewed</SelectItem>
+                          <SelectItem value="archived">Archived</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button variant="ghost" size="icon" onClick={() => handleAppDelete(app.id)}>
+                        <Trash2 className="size-4 text-red-400" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </CardContent>
+      </div>
+
       <ConfirmDialog
         open={confirmState.open}
         title={confirmState.title}

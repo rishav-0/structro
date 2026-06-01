@@ -85,7 +85,7 @@ export function ContactClient() {
                 icon: <MapPin className="w-6 h-6 text-primary" />,
                 title: "Head Office",
                 details: ["1st Floor, Silver Square", "Christian Basti, G.S Road", "Guwahati, Assam - 781005"],
-                link: "#"
+                link: "https://maps.google.com/?q=Structro+Infra+Tech+Christian+Basti+Guwahati"
               },
               {
                 icon: <Clock className="w-6 h-6 text-primary" />,
@@ -101,13 +101,21 @@ export function ContactClient() {
                 <h3 className="font-bold text-gray-900 mb-3">{item.title}</h3>
                 <div className="space-y-1">
                   {item.details.map((detail, dIndex) => (
-                    <a 
-                      key={dIndex} 
-                      href={item.link} 
-                      className="text-gray-600 text-sm hover:text-primary block"
-                    >
-                      {detail}
-                    </a>
+                    item.link && item.link !== "#" ? (
+                      <a 
+                        key={dIndex} 
+                        href={item.link} 
+                        target={item.link.startsWith("http") ? "_blank" : undefined}
+                        rel={item.link.startsWith("http") ? "noopener noreferrer" : undefined}
+                        className="text-gray-600 text-sm hover:text-primary block font-medium"
+                      >
+                        {detail}
+                      </a>
+                    ) : (
+                      <span key={dIndex} className="text-gray-600 text-sm block">
+                        {detail}
+                      </span>
+                    )
                   ))}
                 </div>
               </div>
@@ -276,13 +284,19 @@ export function ContactClient() {
             {/* Workshop Location */}
             <div className="bg-gray-50 p-8 rounded-lg">
               <h3 className="font-bold text-gray-900 text-xl mb-4">Workshop Location</h3>
-              <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-accent mt-1 flex-shrink-0" />
+              <a 
+                href="https://maps.google.com/?q=Structro+Infra+Tech+Rani+Workshop+Guwahati"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-3 hover:text-primary transition-colors group"
+              >
+                <MapPin className="w-5 h-5 text-accent mt-1 flex-shrink-0 group-hover:scale-110 transition-transform" />
                 <div>
-                  <p className="text-gray-700 font-medium">Guwahati-Accoland-Rani Rd</p>
+                  <p className="text-gray-700 font-medium group-hover:text-primary transition-colors">Guwahati-Accoland-Rani Rd</p>
                   <p className="text-gray-600">South Rani, Guwahati-31</p>
+                  <span className="text-xs text-primary font-semibold mt-1 inline-block uppercase tracking-wider">View on Google Maps</span>
                 </div>
-              </div>
+              </a>
             </div>
 
             {/* Why Work With Us */}

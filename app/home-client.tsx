@@ -87,9 +87,9 @@ export function HomeClient({
   const [launches] = useState<HomeLaunch[]>(initialLaunches);
 
   const stats = [
-    { label: "DISTRICTS COVERED", value: "32+", since: "Since 2000" },
-    { label: "VERIFIED PROJECTS", value: "500+", since: "Since 2000" },
-    { label: "TONNAGE FABRICATED", value: "100K+", since: "Since 2000" },
+    { label: "DISTRICTS COVERED", value: "32+" },
+    { label: "VERIFIED PROJECTS", value: "500+" },
+    { label: "TONNAGE FABRICATED", value: "100K+" },
     { label: "STATES COVERED", value: "7+", since: "Across Northeast India" },
   ];
 
@@ -138,9 +138,11 @@ export function HomeClient({
                 <p className="text-sm text-gray-500 font-bold uppercase tracking-wide">
                   {stat.label}
                 </p>
-                <p className="text-xs text-gray-400 font-medium mt-1">
-                  {stat.since}
-                </p>
+                {stat.since && (
+                  <p className="text-xs text-gray-400 font-medium mt-1">
+                    {stat.since}
+                  </p>
+                )}
               </motion.div>
             ))}
           </motion.div>

@@ -265,26 +265,6 @@ const CinematicModernHero = () => {
           }}
           className="hidden lg:flex flex-col items-center justify-center h-full gap-0 select-none py-16"
         >
-          {/* Top label */}
-          <div className="flex flex-col items-end mb-4 self-end mr-4">
-            <span
-              className="text-zinc-500 text-[0.6rem] font-bold tracking-[0.45em] uppercase leading-none mb-1"
-              style={{
-                fontFamily: 'Montserrat, sans-serif',
-              }}
-            >
-              ESTD
-            </span>
-
-            <span
-              className="text-zinc-300 text-xs font-bold tracking-[0.3em]"
-              style={{
-                fontFamily: 'Montserrat, sans-serif',
-              }}
-            >
-              2000
-            </span>
-          </div>
 
           {/* Vertical Overlapping / Pattern STRUCTRO */}
           <div className="flex flex-col items-center animate-pulse-slow" style={{ gap: '0.01em' }}>

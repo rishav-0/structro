@@ -128,14 +128,6 @@ export default async function ServicesPage() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                  {serviceScaleSignals[service.id] && (
-                    <div className="w-full mb-2">
-                      <span className="inline-flex items-center gap-2 bg-primary/5 border border-primary/20 text-primary text-xs font-semibold px-3 py-2 rounded-sm">
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                        {serviceScaleSignals[service.id]}
-                      </span>
-                    </div>
-                  )}
                   <Link href={`/services/${service.id}`} className="w-full sm:w-auto">
                     <Button variant="saffron" size="xl" className="w-full font-bold shadow-md hover:shadow-lg transition-all">
                       TECHNICAL SPECS

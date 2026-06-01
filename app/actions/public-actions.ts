@@ -56,3 +56,32 @@ export async function submitBrochureDownload(data: BrochureDownloadData) {
     createdAt: Date.now(),
   });
 }
+
+interface CareerApplicationData {
+  name: string;
+  email: string;
+  phone: string;
+  position: string;
+  experience: string;
+  resumeUrl?: string;
+  message?: string;
+}
+
+export async function submitCareerApplication(data: CareerApplicationData) {
+  if (!data.name || !data.email || !data.phone || !data.position) {
+    throw new Error("Missing required fields");
+  }
+
+  await adminDb.collection("career-applications").add({
+    name: data.name,
+    email: data.email,
+    phone: data.phone,
+    position: data.position,
+    experience: data.experience,
+    resumeUrl: data.resumeUrl || "",
+    message: data.message || "",
+    status: "new",
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  });
+}

@@ -56,6 +56,33 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   };
 }
 
+function parseContentWithLinks(text: string) {
+  const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const parts = [];
+  let lastIndex = 0;
+  let match;
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.substring(lastIndex, match.index));
+    }
+    const linkText = match[1];
+    const linkUrl = match[2];
+    parts.push(
+      <Link key={match.index} href={linkUrl} className="text-primary hover:underline font-semibold">
+        {linkText}
+      </Link>
+    );
+    lastIndex = regex.lastIndex;
+  }
+
+  if (lastIndex < text.length) {
+    parts.push(text.substring(lastIndex));
+  }
+
+  return parts.length > 0 ? parts : text;
+}
+
 export default async function BlogPostPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const post = await getPost(id);
@@ -165,13 +192,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
             {/* Content Area */}
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 items-start">
               <article className="min-w-0">
-                <div className="space-y-8 text-lg md:text-xl leading-relaxed text-gray-700 font-serif">
+                <div className="space-y-6 text-lg md:text-xl leading-relaxed text-gray-700">
                   {cleanContent.map((paragraph, idx) => (
-                    <p key={idx} className="first-letter:text-3xl first-letter:font-bold first-letter:text-primary first-letter:mr-1 first-letter:float-left first-letter:leading-none">
-                      {idx === 0 ? paragraph : paragraph}
+                    <p key={idx} className="mb-6 leading-relaxed">
+                      {parseContentWithLinks(paragraph)}
                     </p>
                   ))}
-                  {/* Note: the drop cap logic above is simplified, usually we'd only want it on the very first paragraph */}
                 </div>
 
                 <div className="mt-16 pt-8 border-t border-gray-100">

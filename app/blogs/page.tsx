@@ -44,10 +44,10 @@ const samplePosts: BlogPost[] = [
   {
     id: "1",
     title: "Structro Completes New Railway Bridge in Assam",
-    content: "Structro Infratech is proud to announce the successful completion of a major railway bridge project in Assam. The bridge spans 150 meters and connects crucial transportation networks in the region.\n\nOur team of engineers worked tirelessly to complete this project on schedule while maintaining the highest safety standards. The project involved complex steel arch construction techniques that we have perfected over years of experience.\n\nThis bridge will significantly improve transportation connectivity for thousands of people in the region.",
-    author: "Structro Team",
+    content: "Structro Infratech is proud to announce the successful completion of a major railway bridge project in Assam. The bridge spans 150 meters and connects crucial transportation networks in the region.\n\nOur team of engineers worked tirelessly to complete this project on schedule while maintaining the highest safety standards. The project involved complex [bridge engineering](/services/bridge) techniques that we have perfected over years of experience under [heavy infrastructure](/services) standards.\n\nThis bridge will significantly improve transportation connectivity for thousands of people in the region.",
+    author: "Nipu Baishya & Engineering Team",
     featuredImage: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2070",
-    tags: ["bridge", "infrastructure", "railway", "assam"],
+    tags: ["Bridge Engineering", "Heavy Infrastructure"],
     publishDate: "2024-01-15",
     status: "published",
     createdAt: Date.now()
@@ -55,10 +55,10 @@ const samplePosts: BlogPost[] = [
   {
     id: "2",
     title: "The Future of Steel Structures in Northeast India",
-    content: "Northeast India is witnessing a Infrastructure revolution. With government focus on connectivity and industrial development, steel structures are playing a crucial role.\n\nFrom railway bridges to PEB buildings, the demand for quality steel structures is at an all-time high. Structro Infratech is at the forefront of this transformation.\n\nWe continue to invest in latest technology and skilled workforce to deliver world-class infrastructure projects.",
-    author: "Structro Team",
+    content: "Northeast India is witnessing an infrastructure revolution. With government focus on connectivity and industrial development, steel structures are playing a crucial role.\n\nFrom railway bridges to [PEB buildings](/services/peb), the demand for quality [steel structures](/services/steel) is at an all-time high. Structro Infratech is at the forefront of this transformation.\n\nWe continue to invest in the latest technology and a skilled workforce to deliver world-class infrastructure projects.",
+    author: "Nipu Baishya & Engineering Team",
     featuredImage: "https://images.unsplash.com/photo-1531306728370-e2ebd0ea0b4f?q=80&w=2070",
-    tags: ["steel", "engineering", "infrastructure"],
+    tags: ["Steel Structures", "Engineering Design"],
     publishDate: "2024-02-01",
     status: "published",
     createdAt: Date.now()
@@ -66,10 +66,10 @@ const samplePosts: BlogPost[] = [
   {
     id: "3",
     title: "PEB Buildings: The Smart Choice for Industrial Construction",
-    content: "Pre-Engineered Buildings (PEB) have revolutionized industrial construction. Here's why more companies are choosing PEB solutions.\n\n1. Faster construction time\n2. Cost-effective\n3. Flexible design options\n4. Easy expansion\n\nStructro has delivered numerous PEB projects across Northeast India, from warehouses to manufacturing facilities.",
-    author: "Structro Team",
+    content: "Pre-Engineered Buildings (PEB) have revolutionized industrial construction. Here's why more companies are choosing PEB solutions.\n\n1. Faster construction time\n2. Cost-effective\n3. Flexible design options\n4. Easy expansion\n\nStructro has delivered numerous [PEB projects](/projects) across Northeast India, from warehouses to manufacturing facilities. Learn more about our [PEB buildings](/services/peb) catalog.",
+    author: "Nipu Baishya & Engineering Team",
     featuredImage: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2070",
-    tags: ["peb", "industrial", "construction"],
+    tags: ["PEB Buildings", "Turnkey Construction"],
     publishDate: "2024-02-15",
     status: "published",
     createdAt: Date.now()
