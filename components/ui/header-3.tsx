@@ -71,7 +71,7 @@ export function Header() {
 					<Link href="/" className="flex items-center gap-2 group">
 						<div className="relative w-10 h-10 transition-all duration-300">
 							<Image 
-								src="/images/transparantLogo.png" 
+								src="/images/logo.svg" 
 								alt="Structro Logo" 
 								fill
 								className={cn("object-contain transition-opacity duration-300", 
@@ -79,7 +79,7 @@ export function Header() {
 								)}
 							/>
 							<Image 
-								src="/images/logo.png" 
+								src="/images/logo.svg" 
 								alt="Structro Logo" 
 								fill
 								className={cn("object-contain transition-opacity duration-300", 

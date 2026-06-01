@@ -119,7 +119,7 @@ const servicesData = [
       },
       {
         title: "Large Clear Spans",
-        description: "Buildings can be supplied to around 80 meters clear span.",
+        description: "Buildings can be supplied up to 80 meters clear span.",
       },
       {
         title: "Quality Control",
@@ -553,7 +553,7 @@ const productsData = [
   },
   {
     id: "multipurpose-containers",
-    title: "Multipurpose Industrial Containers",
+    title: "Industrial Storage Tanks",
     specs: "500 Ltr to 10,000 Ltrs.",
     description:
       "Engineered to safely store and transport a wide range of materials, including liquids, chemicals, and bulk solids. These heavy-duty industrial containers are fabricated from specialized metals designed to withstand harsh industrial environments.",

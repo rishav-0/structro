@@ -88,10 +88,11 @@ export default async function Footer() {
               <li><Link href="/projects" className="hover:text-primary transition-colors">Our Projects</Link></li>
               <li><Link href="/services" className="hover:text-primary transition-colors">Services</Link></li>
               <li><Link href="/contact" className="hover:text-primary transition-colors">Contact Us</Link></li>
-              <li>
-                <DownloadBrochureButton brochureUrl={brochureUrl} brochureTitle={brochureTitle} />
-              </li>
-              <li><Link href="/admin" className="hover:text-primary transition-colors">Admin</Link></li>
+              {brochureUrl && (
+                <li>
+                  <DownloadBrochureButton brochureUrl={brochureUrl} brochureTitle={brochureTitle} />
+                </li>
+              )}
             </ul>
           </div>
 
@@ -170,8 +171,8 @@ export default async function Footer() {
             <h4 className="font-semibold text-lg mb-6 uppercase tracking-wide">Business Links</h4>
             <ul className="space-y-4 text-gray-400 text-sm">
               <li><a href="https://gem.gov.in" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">GeM (Govt. e-Marketplace)</a></li>
-              <li><a href="https://www.indiamart.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">IndiaMART</a></li>
-              <li><a href="https://www.justdial.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">JustDial</a></li>
+              <li><a href="https://www.indiamart.com/structro-infra-tech/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">IndiaMART</a></li>
+              <li><a href="https://jsdl.in/DT-997A7SFQVYJ" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">JustDial</a></li>
             </ul>
           </div>
 

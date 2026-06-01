@@ -1,5 +1,5 @@
 
-
+import type { Metadata } from 'next';
 import { Button } from "@/components/ui/button"
 import { PageHero } from "@/components/page-hero";
 import { ArrowUpRight, CheckCircle, Clock, Shield, Award } from "lucide-react";
@@ -7,6 +7,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { getPublicCollectionData } from "@/lib/public-db-server";
+
+// Scale signals per service — tells buyers minimum project scope at a glance
+const serviceScaleSignals: Record<string, string> = {
+  bridge: "Span range 20m to 500m+ corridors",
+  peb: "From 1,000 sq.ft to 1,00,000+ sq.ft",
+  steel: "Custom scope — warehouses, factories, hangars",
+  design: "Concept to certified drawings",
+  "special-metal": "SS & Inconel — industrial & defence applications",
+};
+
+export const metadata: Metadata = {
+  title: 'Services | Structro Infratech — Bridge, PEB & Steel Contractors Guwahati',
+  description: 'Structro Infratech offers bridge engineering, PEB buildings, steel structures, design services and special metal fabrication across Northeast India. ISO 9001:2015 certified.',
+  keywords: ['Steel Engineering Services Guwahati', 'Bridge Construction Assam', 'PEB Buildings Northeast India', 'Steel Structures Contractor', 'Design Services Guwahati'],
+}
 
 type ServiceSummary = {
   id: string;
@@ -113,6 +128,14 @@ export default async function ServicesPage() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                  {serviceScaleSignals[service.id] && (
+                    <div className="w-full mb-2">
+                      <span className="inline-flex items-center gap-2 bg-primary/5 border border-primary/20 text-primary text-xs font-semibold px-3 py-2 rounded-sm">
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                        {serviceScaleSignals[service.id]}
+                      </span>
+                    </div>
+                  )}
                   <Link href={`/services/${service.id}`} className="w-full sm:w-auto">
                     <Button variant="saffron" size="xl" className="w-full font-bold shadow-md hover:shadow-lg transition-all">
                       TECHNICAL SPECS

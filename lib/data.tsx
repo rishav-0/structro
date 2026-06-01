@@ -93,7 +93,7 @@ export const servicesData = [
       { title: "Reduced Construction Time", description: "Buildings are typically delivered in just a few weeks after approval of drawings. Foundation and anchor bolts are cast parallel with drawing, while fabrication is done in the factory." },
       { title: "Lower Cost", description: "Significant savings in design, manufacturing, and site erection costs due to the systems approach." },
       { title: "Flexibility of Expansion", description: "Buildings can be easily expanded in length by adding additional bays. Future expansion in width and height is also possible by pre-designing for it." },
-      { title: "Large Clear Spans", description: "Buildings can be supplied to around 80 meters clear span." },
+      { title: "Large Clear Spans", description: "Buildings can be supplied up to 80 meters clear span." },
       { title: "Quality Control", description: "Since buildings are manufactured entirely in the factory under controlled conditions, the highest quality is assured." },
       { title: "Low Maintenance", description: "Buildings are supplied with high-quality paint systems for steel and cladding to provide long durability and low maintenance costs." }
     ],
@@ -459,7 +459,7 @@ export const featuredProductsData = [
   },
   {
     id: "multipurpose-containers",
-    title: "Multipurpose Industrial Containers",
+    title: "Industrial Storage Tanks",
     specs: "500 Ltr to 10,000 Ltrs.",
     description: "Engineered to safely store and transport a wide range of materials, including liquids, chemicals, and bulk solids. These heavy-duty industrial containers are fabricated from specialized metals designed to withstand harsh industrial environments.",
     features: ["Corrosion-Resistant Coating", "Custom Valve Fittings", "High Impact Strength", "Stackable Designs"],

@@ -7,8 +7,8 @@ import { CheckCircle2, Target, ShieldCheck, Factory, Settings, Flame, Activity }
 
 export const metadata: Metadata = {
   title: 'About Us | Structro Infra Tech',
-  description: 'Learn about Structro Infra Tech, pioneers of structural engineering and high-precision construction in Assam.',
-  keywords: ['About Structro', 'Company History', 'Steel Engineering Guwahati', 'Assam Construction', 'Core Values'],
+  description: 'Learn about Structro Infra Tech — founded in 2000, Northeast India\'s premier steel engineering firm with 55,000 sq.ft in-house fabrication and 500+ completed projects.',
+  keywords: ['About Structro', 'Steel Engineering Guwahati', 'Assam Construction Company', 'Northeast India Infrastructure', 'ISO Certified Steel Contractor'],
 }
 
 export default function AboutPage() {
@@ -96,7 +96,7 @@ export default function AboutPage() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">VISION</h3>
-                  <p className="text-gray-600">To be the most trusted structural benchmark in Northeast India by 2030.</p>
+                  <p className="text-gray-600">To be the most trusted structural benchmark in Northeast India.</p>
                 </div>
               </div>
               <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 flex gap-6 items-start">
@@ -194,7 +194,7 @@ export default function AboutPage() {
               LEADERSHIP.
             </h2>
             <div className="relative aspect-[3/4] rounded-lg overflow-hidden mb-6">
-              <Image src="/images/process/e.jpeg" alt="S. K. Baruah" fill className="object-cover grayscale" />
+              <Image src="/images/process/e.jpeg" alt="Nipu Baishya, Managing Director" fill className="object-cover grayscale" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900">Nipu Baishya</h3>
             <p className="text-accent font-medium uppercase tracking-wider text-sm mt-1">Managing Director</p>
@@ -205,7 +205,7 @@ export default function AboutPage() {
             </h3>
             <div className="space-y-6 text-gray-600 leading-relaxed text-lg mb-12">
               <p>
-                S. K. Baruah brings extensive specialized technical expertise to the structural landscape of Northeast India. As the driving energy behind Structro Infra Tech, he has transitioned the organization from a four-person visionary mission to an industry benchmark for seismic-resilient construction today.
+                Nipu Baishya brings extensive specialized technical expertise to the structural landscape of Northeast India. As the driving energy behind Structro Infra Tech, he has transitioned the organization from a four-person visionary mission to an industry benchmark for seismic-resilient construction today.
               </p>
               <p>
                 His leadership is defined by an uncompromising "Engineering-First" philosophy, where every joint, weld, and foundation is treated as a critical link in regional safety. Under his tenure, the firm has delivered over 500+ projects, consistently bridging the gap between sophisticated corporate-grade engineering and the unique geotechnical complexities of the Brahmaputra valley.
@@ -332,6 +332,19 @@ export default function AboutPage() {
       {/* Map Section */}
       <div className="bg-gray-100 py-16 border-t border-gray-200">
         <Container>
+          {/* 8-State Coverage */}
+          <div className="text-center mb-12">
+            <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4">SERVICE COVERAGE</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Operating Across All 8 Northeast Indian States</h2>
+            <p className="text-gray-600 mb-8">From our Guwahati base, we deliver steel engineering solutions across the entire Northeast region.</p>
+            <div className="flex flex-wrap justify-center gap-3 mb-4">
+              {['Assam', 'Meghalaya', 'Nagaland', 'Manipur', 'Mizoram', 'Tripura', 'Arunachal Pradesh', 'Sikkim'].map((state) => (
+                <span key={state} className="bg-primary/10 text-primary font-semibold px-4 py-2 rounded-full text-sm border border-primary/20">
+                  {state}
+                </span>
+              ))}
+            </div>
+          </div>
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Find Us</h2>
             <p className="text-gray-600 mt-2">Visit both our head office and workshop locations in Assam</p>

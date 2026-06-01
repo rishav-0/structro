@@ -87,10 +87,10 @@ export function HomeClient({
   const [launches] = useState<HomeLaunch[]>(initialLaunches);
 
   const stats = [
-    { label: "DISTRICTS COVERED", value: "32+" },
-    { label: "VERIFIED PROJECTS", value: "500+" },
-    { label: "TONNAGE FABRICATED", value: "100K+" },
-    { label: "STATES COVERED", value: "7+" },
+    { label: "DISTRICTS COVERED", value: "32+", since: "Since 2000" },
+    { label: "VERIFIED PROJECTS", value: "500+", since: "Since 2000" },
+    { label: "TONNAGE FABRICATED", value: "100K+", since: "Since 2000" },
+    { label: "STATES COVERED", value: "7+", since: "Across Northeast India" },
   ];
 
   const values = [
@@ -137,6 +137,9 @@ export function HomeClient({
                 </h2>
                 <p className="text-sm text-gray-500 font-bold uppercase tracking-wide">
                   {stat.label}
+                </p>
+                <p className="text-xs text-gray-400 font-medium mt-1">
+                  {stat.since}
                 </p>
               </motion.div>
             ))}
@@ -299,7 +302,7 @@ export function HomeClient({
               <p className="text-primary text-sm font-bold uppercase tracking-[0.2em] mb-4">
                 Manufacturing
               </p>
-              <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">Featured Products</h2>
+              <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">Rapid-Deploy Steel Solutions</h2>
             </div>
             <Link href="/products" className="hidden md:flex items-center font-bold text-gray-900 hover:text-primary transition-colors group">
               Browse Catalog 
@@ -368,8 +371,8 @@ export function HomeClient({
               <p className="text-primary text-sm font-bold uppercase tracking-[0.2em] mb-4">
                 Innovations
               </p>
-              <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">New Launches</h2>
-              <p className="text-gray-500 mt-3 max-w-xl">Discover our latest additions to the heavy engineering portfolio.</p>
+              <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">Recent Project Milestones</h2>
+              <p className="text-gray-500 mt-3 max-w-xl">Explore our latest completed projects from the heavy engineering portfolio.</p>
             </div>
           </motion.div>
 

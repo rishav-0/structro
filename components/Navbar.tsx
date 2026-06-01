@@ -41,7 +41,7 @@ const Navbar = () => {
         {/* Brand */}
         <Link href="/" className="relative flex items-center gap-2 group h-10 w-32 md:h-12 md:w-40">
           <Image
-            src={scrolled || isOpen ? "/images/logo.png" : "/images/transparantLogo.png"}
+            src={scrolled || isOpen ? "/images/logo.svg" : "/images/logo.svg"}
             alt="Structro Logo"
             fill
             className={`object-contain transition-all duration-300 transform group-hover:scale-105 ${scrolled || isOpen ? "invert-0" : "invert"}`}

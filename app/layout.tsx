@@ -21,8 +21,8 @@ const organizationSchema = {
   "@type": ["Organization", "LocalBusiness"],
   name: "Structro Infratech",
   url: siteUrl.toString(),
-  logo: new URL("/images/logo.png", siteUrl).toString(),
-  image: new URL("/images/logo.png", siteUrl).toString(),
+  logo: new URL("/images/logo.svg", siteUrl).toString(),
+  image: new URL("/images/logo.svg", siteUrl).toString(),
   email: "structro.infratech@gmail.com",
   telephone: "+91-9678027684",
   address: [
@@ -61,8 +61,8 @@ const organizationSchema = {
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
-  title: 'Structro Infratech | Steel Engineering Company Guwahati | Bridge Construction Assam',
-  description: 'Structro Infratech is a leading steel engineering company in Guwahati, Assam. Specializing in bridge engineering, PEB buildings, and steel structures. ISO 9001:2015 certified.',
+  title: 'Structro Infratech | Steel Engineering Company Guwahati',
+  description: 'Structro Infratech — Guwahati\'s leading steel engineering firm. PEB buildings, bridge construction & industrial structures across Northeast India. ISO 9001:2015 certified.',
   keywords: [
     'Steel Engineering Company Guwahati',
     'Bridge Construction Assam',
@@ -88,10 +88,10 @@ export const metadata: Metadata = {
     url: siteUrl.toString(),
     images: [
       {
-        url: '/images/logo.png',
+        url: '/images/og-banner.jpg',
         width: 1200,
         height: 630,
-        alt: 'Structro Infratech Logo',
+        alt: 'Structro Infratech — Steel Engineering Company Guwahati',
       },
     ],
   },
@@ -106,13 +106,15 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  // TODO: Replace the string below with your real Google Search Console verification code
+  // Steps: search.google.com/search-console → Add property → HTML tag → copy content= value
   verification: {
-    google: 'google-site-verification-code',
+    google: 'google-site-verification-code', // ← REPLACE with real code before going live
   },
   icons: {
-    icon: '/images/logo.png',
-    shortcut: '/images/logo.png',
-    apple: '/images/logo.png',
+    icon: '/images/logo.svg',
+    shortcut: '/images/logo.svg',
+    apple: '/images/logo.svg',
   },
 }
 
