@@ -72,7 +72,7 @@ export default function SiteCta({
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-white/58">
 
-              <span>500+ completed projects</span>
+              <span>5000+MT steel fabricated</span>
               <span className="hidden h-1 w-1 rounded-full bg-white/30 sm:block" />
               <span>ISO 9001:2015 certified</span>
             </div>

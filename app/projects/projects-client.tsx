@@ -94,9 +94,9 @@ export function ProjectsClient({ initialProjects, availableCategories = [] }: { 
 
     
       {/* Filters Container */}
-      <div className="md:sticky md:top-16 z-40">
+      <div className="z-40">
         {/* Mobile Filter Toggle Button */}
-        <div className="md:hidden bg-white py-4 border-b border-gray-200 sticky top-16 z-50">
+        <div className="md:hidden bg-white py-4 border-b border-gray-200 z-50">
           <Container>
             <Button 
               onClick={() => setShowMobileFilters(!showMobileFilters)}
