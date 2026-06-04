@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { getAdminDocs, addAdminDoc, updateAdminDoc, deleteAdminDoc } from "@/app/actions/admin-db";
 import { AdminImageUploadField } from "@/components/admin-image-upload-field";
+import { AdminGalleryUpload } from "@/components/admin-gallery-upload";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,6 +19,12 @@ interface ServiceCatalogItem {
   description: string;
 }
 
+interface GalleryImage {
+  url: string;
+  alt?: string;
+  publicId?: string;
+}
+
 interface Service {
   id: string;
   title: string;
@@ -26,6 +33,7 @@ interface Service {
   homeDescription: string;
   features: string[];
   image: string;
+  images?: GalleryImage[];
   alt: string;
   navDescription: string;
   catalog: ServiceCatalogItem[];
@@ -40,6 +48,7 @@ const initialForm: Omit<Service, "id" | "createdAt" | "updatedAt"> = {
   homeDescription: "",
   features: [],
   image: "",
+  images: [],
   alt: "",
   navDescription: "",
   catalog: [],
@@ -146,6 +155,7 @@ export default function ServicesPage() {
       homeDescription: service.homeDescription,
       features: service.features,
       image: service.image,
+      images: service.images || [],
       alt: service.alt,
       navDescription: service.navDescription,
       catalog: service.catalog,
@@ -248,10 +258,17 @@ export default function ServicesPage() {
               </div>
               <div className="space-y-2">
                 <AdminImageUploadField
-                  label="Image"
+                  label="Main Image (used as thumbnail)"
                   value={form.image}
                   onChange={(value) => setForm((current) => ({ ...current, image: value }))}
                   placeholder="Upload or enter image URL"
+                  folder="services"
+                />
+              </div>
+              <div className="border-t border-white/10 pt-4">
+                <AdminGalleryUpload
+                  value={form.images || []}
+                  onChange={(value) => setForm((current) => ({ ...current, images: value }))}
                   folder="services"
                 />
               </div>

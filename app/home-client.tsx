@@ -90,9 +90,8 @@ export function HomeClient({
   const [launches] = useState<HomeLaunch[]>(initialLaunches);
 
   const stats = [
-    { label: "DISTRICTS COVERED", end: 32, suffix: "+" },
-    { label: "VERIFIED PROJECTS", end: 500, suffix: "+" },
-    { label: "TONNAGE FABRICATED", end: 100, suffix: "K+" },
+    { label: "PROJECTS", end: 200, suffix: "+" },
+    { label: "TONNAGE EXECUTED", end: 100, suffix: "K+" },
     { label: "STATES COVERED", end: 7, suffix: "+", since: "Across Northeast India" },
   ];
 
@@ -131,7 +130,7 @@ export function HomeClient({
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center"
+            className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 text-center"
           >
             {stats.map((stat, index) => (
               <motion.div variants={fadeInUp} key={index} className="flex flex-col items-center">

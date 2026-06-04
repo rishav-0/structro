@@ -171,13 +171,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
         <Container>
           <div className="max-w-4xl mx-auto">
             {/* Featured Image */}
-            <div className="relative aspect-[16/9] md:aspect-[21/9] rounded-2xl overflow-hidden shadow-2xl mb-16 group">
+            <div className="relative aspect-[16/9] md:aspect-[21/9] rounded-2xl overflow-hidden mb-16 group bg-transparent">
               {post.featuredImage ? (
                 <Image
                   src={post.featuredImage}
                   alt={post.title}
                   fill
-                  className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                  className="object-contain transition-transform duration-1000 group-hover:scale-105"
                   priority
                   sizes="(max-width: 1280px) 100vw, 1200px"
                 />
@@ -186,7 +186,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
                   <Tag className="h-12 w-12 text-gray-300" />
                 </div>
               )}
-              <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-2xl" />
             </div>
 
             {/* Content Area */}
@@ -250,7 +249,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
                       ) : (
                         <div className="w-full h-full bg-gray-100" />
                       )}
-                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
                     </div>
                     <div className="p-6 flex flex-col flex-grow">
                       <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors line-clamp-2 leading-tight">

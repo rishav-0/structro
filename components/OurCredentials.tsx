@@ -2,18 +2,7 @@
 
 import React from "react";
 import { motion, type Variants } from "framer-motion";
-import {
-  ArrowUpRight,
-  Anchor,
-  Factory,
-  Landmark,
-  Plane,
-  Route,
-  Shield,
-  Train,
-  Wrench,
-  type LucideIcon,
-} from "lucide-react";
+import Image from "next/image";
 import { Container } from "./ui/container";
 
 const fadeUp: Variants = {
@@ -36,56 +25,56 @@ const stagger: Variants = {
 const clients = [
   {
     category: "Central Govt.",
-    icon: Train,
+    logo: "/department/indianrailways.png",
     name: "Indian Railways",
     description: "Ministry of Railways",
     highlight: false,
   },
   {
     category: "Inland Waterways",
-    icon: Anchor,
+    logo: "/department/iwai.png",
     name: "IWAI",
     description: "Inland Waterways Authority",
     highlight: false,
   },
   {
     category: "Aviation",
-    icon: Plane,
+    logo: "/department/aai.png",
     name: "AAI",
     description: "Airports Authority of India",
     highlight: false,
   },
   {
     category: "Infrastructure",
-    icon: Route,
+    logo: "/department/nhidcl.png",
     name: "NHIDCL",
     description: "National Highways & Infra",
     highlight: true,
   },
   {
     category: "Strategic Infra",
-    icon: Shield,
+    logo: "/department/bro.png",
     name: "BRO",
     description: "Border Roads Organization",
     highlight: false,
   },
   {
     category: "Defense",
-    icon: Wrench,
+    logo: "/department/mes.png",
     name: "MES",
     description: "Military Engineer Services",
     highlight: false,
   },
   {
     category: "Public Works",
-    icon: Landmark,
+    logo: "/department/govt.png",
     name: "State Govt.",
     description: "Government of Assam & Others",
     highlight: false,
   },
   {
     category: "Industrial",
-    icon: Factory,
+    logo: "/department/private.png",
     name: "Private Parties",
     description: "Major Corporate Clients",
     highlight: false,
@@ -151,8 +140,6 @@ const OurCredentials = () => {
 type Credential = (typeof clients)[number];
 
 function CredentialCard({ client, index }: { client: Credential; index: number }) {
-  const Icon = client.icon as LucideIcon;
-
   return (
     <motion.div
       variants={fadeUp}
@@ -162,8 +149,14 @@ function CredentialCard({ client, index }: { client: Credential; index: number }
       <div className="absolute top-0 right-0 w-24 h-24 bg-gray-50 rounded-bl-[100px] z-0 group-hover:bg-primary/5 transition-colors duration-500" />
       
       <div className="flex justify-between items-start relative z-10">
-        <div className="w-14 h-14 rounded-md bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:text-white transition-all duration-300 text-primary shadow-sm">
-          <Icon className="w-7 h-7" strokeWidth={1.5} />
+        <div className="w-20 h-20 rounded-md bg-white border border-gray-100 flex items-center justify-center group-hover:border-primary/50 transition-all duration-300 shadow-sm p-2">
+          <Image 
+            src={client.logo} 
+            alt={client.name} 
+            width={64} 
+            height={64} 
+            className="w-full h-full object-contain" 
+          />
         </div>
         <span className="text-gray-200 font-bold text-2xl group-hover:text-primary/20 transition-colors">
           {String(index + 1).padStart(2, "0")}
@@ -184,9 +177,6 @@ function CredentialCard({ client, index }: { client: Credential; index: number }
 
       {/* Animated bottom border */}
       <div className="absolute bottom-0 left-0 h-1 bg-primary w-0 group-hover:w-full transition-all duration-500 ease-out" />
-      
-      {/* Subtle hover icon */}
-      <ArrowUpRight className="absolute bottom-7 right-7 w-5 h-5 text-primary opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-500" />
     </motion.div>
   );
 }

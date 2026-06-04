@@ -1,12 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ArrowLeft, ArrowUpRight, CheckCircle, Target, Wrench, Building2, FlaskConical, Layers } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import type { Metadata } from "next";
 import { getPublicCollectionData } from "@/lib/public-db-server";
+import Image from "next/image";
+import { ImageGallery } from "@/components/image-gallery";
+
+interface GalleryImage {
+  url: string;
+  alt?: string;
+}
 
 interface Service {
   id: string;
@@ -16,6 +22,7 @@ interface Service {
   homeDescription: string;
   features: string[];
   image: string;
+  images?: GalleryImage[];
   alt: string;
   navDescription: string;
   catalog: { title: string; description: string }[];
@@ -335,13 +342,13 @@ export default async function ServicePage({ params }: { params: Promise<{ id: st
                 </Link>
               </div>
             </div>
-            <div className="relative aspect-4/3 overflow-hidden">
-              <Image
-                src={service.image}
-                alt={service.alt}
-                fill
-                className="object-cover"
+            <div className="relative">
+              <ImageGallery
+                mainImage={service.image}
+                mainAlt={service.alt}
+                images={service.images}
                 priority
+                containerClassName="relative aspect-4/3 overflow-hidden rounded-lg bg-transparent"
               />
             </div>
           </div>
@@ -446,14 +453,13 @@ export default async function ServicePage({ params }: { params: Promise<{ id: st
           <div className="absolute bottom-0 left-0 h-px w-full bg-linear-to-r from-transparent via-gray-200 to-transparent" />
           <Container>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              <div className="group relative aspect-4/3 overflow-hidden rounded-sm shadow-2xl">
+              <div className="group relative aspect-4/3 overflow-hidden rounded-sm">
                 <Image 
                   src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop"
                   alt="Technical Excellence"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-primary/20 mix-blend-multiply" />
                 <div className="absolute inset-0 flex items-center justify-center p-8">
                    <div className="flex h-full w-full flex-col items-center justify-center border border-white/70 bg-white/55 p-6 text-center backdrop-blur-[2px]">
                      <p className="text-3xl font-extrabold uppercase tracking-[0.2em] text-gray-900 drop-shadow-lg">Structural Accuracy</p>

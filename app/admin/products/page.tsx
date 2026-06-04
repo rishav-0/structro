@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { getAdminDocs, addAdminDoc, updateAdminDoc, deleteAdminDoc } from "@/app/actions/admin-db";
 import { AdminImageUploadField } from "@/components/admin-image-upload-field";
+import { AdminGalleryUpload } from "@/components/admin-gallery-upload";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,6 +13,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Plus, Pencil, Trash2, Search, Package, Tag } from "lucide-react";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
+interface GalleryImage {
+  url: string;
+  alt?: string;
+  publicId?: string;
+}
+
 interface Product {
   id: string;
   title: string;
@@ -19,6 +26,7 @@ interface Product {
   description: string;
   features: string[];
   image: string;
+  images?: GalleryImage[];
   createdAt: number;
   updatedAt: number;
 }
@@ -29,6 +37,7 @@ const initialForm: Omit<Product, "id" | "createdAt" | "updatedAt"> = {
   description: "",
   features: [],
   image: "",
+  images: [],
 };
 
 import { AdminPagination } from "@/components/admin-pagination";
@@ -128,6 +137,7 @@ export default function ProductsPage() {
       description: product.description,
       features: product.features,
       image: product.image,
+      images: product.images || [],
     });
     setFeaturesInput(Array.isArray(product.features) ? product.features.join(", ") : "");
     setEditingId(product.id);
@@ -226,10 +236,17 @@ export default function ProductsPage() {
               </div>
               <div className="space-y-2">
                 <AdminImageUploadField
-                  label="Image URL"
+                  label="Main Image (used as thumbnail)"
                   value={form.image}
                   onChange={(value) => setForm((current) => ({ ...current, image: value }))}
                   placeholder="https://..."
+                  folder="products"
+                />
+              </div>
+              <div className="border-t border-white/10 pt-4">
+                <AdminGalleryUpload
+                  value={form.images || []}
+                  onChange={(value) => setForm((current) => ({ ...current, images: value }))}
                   folder="products"
                 />
               </div>

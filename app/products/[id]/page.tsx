@@ -1,10 +1,15 @@
 import { getPublicCollectionData } from "@/lib/public-db-server";
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, ChevronRight, Ruler, Shield, Zap } from "lucide-react";
 import Link from "next/link";
+import { ImageGallery } from "@/components/image-gallery";
+
+interface GalleryImage {
+  url: string;
+  alt?: string;
+}
 
 interface Product {
   id: string;
@@ -13,6 +18,7 @@ interface Product {
   description: string;
   features: string[];
   image: string;
+  images?: GalleryImage[];
 }
 
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
@@ -58,19 +64,13 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             </div>
 
             <div className="relative">
-              <div className="absolute -inset-4 rounded-[2rem] bg-primary/8 blur-2xl" />
-              <div className="relative overflow-hidden rounded-[2rem] border border-gray-200 bg-white p-3 shadow-[0_24px_60px_rgba(15,23,42,0.14)]">
-                <div className="relative aspect-5/4 overflow-hidden rounded-[1.4rem] bg-gray-100">
-                  <Image
-                    src={product.image}
-                    alt={product.title}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                  <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-black/45 via-black/10 to-transparent" />
-                </div>
-              </div>
+              <ImageGallery
+                mainImage={product.image}
+                mainAlt={product.title}
+                images={product.images}
+                priority
+                containerClassName="relative aspect-5/4 overflow-hidden rounded-lg bg-transparent"
+              />
             </div>
           </div>
         </Container>

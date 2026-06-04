@@ -1,10 +1,15 @@
 import { getPublicCollectionData } from "@/lib/public-db-server";
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { MapPin, Building, Calendar, Scale, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { ImageGallery } from "@/components/image-gallery";
+
+interface GalleryImage {
+  url: string;
+  alt?: string;
+}
 
 interface Project {
   id: string | number;
@@ -14,6 +19,7 @@ interface Project {
   serviceId?: string;
   src: string;
   alt: string;
+  images?: GalleryImage[];
   isVideo?: boolean;
   client?: string;
   scope?: string;
@@ -54,18 +60,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
     <div className="bg-white">
       <article className="border-b border-gray-200 bg-gray-50 pt-28 pb-12 md:pt-32 md:pb-16">
         <Container>
-          <div className="relative overflow-hidden rounded-[2rem] border border-gray-200 bg-white p-3 shadow-[0_24px_60px_rgba(15,23,42,0.12)]">
-            <div className="relative aspect-16/8 overflow-hidden rounded-[1.5rem] bg-gray-100 md:aspect-16/7">
-              <Image
-                src={project.src}
-                alt={project.alt || "Project Image"}
-                fill
-                priority
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-linear-to-t from-black/55 via-black/10 to-transparent" />
-            </div>
-          </div>
+          <ImageGallery
+            mainImage={project.src}
+            mainAlt={project.alt || "Project Image"}
+            images={project.images}
+            priority
+            containerClassName="relative aspect-16/8 overflow-hidden rounded-lg bg-transparent md:aspect-16/7"
+          />
 
           <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-7">

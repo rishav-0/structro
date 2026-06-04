@@ -296,13 +296,13 @@ export function ProjectsClient({ initialProjects, availableCategories = [] }: { 
                   Serving All of Northeast India
                 </h2>
                 <p className="text-gray-600 leading-relaxed mb-6">
-                  Structro Infratech has successfully delivered projects across Assam and the entire 
+                  Structro Infratech has successfully delivered projects across the entire 
                   Northeast India region. Our expertise in handling diverse geographical and 
                   climatic conditions makes us the preferred choice for infrastructure development 
                   in the region.
                 </p>
                 <div className="flex flex-wrap justify-center lg:justify-start gap-2">
-                  {["Guwahati", "Assam", "Meghalaya", "Nagaland", "Manipur", "Tripura", "Mizoram", "Arunachal Pradesh"].map((region) => (
+                  {["Guwahati", "Assam", "Meghalaya", "Nagaland", "Manipur", "Bihar","Tripura", "Mizoram", "Arunachal Pradesh"].map((region) => (
                     <span key={region} className="bg-primary/10 text-primary px-3 py-1 text-sm font-medium rounded-sm">
                       {region}
                     </span>

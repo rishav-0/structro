@@ -8,38 +8,37 @@ import { StatsCounter } from "@/components/StatsCounter";
 
 export const metadata: Metadata = {
   title: 'About Us | Structro Infra Tech',
-  description: 'Learn about Structro Infra Tech — founded in 2000, Northeast India\'s premier steel engineering firm with 55,000 sq.ft in-house fabrication and 500+ completed projects.',
+  description: 'Learn about Structro Infra Tech — founded in 2000, Northeast India\'s premier steel engineering firm with 55,000 sq.ft in-house fabrication and 200+ completed projects.',
   keywords: ['About Structro', 'Steel Engineering Guwahati', 'Assam Construction Company', 'Northeast India Infrastructure', 'ISO Certified Steel Contractor'],
 }
 
 export default function AboutPage() {
   
   const stats = [
-    { label: "DISTRICTS COVERED", end: 32, suffix: "+" },
-    { label: "VERIFIED PROJECTS", end: 500, suffix: "+" },
-    { label: "TONNAGE FABRICATED", end: 100, suffix: "K+" },
+    { label: "PROJECTS", end: 200, suffix: "+" },
+    { label: "TONNAGE EXECUTED", end: 100, suffix: "K+" },
     { label: "STATES COVERED", end: 7, suffix: "+" },
   ];
 
   const capabilities = [
     {
       title: "Precision Cutting",
-      description: "High-definition CNC Plasma cutting for millimetric accuracy.",
+      description: "High-accuracy and Plasma cutting systems engineered for precise structural fabrication and dimensional consistency.",
       icon: <Settings className="w-6 h-6 text-accent" />
     },
     {
-      title: "Auto Welding",
-      description: "Submerged Arc Welding (SAW) for deep-penetration structural joints.",
+      title: "Advanced Welding",
+      description: "Certified welding procedures and quality-controlled fabrication methods designed for high-strength structural performance.",
       icon: <Flame className="w-6 h-6 text-accent" />
     },
     {
-      title: "Surface Prep",
-      description: "Integrated shot-blasting unit for superior paint adhesion.",
+      title: "Surface Preparation",
+      description: "Industrial-grade finishing and surface treatment processes that improve corrosion resistance and long-term durability.",
       icon: <Factory className="w-6 h-6 text-accent" />
     },
     {
-      title: "Load Testing",
-      description: "In-house hydraulic rigs for component-level stress verification.",
+      title: "Load Testing & Inspection",
+      description: "Comprehensive inspection and testing protocols conducted to ensure structural integrity, fabrication accuracy, and project compliance.",
       icon: <Activity className="w-6 h-6 text-accent" />
     }
   ];
@@ -62,12 +61,15 @@ export default function AboutPage() {
             HISTORY OF US.
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-gray-600 leading-relaxed text-lg">
+        <div className="max-w-5xl mx-auto space-y-6 text-gray-600 leading-relaxed text-lg">
           <p>
-            Before we were a firm, we were a mission. The journey of Structro Infra Tech began as the collective brainchild of four visionaries who identified a fundamental stagnation in regional development: the reliance on outdated methods for critical steel infrastructure.
+            Before Structro became an infrastructure company, it began as a response to a growing challenge in Northeast India — the need for modern, dependable, and engineering-driven structural solutions capable of withstanding the region’s demanding terrain and seismic conditions.
           </p>
           <p>
-            Driven by the goal to upgrade the traditional steel engineering processes in Northeast India, they spent years developing proprietary technologies and stress-testing methodologies that would eventually become the technical bedrock of our company today.
+            Founded by a Team of Engineering Professionals with deep experience in structural execution and fabrication, Structro was built on a simple principle: infrastructure should not only be constructed quickly, but engineered to perform safely for decades. What started as a focused fabrication and structural works initiative has evolved into a multidisciplinary engineering and infrastructure company delivering high-performance solutions across industrial, commercial, and public-sector projects.
+          </p>
+          <p>
+            Today, Structro combines advanced fabrication capabilities, modern engineering practices, and disciplined project execution to deliver infrastructure that meets the highest standards of strength, precision, and reliability.
           </p>
         </div>
       </Container>
@@ -77,15 +79,18 @@ export default function AboutPage() {
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight uppercase">
                 Bridging Corporate Excellence with Regional Pride.
               </h2>
               <div className="space-y-6 text-gray-600 leading-relaxed text-lg">
                 <p>
-                  For too long, major infrastructure in Northeast India was built with a generic approach that ignored the region's unique seismic and geotechnical complexities.
+                  For decades, critical infrastructure across Northeast India faced unique engineering challenges — difficult terrain, high rainfall, seismic activity, and logistical complexity. Structro was established to bridge the gap between national-level engineering standards and region-specific execution expertise.
                 </p>
                 <p>
-                  Structro Infra Tech was formed to change that. We bring modern engineering analysis—typically reserved for mega-metros—to the residential, commercial, and industrial projects of Assam. Our mission is to ensure every square foot we build is a square foot that lasts.
+                  We bring a corporate-grade approach to infrastructure development while remaining deeply connected to the realities of the region we serve. Our team understands the technical, environmental, and operational demands of building in Northeast India, enabling us to execute projects with greater precision, efficiency, and long-term durability.
+                </p>
+                <p>
+                  At Structro, every structure represents more than construction — it reflects our commitment to engineering integrity, safety, and regional progress.
                 </p>
               </div>
             </div>
@@ -97,7 +102,7 @@ export default function AboutPage() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">VISION</h3>
-                  <p className="text-gray-600">To be the most trusted structural benchmark in Northeast India.</p>
+                  <p className="text-gray-600">To become Northeast India’s most trusted structural engineering and infrastructure company by delivering resilient, future-ready, and high-performance infrastructure solutions built on innovation, precision, and accountability.</p>
                 </div>
               </div>
               <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 flex gap-6 items-start">
@@ -106,7 +111,7 @@ export default function AboutPage() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">QUALITY</h3>
-                  <p className="text-gray-600">Every join, every foundation, every material choice is verified across a 12-point rigor list.</p>
+                  <p className="text-gray-600">Quality at Structro is embedded into every phase of execution — from engineering design and material selection to fabrication, welding, inspection, and final installation. Our processes follow strict quality-control standards to ensure every structural component achieves maximum durability, dimensional accuracy, and long-term performance reliability.</p>
                 </div>
               </div>
             </div>
@@ -124,9 +129,10 @@ export default function AboutPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight">
               THE STRUCTRO FABRICATION HUB.
             </h2>
-            <p className="text-gray-600 leading-relaxed text-lg mb-12">
-              Our dedicated 55,000 sq. ft. workshop in Guwahati serves as the engineering engine of our operations, allowing us to maintain absolute quality control over every structural component.
-            </p>
+            <div className="text-gray-600 leading-relaxed text-lg mb-12 space-y-4">
+              <p>Our advanced fabrication facility in Guwahati serves as the operational backbone of Structro’s infrastructure capabilities. Designed for precision manufacturing and large-scale structural production, the facility enables us to maintain complete control over fabrication quality, project timelines, and execution efficiency.</p>
+              <p>Equipped with modern machinery, certified welding systems, and skilled fabrication teams, the Structro Fabrication Hub supports the production of structural steel systems for industrial buildings, bridge components, infrastructure projects, and customized engineering applications.</p>
+            </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               {capabilities.map((item, idx) => (
@@ -142,24 +148,25 @@ export default function AboutPage() {
 
             <div className="bg-primary text-white p-8 rounded-lg inline-block">
               <div className="text-5xl font-bold text-accent mb-2">500 MT</div>
-              <div className="text-sm font-bold uppercase tracking-wider">Monthly Fabrication Capacity</div>
+              <div className="text-sm font-bold uppercase tracking-wider mb-4">Monthly Fabrication Capacity</div>
+              <div className="text-sm text-primary-foreground/80 max-w-sm">Structro maintains a scalable production ecosystem capable of supporting fast-track infrastructure projects, industrial developments, and heavy structural fabrication requirements across Northeast India.</div>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-4">
               <div className="relative aspect-square rounded-lg overflow-hidden">
-                <Image src="/images/process/a.jpeg" alt="Welding process" fill className="object-cover" />
+                <Image src="/about/a.png" alt="Welding process" fill className="object-cover" />
               </div>
               <div className="relative aspect-[4/5] rounded-lg overflow-hidden">
-                <Image src="/images/process/b.jpeg" alt="Steel beams" fill className="object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                <Image src="/about/b.png" alt="Steel beams" fill className="object-cover" />
               </div>
             </div>
             <div className="space-y-4 pt-12">
               <div className="relative aspect-[4/5] rounded-lg overflow-hidden">
-                <Image src="/images/process/c.jpeg" alt="Heavy machinery" fill className="object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                <Image src="/about/c.png" alt="Heavy machinery" fill className="object-cover" />
               </div>
               <div className="relative aspect-square rounded-lg overflow-hidden">
-                <Image src="/images/process/d.jpeg" alt="Facility interior" fill className="object-cover" />
+                <Image src="/about/d.png" alt="Facility interior" fill className="object-cover" />
               </div>
             </div>
           </div>
@@ -169,7 +176,7 @@ export default function AboutPage() {
       {/* Stats Section */}
       <div className="bg-primary py-16">
         <Container>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-white/20">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 divide-x divide-white/20">
             {stats.map((stat, index) => (
               <div key={index} className="text-center px-4 flex flex-col items-center">
                 <h2 className="text-4xl md:text-5xl font-bold text-white mb-2 flex items-center justify-center">
@@ -287,7 +294,7 @@ export default function AboutPage() {
                 </span>
               </summary>
               <div className="p-6 pt-0 text-gray-600 leading-relaxed border-t border-gray-100 mt-2">
-                Assam falls in Seismic Zone V, requiring specialized ductility analysis. We also factor in extremely high soil moisture levels and annual flood patterns when designing foundations.
+                Assam falls in Seismic Zone VI, requiring specialized ductility analysis. We also factor in extremely high soil moisture levels and annual flood patterns when designing foundations.
               </div>
             </details>
             
@@ -336,15 +343,9 @@ export default function AboutPage() {
           {/* 8-State Coverage */}
           <div className="text-center mb-12">
             <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4">SERVICE COVERAGE</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Operating Across All 8 Northeast Indian States</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Operating Across the Northeast Indian States</h2>
             <p className="text-gray-600 mb-8">From our Guwahati base, we deliver steel engineering solutions across the entire Northeast region.</p>
-            <div className="flex flex-wrap justify-center gap-3 mb-4">
-              {['Assam', 'Meghalaya', 'Nagaland', 'Manipur', 'Mizoram', 'Tripura', 'Arunachal Pradesh', 'Sikkim'].map((state) => (
-                <span key={state} className="bg-primary/10 text-primary font-semibold px-4 py-2 rounded-full text-sm border border-primary/20">
-                  {state}
-                </span>
-              ))}
-            </div>
+          
           </div>
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Find Us</h2>

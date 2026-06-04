@@ -232,13 +232,21 @@ export function CareersClient({ jobs }: { jobs: Career[] }) {
                   <label className="block text-gray-700 font-medium mb-2 text-sm">
                     Position Applied For
                   </label>
-                  <input
-                    type="text"
+                  <select
                     name="position"
-                    disabled
+                    required
                     value={formData.position}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-sm bg-gray-100 text-gray-500 font-semibold outline-none cursor-not-allowed"
-                  />
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none bg-white transition-all text-gray-800"
+                  >
+                    <option value="General Application">General Application</option>
+                    <option value="Sales">Sales</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Site/Design Engineer">Site/Design Engineer</option>
+                    <option value="Account Executive">Account Executive</option>
+                    <option value="Supervisor">Supervisor</option>
+                    <option value="Others">Others</option>
+                  </select>
                 </div>
               </div>
 

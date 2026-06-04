@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { getAdminDocs, addAdminDoc, updateAdminDoc, deleteAdminDoc } from "@/app/actions/admin-db";
 import { AdminImageUploadField } from "@/components/admin-image-upload-field";
+import { AdminGalleryUpload } from "@/components/admin-gallery-upload";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,6 +16,12 @@ import { Plus, Pencil, Trash2, Search, MapPin, Building, Calendar } from "lucide
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { AdminPagination } from "@/components/admin-pagination";
 
+interface GalleryImage {
+  url: string;
+  alt?: string;
+  publicId?: string;
+}
+
 interface Project {
   id: string;
   title: string;
@@ -23,6 +30,7 @@ interface Project {
   serviceId: string;
   src: string;
   alt: string;
+  images?: GalleryImage[];
   isVideo?: boolean;
   client?: string;
   scope?: string;
@@ -40,6 +48,7 @@ const initialForm: Omit<Project, "id" | "createdAt" | "updatedAt"> = {
   serviceId: "",
   src: "",
   alt: "",
+  images: [],
   isVideo: false,
   client: "",
   scope: "",
@@ -150,6 +159,7 @@ export default function ProjectsPage() {
       serviceId: project.serviceId,
       src: project.src,
       alt: project.alt,
+      images: project.images || [],
       isVideo: project.isVideo || false,
       client: project.client || "",
       scope: project.scope || "",
@@ -298,6 +308,13 @@ export default function ProjectsPage() {
                   onChange={(e) => setForm({ ...form, alt: e.target.value })}
                   placeholder="Alt text for accessibility"
                   className="bg-neutral-800 border-neutral-700"
+                />
+              </div>
+              <div className="border-t border-white/10 pt-4">
+                <AdminGalleryUpload
+                  value={form.images || []}
+                  onChange={(value) => setForm((current) => ({ ...current, images: value }))}
+                  folder="projects"
                 />
               </div>
               <div className="flex items-center gap-2">
