@@ -333,6 +333,42 @@ export default function AboutPage() {
                 Every major structural member—purlins, frames, and custom steel plates—is fabricated in our 55,000 sq. ft. Guwahati Facility to ensure millimetrical accuracy.
               </div>
             </details>
+
+            <details className="group bg-white border border-gray-200 rounded-lg open:border-primary/30 transition-all duration-300">
+              <summary className="flex items-center justify-between p-6 font-bold text-gray-900 cursor-pointer list-none hover:bg-gray-50">
+                <span className="text-lg">05. HOW DO YOU ENSURE WELDING QUALITY AND INTEGRITY?</span>
+                <span className="transition group-open:rotate-180">
+                  <svg fill="none" height="24" shapeRendering="geometricPrecision" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24" width="24" className="text-primary"><path d="M6 9l6 6 6-6"></path></svg>
+                </span>
+              </summary>
+              <div className="p-6 pt-0 text-gray-600 leading-relaxed border-t border-gray-100 mt-2">
+                We employ AWS-certified welders and perform rigorous non-destructive testing (NDT), including ultrasonic and dye penetrant inspections, on all critical structural joints prior to site dispatch.
+              </div>
+            </details>
+
+            <details className="group bg-white border border-gray-200 rounded-lg open:border-primary/30 transition-all duration-300">
+              <summary className="flex items-center justify-between p-6 font-bold text-gray-900 cursor-pointer list-none hover:bg-gray-50">
+                <span className="text-lg">06. CAN PRE-ENGINEERED BUILDINGS (PEB) BE EXPANDED IN THE FUTURE?</span>
+                <span className="transition group-open:rotate-180">
+                  <svg fill="none" height="24" shapeRendering="geometricPrecision" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24" width="24" className="text-primary"><path d="M6 9l6 6 6-6"></path></svg>
+                </span>
+              </summary>
+              <div className="p-6 pt-0 text-gray-600 leading-relaxed border-t border-gray-100 mt-2">
+                Yes. PEB structures are highly flexible and modular. Our designs incorporate specific framing connections that allow for easy longitudinal extension or side expansion with minimal disruption to your ongoing operations.
+              </div>
+            </details>
+
+            <details className="group bg-white border border-gray-200 rounded-lg open:border-primary/30 transition-all duration-300">
+              <summary className="flex items-center justify-between p-6 font-bold text-gray-900 cursor-pointer list-none hover:bg-gray-50">
+                <span className="text-lg">07. WHAT STUFF/GRADES OF STEEL DO YOU TYPICALLY UTILIZE?</span>
+                <span className="transition group-open:rotate-180">
+                  <svg fill="none" height="24" shapeRendering="geometricPrecision" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24" width="24" className="text-primary"><path d="M6 9l6 6 6-6"></path></svg>
+                </span>
+              </summary>
+              <div className="p-6 pt-0 text-gray-600 leading-relaxed border-t border-gray-100 mt-2">
+                We primarily use high-grade structural steel conforming to IS 2062 (Grades E250/E350) and equivalent international standards (such as ASTM A36 or A572), sourced directly from primary national manufacturers like SAIL, TATA, and JSW.
+              </div>
+            </details>
           </div>
         </div>
       </Container>
