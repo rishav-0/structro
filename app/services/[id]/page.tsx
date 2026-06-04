@@ -25,8 +25,19 @@ interface Service {
   images?: GalleryImage[];
   alt: string;
   navDescription: string;
-  catalog: { title: string; description: string }[];
+  catalog: { title: string; description: string; image?: string }[];
 }
+
+const getInitials = (title: string) => {
+  if (!title) return "";
+  return title
+    .split(/\s+/)
+    .map((word) => word[0])
+    .filter(Boolean)
+    .join("")
+    .toUpperCase()
+    .slice(0, 3);
+};
 
 // Per-slug metadata map
 const serviceMetaMap: Record<string, { title: string; description: string; keywords: string[] }> = {
@@ -396,19 +407,45 @@ export default async function ServicePage({ params }: { params: Promise<{ id: st
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {service.catalog && service.catalog.length > 0 ? (
-              service.catalog.map((item, index) => (
-                <div key={index} className="group p-8 border border-gray-100 bg-gray-50 hover:bg-white hover:shadow-2xl hover:border-primary/20 transition-all duration-300 relative rounded-sm">
-                  <div className="w-10 h-10 bg-primary flex items-center justify-center mb-6 font-bold text-primary-foreground rounded-sm text-sm">
-                    {index + 1}
+              service.catalog.map((item, index) => {
+                const showImage = item.image;
+                return (
+                  <div 
+                    key={index} 
+                    className="group flex flex-col bg-gray-50 hover:bg-white border border-gray-100 hover:border-primary/20 hover:shadow-2xl transition-all duration-300 relative rounded-lg overflow-hidden h-full"
+                  >
+                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100 border-b border-gray-200/50">
+                      {showImage ? (
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#0c1b2a] via-[#142c44] to-[#0c1b2a] flex flex-col items-center justify-center gap-2 overflow-hidden">
+                          {/* Technical grid overlay */}
+                          <div className="absolute inset-0 opacity-[0.07] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:16px_16px]" />
+                          {/* Subtle circular lines */}
+                          <div className="absolute w-24 h-24 border border-white/5 rounded-full flex items-center justify-center">
+                            <div className="absolute w-16 h-16 border border-dashed border-white/5 rounded-full" />
+                          </div>
+                          <Building2 className="w-8 h-8 text-accent/60 relative z-10 transition-transform duration-500 group-hover:scale-110" />
+                          <span className="text-white/40 font-mono text-[10px] font-bold tracking-widest uppercase bg-white/5 border border-white/5 px-2 py-0.5 rounded relative z-10 select-none">
+                            {getInitials(item.title)}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  <div className="p-6 flex flex-col flex-grow">
+                    <h3 className="text-base font-bold text-gray-900 mb-2.5 uppercase tracking-wide group-hover:text-primary transition-colors line-clamp-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed font-medium flex-grow">
+                      {item.description}
+                    </p>
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-4 uppercase tracking-wider group-hover:text-primary transition-colors">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed font-medium">
-                    {item.description}
-                  </p>
                 </div>
-              ))
+              );})
             ) : null}
           </div>
         </Container>

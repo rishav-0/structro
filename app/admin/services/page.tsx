@@ -17,6 +17,7 @@ import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 interface ServiceCatalogItem {
   title: string;
   description: string;
+  image?: string;
 }
 
 interface GalleryImage {
@@ -308,13 +309,13 @@ export default function ServicesPage() {
                     type="button"
                     variant="outline"
                     size="sm"
-                    onClick={() => setCatalogItems([...catalogItems, { title: "", description: "" }])}
+                    onClick={() => setCatalogItems([...catalogItems, { title: "", description: "", image: "" }])}
                     className="bg-transparent text-xs"
                   >
                     <Plus className="mr-1 size-3" /> Add Item
                   </Button>
                 </div>
-                <div className="max-h-64 space-y-3 overflow-y-auto pr-1">
+                <div className="max-h-[500px] space-y-3 overflow-y-auto pr-1">
                   {catalogItems.map((item, index) => (
                     <div key={index} className="flex items-start gap-2 rounded border border-neutral-700 p-3">
                       <div className="flex-1 space-y-2">
@@ -338,6 +339,18 @@ export default function ServicesPage() {
                           placeholder="Item description"
                           rows={2}
                           className="bg-neutral-800 border-neutral-700 text-sm"
+                        />
+                        <AdminImageUploadField
+                          label="Catalog Item Image"
+                          value={item.image || ""}
+                          onChange={(value) => {
+                            const updated = [...catalogItems];
+                            updated[index] = { ...updated[index], image: value };
+                            setCatalogItems(updated);
+                          }}
+                          folder="services"
+                          placeholder="Upload or enter image URL"
+                          showPreview={true}
                         />
                       </div>
                       <Button

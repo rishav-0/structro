@@ -22,6 +22,7 @@ interface Project {
   scope?: string;
   quantity?: string;
   period?: string;
+  description?: string;
   type?: "ongoing" | "completed";
 }
 
@@ -53,7 +54,18 @@ const clientsList = [
   { name: "BRIDGE & ROOF CO.", logo: "/clients/bridgeandroofco.png" },
 ];
 
-export function ProjectsClient({ initialProjects, availableCategories = [] }: { initialProjects: { ongoing: Project[]; completed: Project[]; homeProjects: Project[] }, availableCategories?: string[] }) {
+interface ServiceInfo {
+  id: string;
+  title: string;
+}
+
+export function ProjectsClient({
+  initialProjects,
+  availableServices = []
+}: {
+  initialProjects: { ongoing: Project[]; completed: Project[]; homeProjects: Project[] },
+  availableServices?: ServiceInfo[]
+}) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
@@ -68,21 +80,26 @@ export function ProjectsClient({ initialProjects, availableCategories = [] }: { 
   }
 
   const [projects] = useState(initialProjects)
-  const [selectedCategory, setSelectedCategory] = useState("ALL PROJECTS")
+  const [selectedServiceId, setSelectedServiceId] = useState("ALL")
   const [showMobileFilters, setShowMobileFilters] = useState(false)
 
-  const categories = [
-    "ALL PROJECTS",
-    ...availableCategories
-  ]
+  const filterOptions = useMemo(() => {
+    return [
+      { id: "ALL", title: "ALL PROJECTS" },
+      ...availableServices.map((s) => ({
+        id: s.id,
+        title: s.title.toUpperCase(),
+      })),
+    ];
+  }, [availableServices]);
 
   const filteredProjects = useMemo(() => {
     let list = projects[activeTab];
-    if (selectedCategory !== "ALL PROJECTS") {
-      list = list.filter(p => p.category?.toUpperCase() === selectedCategory);
+    if (selectedServiceId !== "ALL") {
+      list = list.filter((p) => p.serviceId === selectedServiceId);
     }
     return list;
-  }, [projects, activeTab, selectedCategory]);
+  }, [projects, activeTab, selectedServiceId]);
 
   return (
     <div className="">
@@ -145,20 +162,20 @@ export function ProjectsClient({ initialProjects, availableCategories = [] }: { 
           <div className="bg-white py-4 border-b border-gray-100">
             <Container>
               <div className="flex flex-wrap justify-center gap-3 md:gap-10">
-                {categories.map((category) => (
+                {filterOptions.map((opt) => (
                   <button
-                    key={category}
+                    key={opt.id}
                     onClick={() => {
-                      setSelectedCategory(category);
+                      setSelectedServiceId(opt.id);
                       if (window.innerWidth < 768) setShowMobileFilters(false);
                     }}
                     className={`text-xs  font-bold tracking-wider transition-colors duration-300 pb-2 border-b-2 ${
-                      selectedCategory === category
+                      selectedServiceId === opt.id
                         ? "text-primary border-primary"
                         : "text-gray-400  border-transparent hover:text-gray-900"
                     }`}
                   >
-                    {category}
+                    {opt.title}
                   </button>
                 ))}
               </div>
@@ -189,7 +206,7 @@ export function ProjectsClient({ initialProjects, availableCategories = [] }: { 
                 {/* Category Badge */}
                 <div className="absolute top-4 left-4">
                   <span className="bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-sm shadow-sm">
-                    {project.category}
+                    {availableServices.find((s) => s.id === project.serviceId)?.title || project.category}
                   </span>
                 </div>
                 

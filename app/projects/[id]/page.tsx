@@ -25,6 +25,8 @@ interface Project {
   scope?: string;
   quantity?: string;
   period?: string;
+  description?: string;
+  visible?: boolean;
 }
 
 function buildProjectNarrative(project: Project) {
@@ -44,17 +46,28 @@ function buildProjectNarrative(project: Project) {
 export default async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   let project: Project | null = null;
+  let serviceTitle = "";
   
   try {
     const dbProjects = (await getPublicCollectionData("projects")) as Project[];
     project = dbProjects.find((projectItem) => String(projectItem.id) === id) || null;
+
+    if (project && project.serviceId) {
+      const serviceId = project.serviceId;
+      const dbServices = await getPublicCollectionData("services") as { id: string; title: string }[];
+      const matchedService = dbServices.find((s) => s.id === serviceId);
+      if (matchedService) {
+        serviceTitle = matchedService.title;
+      }
+    }
   } catch (e) {
     console.error("Error fetching from DB:", e);
   }
 
-  if (!project) return notFound();
+  if (!project || project.visible === false) return notFound();
 
   const projectNarrative = buildProjectNarrative(project);
+  const displayCategory = serviceTitle || project.category;
 
   return (
     <div className="bg-white">
@@ -70,9 +83,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
 
           <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-7">
-              {project.category && (
+              {displayCategory && (
                 <span className="mb-4 block text-xs font-bold uppercase tracking-[0.3em] text-primary">
-                  {project.category}
+                  {displayCategory}
                 </span>
               )}
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 md:text-6xl">
@@ -80,7 +93,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
               </h1>
 
               <p className="mt-6 max-w-2xl border-l-2 border-gray-300 pl-6 text-lg leading-relaxed text-gray-600 md:text-xl">
-                {project.scope || "Details for this project's scope are currently being finalized."}
+                {project.description || project.scope || "Details for this project are currently being finalized."}
               </p>
 
               <div className="mt-8 flex flex-wrap gap-4 text-sm text-gray-600">
@@ -162,7 +175,18 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
               </div>
             </div>
 
-            <div className="lg:col-span-8">
+            <div className="lg:col-span-8 space-y-6">
+              {project.description && (
+                <section className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm md:p-10">
+                  <h2 className="mb-6 text-sm font-bold uppercase tracking-widest text-gray-400">Project Description</h2>
+                  <div className="prose prose-slate prose-lg max-w-none">
+                    <p className="whitespace-pre-line leading-relaxed text-gray-700">
+                      {project.description}
+                    </p>
+                  </div>
+                </section>
+              )}
+
               <section className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm md:p-10">
                 <h2 className="mb-6 text-sm font-bold uppercase tracking-widest text-gray-400">Project Scope</h2>
                 <div className="prose prose-slate prose-lg max-w-none">

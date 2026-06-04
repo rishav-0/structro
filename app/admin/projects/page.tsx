@@ -36,6 +36,8 @@ interface Project {
   scope?: string;
   quantity?: string;
   period?: string;
+  description?: string;
+  visible?: boolean;
   type: "ongoing" | "completed";
   createdAt: number;
   updatedAt: number;
@@ -54,6 +56,8 @@ const initialForm: Omit<Project, "id" | "createdAt" | "updatedAt"> = {
   scope: "",
   quantity: "",
   period: "",
+  description: "",
+  visible: true,
   type: "completed",
 };
 
@@ -130,8 +134,10 @@ export default function ProjectsPage() {
 
   const handleSubmit = async () => {
     try {
+      const selectedService = serviceOptions.find(opt => opt.value === form.serviceId);
       const projectData = {
         ...form,
+        category: selectedService ? selectedService.label : "",
         updatedAt: Date.now(),
         ...(editingId ? {} : { createdAt: Date.now() }),
       };
@@ -165,6 +171,8 @@ export default function ProjectsPage() {
       scope: project.scope || "",
       quantity: project.quantity || "",
       period: project.period || "",
+      description: project.description || "",
+      visible: project.visible !== false,
       type: project.type,
     });
     setEditingId(project.id);
@@ -261,30 +269,50 @@ export default function ProjectsPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Category</label>
-                  <Input
-                    value={form.category}
-                    onChange={(e) => setForm({ ...form, category: e.target.value })}
-                    placeholder="Category"
-                    className="bg-neutral-800 border-neutral-700"
-                  />
+                  <label className="text-sm font-medium">Service</label>
+                  <Select
+                    value={form.serviceId}
+                    onValueChange={(value) => setForm({ ...form, serviceId: value })}
+                  >
+                    <SelectTrigger className="bg-neutral-800 border-neutral-700">
+                      <SelectValue placeholder="Select service" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-neutral-800 border-neutral-700">
+                      {serviceOptions.map((opt) => (
+                        <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Service</label>
-                <Select
-                  value={form.serviceId}
-                  onValueChange={(value) => setForm({ ...form, serviceId: value })}
+                <label className="text-sm font-medium">Description</label>
+                <Textarea
+                  value={form.description || ""}
+                  onChange={(e) => setForm({ ...form, description: e.target.value })}
+                  placeholder="Project description"
+                  rows={3}
+                  className="bg-neutral-800 border-neutral-700"
+                />
+              </div>
+              <div className="flex items-center justify-between p-4 rounded-lg bg-neutral-800 border border-neutral-700 my-2">
+                <div className="space-y-0.5">
+                  <label className="text-sm font-medium">Visible on website</label>
+                  <p className="text-xs text-neutral-400">Toggle to show or hide this project on the public site.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setForm({ ...form, visible: !form.visible })}
+                  className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
+                    form.visible ? "bg-primary" : "bg-neutral-650"
+                  }`}
                 >
-                  <SelectTrigger className="bg-neutral-800 border-neutral-700">
-                    <SelectValue placeholder="Select service" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-neutral-800 border-neutral-700">
-                    {serviceOptions.map((opt) => (
-                      <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  <span
+                    className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                      form.visible ? "translate-x-5" : "translate-x-0"
+                    }`}
+                  />
+                </button>
               </div>
               <div className="space-y-2">
                 <AdminImageUploadField
@@ -292,13 +320,9 @@ export default function ProjectsPage() {
                   value={form.src}
                   onChange={(value) => setForm((current) => ({ ...current, src: value }))}
                   placeholder="Image URL or /images/gallery/..."
-                  description={
-                    form.isVideo
-                      ? "Paste a video URL for video entries, or upload an image when this project is not a video."
-                      : "Upload to Cloudinary or paste an existing image URL."
-                  }
+                  description="Upload to Cloudinary or paste an existing image URL."
                   folder="projects"
-                  showPreview={!form.isVideo}
+                  showPreview={true}
                 />
               </div>
               <div className="space-y-2">
@@ -316,16 +340,6 @@ export default function ProjectsPage() {
                   onChange={(value) => setForm((current) => ({ ...current, images: value }))}
                   folder="projects"
                 />
-              </div>
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="isVideo"
-                  checked={form.isVideo}
-                  onChange={(e) => setForm({ ...form, isVideo: e.target.checked })}
-                  className="w-4 h-4"
-                />
-                <label htmlFor="isVideo" className="text-sm font-medium">Is Video</label>
               </div>
               <div className="border-t border-white/10 pt-4 mt-2">
                 <h4 className="font-medium mb-3">Additional Details (for completed projects)</h4>
@@ -421,7 +435,8 @@ export default function ProjectsPage() {
                     <TableHead className="text-neutral-400">Title</TableHead>
                     <TableHead className="text-neutral-400">Type</TableHead>
                     <TableHead className="text-neutral-400">Location</TableHead>
-                    <TableHead className="text-neutral-400">Category</TableHead>
+                    <TableHead className="text-neutral-400">Service</TableHead>
+                    <TableHead className="text-neutral-400">Status</TableHead>
                     <TableHead className="text-right text-neutral-400">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -431,7 +446,7 @@ export default function ProjectsPage() {
                       <TableCell className="font-medium max-w-[200px] truncate">{project.title}</TableCell>
                       <TableCell>
                         <Badge variant={project.type === "ongoing" ? "default" : "secondary"}>
-                          {project.type}
+                           {project.type}
                         </Badge>
                       </TableCell>
                       <TableCell>
@@ -439,7 +454,14 @@ export default function ProjectsPage() {
                           <MapPin className="size-3 shrink-0" /> {project.location}
                         </div>
                       </TableCell>
-                      <TableCell className="max-w-[150px] truncate">{project.category}</TableCell>
+                      <TableCell className="max-w-[150px] truncate">
+                        {serviceOptions.find(opt => opt.value === project.serviceId)?.label || project.category}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={project.visible !== false ? "default" : "destructive"}>
+                          {project.visible !== false ? "Visible" : "Hidden"}
+                        </Badge>
+                      </TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-2">
                           <Button variant="ghost" size="icon" onClick={() => handleEdit(project)}>
