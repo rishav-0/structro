@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Mail, Facebook, Instagram, Twitter, Phone, MapPin, Award } from 'lucide-react';
+import { Mail, Facebook, Instagram, Twitter, Linkedin, Phone, MapPin, Award } from 'lucide-react';
 import { Container } from './ui/container';
 import { Button } from './ui/button';
 import { getPublicCollectionData } from '@/lib/public-db-server';
@@ -72,10 +72,15 @@ export default async function Footer() {
             </div>
             
             <div className="flex gap-4 mt-2">
-              {[Facebook, Instagram, Twitter].map((Icon, i) => (
-                <div key={i} className="w-10 h-10 rounded-sm flex items-center justify-center border border-gray-700 hover:bg-primary hover:border-primary transition-all cursor-pointer">
+              {[
+                { Icon: Facebook, href: "#" },
+                { Icon: Instagram, href: "#" },
+                { Icon: Twitter, href: "#" },
+                { Icon: Linkedin, href: "https://www.linkedin.com/company/structroinfratech/?viewAsMember=true" }
+              ].map(({ Icon, href }, i) => (
+                <a key={i} href={href} target={href !== "#" ? "_blank" : undefined} rel={href !== "#" ? "noopener noreferrer" : undefined} className="w-10 h-10 rounded-sm flex items-center justify-center border border-gray-700 hover:bg-primary hover:border-primary transition-all cursor-pointer">
                   <Icon size={18} />
-                </div>
+                </a>
               ))}
             </div>
           </div>
