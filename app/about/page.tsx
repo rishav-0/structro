@@ -147,7 +147,7 @@ export default function AboutPage() {
             </div>
 
             <div className="bg-primary text-white p-8 rounded-lg inline-block">
-              <div className="text-5xl font-bold text-accent mb-2">500 MT</div>
+              <div className="text-5xl font-bold text-accent mb-2">100-500 MT</div>
               <div className="text-sm font-bold uppercase tracking-wider mb-4">Monthly Fabrication Capacity</div>
               <div className="text-sm text-primary-foreground/80 max-w-sm">Structro maintains a scalable production ecosystem capable of supporting fast-track infrastructure projects, industrial developments, and heavy structural fabrication requirements across Northeast India.</div>
             </div>
