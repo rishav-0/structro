@@ -7,6 +7,7 @@ import { ArrowUpRight, ArrowLeft, User, Calendar, Clock, Tag } from "lucide-reac
 import Image from "next/image";
 import Link from "next/link";
 import { ShareButtons } from "@/components/ShareButtons";
+import { BackButton } from "@/components/ui/back-button";
 
 interface BlogPost {
   id: string;
@@ -123,13 +124,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
       <div className="pt-24 md:pt-32 pb-12 bg-gray-50/50 border-b border-gray-100">
         <Container>
           <div className="max-w-4xl mx-auto">
-            <Link 
-              href="/blogs" 
-              className="inline-flex items-center text-primary font-bold text-xs uppercase tracking-[0.2em] mb-8 hover:-translate-x-1 transition-transform group"
-            >
-              <ArrowLeft className="mr-2 w-4 h-4 group-hover:text-primary/70 transition-colors" /> 
-              Back to Knowledge Hub
-            </Link>
+            <BackButton fallbackUrl="/blogs" text="Back to Knowledge Hub" />
             
             <div className="flex flex-wrap gap-2 mb-6">
               {tags.map((tag) => (

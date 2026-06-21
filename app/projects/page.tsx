@@ -28,8 +28,14 @@ interface ProjectData {
   client?: string;
   scope?: string;
   quantity?: string;
+  materialGrade?: string;
+  spanLength?: string;
+  dimensions?: string;
+  projectQuantity?: string;
+  surfacePreparation?: string;
+  spanQuantity?: string;
   period?: string;
-  description?: string;
+  summary?: string;
   visible?: boolean;
   type?: "ongoing" | "completed";
 }
@@ -64,8 +70,14 @@ export default async function ProjectsPage() {
     client: p.client || "",
     scope: p.scope || "",
     quantity: p.quantity || "",
+    materialGrade: p.materialGrade || "",
+    spanLength: p.spanLength || "",
+    dimensions: p.dimensions || "",
+    projectQuantity: p.projectQuantity || "",
+    surfacePreparation: p.surfacePreparation || "",
+    spanQuantity: p.spanQuantity || "",
     period: p.period || "",
-    description: p.description || "",
+    summary: p.summary || "",
     visible: p.visible !== false,
     type: p.type || "completed",
   });

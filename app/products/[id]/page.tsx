@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle2, ChevronRight, Ruler, Shield, Zap } from "lucide-react";
 import Link from "next/link";
 import { ImageGallery } from "@/components/image-gallery";
+import { BackButton } from "@/components/ui/back-button";
 
 interface GalleryImage {
   url: string;
@@ -19,6 +20,11 @@ interface Product {
   features: string[];
   image: string;
   images?: GalleryImage[];
+  subtitle?: string;
+  materialGrade?: string;
+  tags?: string[];
+  badge?: string;
+  imageAlt?: string;
 }
 
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
@@ -37,29 +43,46 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   return (
     <div className="min-h-screen bg-white pb-20 text-gray-900">
       {/* 1. Industrial Hero Section */}
-      <section className="border-b border-gray-200 bg-gray-50 py-16 pt-32 md:py-20 md:pt-36">
+      <section className="border-b border-gray-200 bg-gray-50 py-12 pt-32 md:py-16 md:pt-36">
         <Container>
+          <BackButton fallbackUrl="/products" text="Back to Products" className="mb-4" />
           <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <div>
               <div className="mb-4 flex items-center gap-3">
                 <span className="h-0.5 w-8 bg-red-600" />
-                <span className="text-red-600 font-bold tracking-[0.3em] text-xs uppercase">Industrial Grade</span>
+                <span className="text-red-600 font-bold tracking-[0.3em] text-xs uppercase">
+                  {product.badge || "Industrial Grade"}
+                </span>
               </div>
               <h1 className="mb-4 text-5xl font-black leading-none tracking-tighter text-gray-900 md:text-7xl">
                 {product.title}
               </h1>
               <p className="max-w-xl border-l-2 border-gray-300 pl-6 text-xl text-gray-600">
-                Engineered for resilience. Built with precision-grade materials to meet 
-                <span className="font-semibold text-gray-900"> {product.specs} </span> structural requirements.
+                {product.subtitle || (
+                  <>
+                    Engineered for resilience. Built with precision-grade materials to meet{" "}
+                    <span className="font-semibold text-gray-900">{product.specs}</span> structural requirements.
+                  </>
+                )}
               </p>
 
               <div className="mt-8 flex flex-wrap gap-4 text-sm text-gray-600">
-                <span className="rounded-full border border-gray-200 bg-white px-4 py-2 font-semibold">
-                  Built for industrial use
-                </span>
-                <span className="rounded-full border border-gray-200 bg-white px-4 py-2 font-semibold">
-                  Durable steel construction
-                </span>
+                {product.tags && product.tags.length > 0 ? (
+                  product.tags.map((tag, idx) => (
+                    <span key={idx} className="rounded-full border border-gray-200 bg-white px-4 py-2 font-semibold">
+                      {tag}
+                    </span>
+                  ))
+                ) : (
+                  <>
+                    <span className="rounded-full border border-gray-200 bg-white px-4 py-2 font-semibold">
+                      Built for industrial use
+                    </span>
+                    <span className="rounded-full border border-gray-200 bg-white px-4 py-2 font-semibold">
+                      Durable steel construction
+                    </span>
+                  </>
+                )}
               </div>
             </div>
 
@@ -67,6 +90,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
               <ImageGallery
                 mainImage={product.image}
                 mainAlt={product.title}
+                mainImageAlt={product.imageAlt}
                 images={product.images}
                 priority
                 containerClassName="relative aspect-5/4 overflow-hidden rounded-lg bg-transparent"
@@ -137,7 +161,9 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                         <Zap className="w-4 h-4" />
                         <span className="text-sm">Material Grade</span>
                       </div>
-                      <span className="font-bold uppercase text-gray-900">Industrial</span>
+                      <span className="font-bold uppercase text-gray-900">
+                        {product.materialGrade || "Industrial"}
+                      </span>
                     </div>
                   </div>
 

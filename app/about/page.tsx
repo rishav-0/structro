@@ -147,7 +147,7 @@ export default function AboutPage() {
             </div>
 
             <div className="bg-primary text-white p-8 rounded-lg inline-block">
-              <div className="text-5xl font-bold text-accent mb-2">100-500 MT</div>
+              <div className="text-5xl font-bold text-accent mb-2">200-500 MT</div>
               <div className="text-sm font-bold uppercase tracking-wider mb-4">Monthly Fabrication Capacity</div>
               <div className="text-sm text-primary-foreground/80 max-w-sm">Structro maintains a scalable production ecosystem capable of supporting fast-track infrastructure projects, industrial developments, and heavy structural fabrication requirements across Northeast India.</div>
             </div>
@@ -201,8 +201,8 @@ export default function AboutPage() {
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
               LEADERSHIP.
             </h2>
-            <div className="relative aspect-[3/4] rounded-lg overflow-hidden mb-6">
-              <Image src="/images/process/e.jpeg" alt="Nipu Baishya, Managing Director" fill className="object-cover grayscale" />
+            <div className="rounded-lg overflow-hidden mb-6">
+              <Image src="/about/nipu.png" alt="Nipu Baishya, Managing Director" width={800} height={1000} className="w-full h-auto object-contain" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900">Nipu Baishya</h3>
             <p className="text-accent font-medium uppercase tracking-wider text-sm mt-1">Managing Director</p>

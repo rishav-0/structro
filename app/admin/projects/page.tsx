@@ -35,8 +35,14 @@ interface Project {
   client?: string;
   scope?: string;
   quantity?: string;
+  materialGrade?: string;
+  spanLength?: string;
+  dimensions?: string;
+  projectQuantity?: string;
+  surfacePreparation?: string;
+  spanQuantity?: string;
   period?: string;
-  description?: string;
+  summary?: string;
   visible?: boolean;
   type: "ongoing" | "completed";
   createdAt: number;
@@ -55,8 +61,14 @@ const initialForm: Omit<Project, "id" | "createdAt" | "updatedAt"> = {
   client: "",
   scope: "",
   quantity: "",
+  materialGrade: "",
+  spanLength: "",
+  dimensions: "",
+  projectQuantity: "",
+  surfacePreparation: "",
+  spanQuantity: "",
   period: "",
-  description: "",
+  summary: "",
   visible: true,
   type: "completed",
 };
@@ -170,8 +182,14 @@ export default function ProjectsPage() {
       client: project.client || "",
       scope: project.scope || "",
       quantity: project.quantity || "",
+      materialGrade: project.materialGrade || "",
+      spanLength: project.spanLength || "",
+      dimensions: project.dimensions || "",
+      projectQuantity: project.projectQuantity || "",
+      surfacePreparation: project.surfacePreparation || "",
+      spanQuantity: project.spanQuantity || "",
       period: project.period || "",
-      description: project.description || "",
+      summary: project.summary || "",
       visible: project.visible !== false,
       type: project.type,
     });
@@ -286,12 +304,12 @@ export default function ProjectsPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Description</label>
+                <label className="text-sm font-medium">Summary</label>
                 <Textarea
-                  value={form.description || ""}
-                  onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  placeholder="Project description"
-                  rows={3}
+                  value={form.summary || ""}
+                  onChange={(e) => setForm({ ...form, summary: e.target.value })}
+                  placeholder="Brief project summary (dynamic fallback will be used if left empty)"
+                  rows={4}
                   className="bg-neutral-800 border-neutral-700"
                 />
               </div>
@@ -342,7 +360,7 @@ export default function ProjectsPage() {
                 />
               </div>
               <div className="border-t border-white/10 pt-4 mt-2">
-                <h4 className="font-medium mb-3">Additional Details (for completed projects)</h4>
+                <h4 className="font-medium mb-3">Additional Details</h4>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Client</label>
@@ -362,7 +380,7 @@ export default function ProjectsPage() {
                       className="bg-neutral-800 border-neutral-700"
                     />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-2 col-span-2">
                     <label className="text-sm font-medium">Scope</label>
                     <Input
                       value={form.scope}
@@ -371,12 +389,62 @@ export default function ProjectsPage() {
                       className="bg-neutral-800 border-neutral-700"
                     />
                   </div>
+                </div>
+              </div>
+              <div className="border-t border-white/10 pt-4 mt-2">
+                <h4 className="font-medium mb-3">Specifications (Optional)</h4>
+                <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Quantity</label>
+                    <label className="text-sm font-medium">Material Grade</label>
                     <Input
-                      value={form.quantity}
-                      onChange={(e) => setForm({ ...form, quantity: e.target.value })}
-                      placeholder="e.g., ~500 MT"
+                      value={form.materialGrade}
+                      onChange={(e) => setForm({ ...form, materialGrade: e.target.value })}
+                      placeholder="e.g., E350 BR / E250 BR"
+                      className="bg-neutral-800 border-neutral-700"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Span Length</label>
+                    <Input
+                      value={form.spanLength}
+                      onChange={(e) => setForm({ ...form, spanLength: e.target.value })}
+                      placeholder="e.g., 22X61.0 M / 40.0M"
+                      className="bg-neutral-800 border-neutral-700"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Dimensions</label>
+                    <Input
+                      value={form.dimensions}
+                      onChange={(e) => setForm({ ...form, dimensions: e.target.value })}
+                      placeholder="e.g., 100 x 50 x 12 m"
+                      className="bg-neutral-800 border-neutral-700"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Project Quantity</label>
+                    <Input
+                      value={form.projectQuantity}
+                      onChange={(e) => setForm({ ...form, projectQuantity: e.target.value })}
+                      placeholder="e.g., ~5060 MT"
+                      className="bg-neutral-800 border-neutral-700"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Surface Preparation</label>
+                    <Input
+                      value={form.surfacePreparation}
+                      onChange={(e) => setForm({ ...form, surfacePreparation: e.target.value })}
+                      placeholder="e.g., Blast cleaning to Sa 2.5"
+                      className="bg-neutral-800 border-neutral-700"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Span Quantity</label>
+                    <Input
+                      value={form.spanQuantity}
+                      onChange={(e) => setForm({ ...form, spanQuantity: e.target.value })}
+                      placeholder="e.g., 22 spans"
                       className="bg-neutral-800 border-neutral-700"
                     />
                   </div>

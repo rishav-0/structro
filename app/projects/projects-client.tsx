@@ -21,8 +21,14 @@ interface Project {
   client?: string;
   scope?: string;
   quantity?: string;
+  materialGrade?: string;
+  spanLength?: string;
+  dimensions?: string;
+  projectQuantity?: string;
+  surfacePreparation?: string;
+  spanQuantity?: string;
   period?: string;
-  description?: string;
+  summary?: string;
   type?: "ongoing" | "completed";
 }
 

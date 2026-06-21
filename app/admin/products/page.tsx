@@ -27,6 +27,11 @@ interface Product {
   features: string[];
   image: string;
   images?: GalleryImage[];
+  subtitle?: string;
+  materialGrade?: string;
+  tags?: string[];
+  badge?: string;
+  imageAlt?: string;
   createdAt: number;
   updatedAt: number;
 }
@@ -38,6 +43,11 @@ const initialForm: Omit<Product, "id" | "createdAt" | "updatedAt"> = {
   features: [],
   image: "",
   images: [],
+  subtitle: "",
+  materialGrade: "",
+  tags: [],
+  badge: "",
+  imageAlt: "",
 };
 
 import { AdminPagination } from "@/components/admin-pagination";
@@ -53,6 +63,7 @@ export default function ProductsPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(initialForm);
   const [featuresInput, setFeaturesInput] = useState("");
+  const [tagsInput, setTagsInput] = useState("");
 
   const [confirmState, setConfirmState] = useState<{
     open: boolean;
@@ -110,6 +121,7 @@ export default function ProductsPage() {
       const productData = {
         ...form,
         features: featuresInput.split(",").map((f) => f.trim()).filter(Boolean),
+        tags: tagsInput.split(",").map((t) => t.trim()).filter(Boolean),
         updatedAt: Date.now(),
         ...(editingId ? {} : { createdAt: Date.now() }),
       };
@@ -124,6 +136,7 @@ export default function ProductsPage() {
       setEditingId(null);
       setForm(initialForm);
       setFeaturesInput("");
+      setTagsInput("");
       fetchProducts();
     } catch (error) {
       console.error("Error saving product:", error);
@@ -138,8 +151,14 @@ export default function ProductsPage() {
       features: product.features,
       image: product.image,
       images: product.images || [],
+      subtitle: product.subtitle || "",
+      materialGrade: product.materialGrade || "",
+      tags: product.tags || [],
+      badge: product.badge || "",
+      imageAlt: product.imageAlt || "",
     });
     setFeaturesInput(Array.isArray(product.features) ? product.features.join(", ") : "");
+    setTagsInput(Array.isArray(product.tags) ? product.tags.join(", ") : "");
     setEditingId(product.id);
     setOpen(true);
   };
@@ -234,14 +253,65 @@ export default function ProductsPage() {
                   className="bg-neutral-800 border-neutral-700"
                 />
               </div>
-              <div className="space-y-2">
-                <AdminImageUploadField
-                  label="Main Image (used as thumbnail)"
-                  value={form.image}
-                  onChange={(value) => setForm((current) => ({ ...current, image: value }))}
-                  placeholder="https://..."
-                  folder="products"
-                />
+              <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Material Grade</label>
+                  <Input
+                    value={form.materialGrade}
+                    onChange={(e) => setForm({ ...form, materialGrade: e.target.value })}
+                    placeholder="e.g., SS304, Mild Steel (fallback: Industrial)"
+                    className="bg-neutral-800 border-neutral-700"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Tags (comma-separated)</label>
+                  <Input
+                    value={tagsInput}
+                    onChange={(e) => setTagsInput(e.target.value)}
+                    placeholder="tag 1, tag 2 (fallback: Built for industrial use...)"
+                    className="bg-neutral-800 border-neutral-700"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Subtitle / Intro</label>
+                  <Input
+                    value={form.subtitle}
+                    onChange={(e) => setForm({ ...form, subtitle: e.target.value })}
+                    placeholder="e.g., Engineered for resilience. Built with precision-grade..."
+                    className="bg-neutral-800 border-neutral-700"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Top Badge Label</label>
+                  <Input
+                    value={form.badge}
+                    onChange={(e) => setForm({ ...form, badge: e.target.value })}
+                    placeholder="e.g., Industrial Grade, Premium Modular"
+                    className="bg-neutral-800 border-neutral-700"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <AdminImageUploadField
+                    label="Main Image (used as thumbnail)"
+                    value={form.image}
+                    onChange={(value) => setForm((current) => ({ ...current, image: value }))}
+                    placeholder="https://..."
+                    folder="products"
+                  />
+                </div>
+                <div className="space-y-2 flex flex-col justify-end">
+                  <label className="text-sm font-medium">Main Image Alt Text (optional)</label>
+                  <Input
+                    value={form.imageAlt}
+                    onChange={(e) => setForm({ ...form, imageAlt: e.target.value })}
+                    placeholder="e.g., Prefabricated residential PEB home front facade"
+                    className="bg-neutral-800 border-neutral-700"
+                  />
+                </div>
               </div>
               <div className="border-t border-white/10 pt-4">
                 <AdminGalleryUpload
