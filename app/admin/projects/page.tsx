@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getAdminDocs, addAdminDoc, updateAdminDoc, deleteAdminDoc } from "@/app/actions/admin-db";
+import { useCloudinaryTracker } from "@/hooks/use-cloudinary-tracker";
 import { AdminImageUploadField } from "@/components/admin-image-upload-field";
 import { AdminGalleryUpload } from "@/components/admin-gallery-upload";
 import { Button } from "@/components/ui/button";
@@ -92,6 +93,19 @@ export default function ProjectsPage() {
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(initialForm);
+  const [originalUrls, setOriginalUrls] = useState<string[]>([]);
+
+  const { trackUpload, handleSave, handleCancel, handleDeleteDoc, extractUrls } = useCloudinaryTracker();
+  const isSavedRef = useRef(false);
+
+  useEffect(() => {
+    if (!open) {
+      if (!isSavedRef.current) {
+        handleCancel();
+      }
+      isSavedRef.current = false;
+    }
+  }, [open, handleCancel]);
 
   const [confirmState, setConfirmState] = useState<{
     open: boolean;
@@ -154,15 +168,19 @@ export default function ProjectsPage() {
         ...(editingId ? {} : { createdAt: Date.now() }),
       };
 
+      isSavedRef.current = true;
       if (editingId) {
         await updateAdminDoc("projects", editingId, projectData);
       } else {
         await addAdminDoc("projects", projectData);
       }
 
+      await handleSave(extractUrls(projectData), originalUrls);
+
       setOpen(false);
       setEditingId(null);
       setForm(initialForm);
+      setOriginalUrls([]);
       fetchProjects();
     } catch (error) {
       console.error("Error saving project:", error);
@@ -194,16 +212,22 @@ export default function ProjectsPage() {
       type: project.type,
     });
     setEditingId(project.id);
+    setOriginalUrls(extractUrls(project));
+    isSavedRef.current = false;
     setOpen(true);
   };
 
   const handleDelete = (id: string) => {
+    const projectToDelete = projects.find((p) => p.id === id);
     showConfirm(
       "Delete Project",
       "This action cannot be undone.",
       async () => {
         try {
           await deleteAdminDoc("projects", id);
+          if (projectToDelete) {
+            await handleDeleteDoc(projectToDelete);
+          }
           fetchProjects();
         } catch (error) {
           console.error("Error deleting project:", error);
@@ -240,7 +264,7 @@ export default function ProjectsPage() {
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button onClick={() => { setForm(initialForm); setEditingId(null); }}>
+            <Button onClick={() => { setForm(initialForm); setEditingId(null); setOriginalUrls([]); isSavedRef.current = false; }}>
               <Plus className="mr-2 size-4" />
               Add Project
             </Button>
@@ -341,6 +365,7 @@ export default function ProjectsPage() {
                   description="Upload to Cloudinary or paste an existing image URL."
                   folder="projects"
                   showPreview={true}
+                  onUploadSuccess={trackUpload}
                 />
               </div>
               <div className="space-y-2">
@@ -357,6 +382,7 @@ export default function ProjectsPage() {
                   value={form.images || []}
                   onChange={(value) => setForm((current) => ({ ...current, images: value }))}
                   folder="projects"
+                  onUploadSuccess={trackUpload}
                 />
               </div>
               <div className="border-t border-white/10 pt-4 mt-2">

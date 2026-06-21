@@ -108,3 +108,55 @@ export async function uploadAdminFile({
     uploadStream.end(buffer);
   });
 }
+
+export function getPublicIdFromUrl(url: string): { publicId: string; resourceType: "image" | "raw" } | null {
+  if (!url || !url.includes("cloudinary.com")) return null;
+
+  const isRaw = url.includes("/raw/upload/");
+  const uploadPattern = /\/upload\//;
+  const match = url.match(uploadPattern);
+  if (!match || match.index === undefined) return null;
+
+  const uploadIndex = match.index;
+  let path = url.substring(uploadIndex + 8); // length of "/upload/"
+
+  // Remove version segment if present (e.g., v12345678/)
+  const versionMatch = path.match(/^v\d+\//);
+  if (versionMatch) {
+    path = path.substring(versionMatch[0].length);
+  }
+
+  if (!isRaw) {
+    // Remove file extension for images/videos
+    const lastDotIndex = path.lastIndexOf(".");
+    if (lastDotIndex !== -1) {
+      path = path.substring(0, lastDotIndex);
+    }
+  }
+
+  return {
+    publicId: path,
+    resourceType: isRaw ? "raw" : "image",
+  };
+}
+
+export async function deleteCloudinaryFile(
+  publicId: string,
+  resourceType: "image" | "raw" = "image"
+): Promise<any> {
+  configureCloudinary();
+
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.destroy(
+      publicId,
+      { resource_type: resourceType, invalidate: true },
+      (error, result) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve(result);
+      }
+    );
+  });
+}

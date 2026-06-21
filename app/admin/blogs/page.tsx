@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getAdminDocs, addAdminDoc, updateAdminDoc, deleteAdminDoc } from "@/app/actions/admin-db";
+import { useCloudinaryTracker } from "@/hooks/use-cloudinary-tracker";
 import { AdminImageUploadField } from "@/components/admin-image-upload-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -49,6 +50,19 @@ export default function BlogsPage() {
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(initialForm);
+  const [originalUrls, setOriginalUrls] = useState<string[]>([]);
+
+  const { trackUpload, handleSave, handleCancel, handleDeleteDoc, extractUrls } = useCloudinaryTracker();
+  const isSavedRef = useRef(false);
+
+  useEffect(() => {
+    if (!open) {
+      if (!isSavedRef.current) {
+        handleCancel();
+      }
+      isSavedRef.current = false;
+    }
+  }, [open, handleCancel]);
 
   const [confirmState, setConfirmState] = useState<{
     open: boolean;
@@ -112,15 +126,19 @@ export default function BlogsPage() {
           : { createdAt: Date.now() }),
       };
 
+      isSavedRef.current = true;
       if (editingId) {
         await updateAdminDoc("blogs", editingId, blogData);
       } else {
         await addAdminDoc("blogs", blogData);
       }
 
+      await handleSave(extractUrls(blogData), originalUrls);
+
       setOpen(false);
       setEditingId(null);
       setForm(initialForm);
+      setOriginalUrls([]);
       fetchBlogs();
     } catch (error) {
       console.error("Error saving blog:", error);
@@ -138,16 +156,22 @@ export default function BlogsPage() {
       status: blog.status,
     });
     setEditingId(blog.id);
+    setOriginalUrls(extractUrls(blog));
+    isSavedRef.current = false;
     setOpen(true);
   };
 
   const handleDelete = (id: string) => {
+    const blogToDelete = blogs.find((b) => b.id === id);
     showConfirm(
       "Delete Blog Post",
       "This action cannot be undone.",
       async () => {
         try {
           await deleteAdminDoc("blogs", id);
+          if (blogToDelete) {
+            await handleDeleteDoc(blogToDelete);
+          }
           fetchBlogs();
         } catch (error) {
           console.error("Error deleting blog:", error);
@@ -197,7 +221,7 @@ export default function BlogsPage() {
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button onClick={() => { setForm(initialForm); setEditingId(null); }}>
+            <Button onClick={() => { setForm(initialForm); setEditingId(null); setOriginalUrls([]); isSavedRef.current = false; }}>
               <Plus className="mr-2 size-4" />
               New Blog
             </Button>
@@ -244,6 +268,7 @@ export default function BlogsPage() {
                     }
                     placeholder="https://..."
                     folder="blogs"
+                    onUploadSuccess={trackUpload}
                   />
                 </div>
               </div>

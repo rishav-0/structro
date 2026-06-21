@@ -15,6 +15,7 @@ interface AdminImageUploadFieldProps {
   description?: string;
   disabled?: boolean;
   showPreview?: boolean;
+  onUploadSuccess?: (url: string) => void;
 }
 
 interface UploadResponse {
@@ -31,6 +32,7 @@ export function AdminImageUploadField({
   description = "Upload to Cloudinary or paste an existing URL.",
   disabled = false,
   showPreview = true,
+  onUploadSuccess,
 }: AdminImageUploadFieldProps) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -61,6 +63,7 @@ export function AdminImageUploadField({
       }
 
       onChange(data.secureUrl);
+      onUploadSuccess?.(data.secureUrl);
     } catch (uploadError) {
       setError(
         uploadError instanceof Error

@@ -2,6 +2,7 @@
 
 import { auth } from "@/auth";
 import { adminDb } from "@/lib/firebase-admin";
+import { deleteCloudinaryFile, getPublicIdFromUrl } from "@/lib/cloudinary";
 
 async function verifyAdmin() {
   const session = await auth();
@@ -42,3 +43,24 @@ export async function deleteAdminDoc(collectionName: string, docId: string) {
   await verifyAdmin();
   await adminDb.collection(collectionName).doc(docId).delete();
 }
+
+export async function deleteMultipleCloudinaryAssetsByUrls(urls: string[]) {
+  await verifyAdmin();
+  const validUrls = urls.filter(url => typeof url === "string" && url.includes("cloudinary.com"));
+  if (validUrls.length === 0) return [];
+
+  const deletePromises = validUrls.map(async (url) => {
+    const parsed = getPublicIdFromUrl(url);
+    if (!parsed) return { url, success: false, error: "Invalid Cloudinary URL" };
+    try {
+      const result = await deleteCloudinaryFile(parsed.publicId, parsed.resourceType);
+      return { url, success: true, result };
+    } catch (error) {
+      console.error(`Failed to delete Cloudinary asset ${url}:`, error);
+      return { url, success: false, error: error instanceof Error ? error.message : String(error) };
+    }
+  });
+
+  return Promise.all(deletePromises);
+}
+

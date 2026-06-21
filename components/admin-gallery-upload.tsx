@@ -17,6 +17,7 @@ interface AdminGalleryUploadProps {
   onChange: (value: GalleryImage[]) => void;
   folder: string;
   disabled?: boolean;
+  onUploadSuccess?: (url: string) => void;
 }
 
 interface UploadResponse {
@@ -30,6 +31,7 @@ export function AdminGalleryUpload({
   onChange,
   folder,
   disabled = false,
+  onUploadSuccess,
 }: AdminGalleryUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -66,6 +68,9 @@ export function AdminGalleryUpload({
           publicId: data.publicId,
           alt: "",
         });
+        if (data.secureUrl) {
+          onUploadSuccess?.(data.secureUrl);
+        }
       } catch (uploadError) {
         setError(
           uploadError instanceof Error

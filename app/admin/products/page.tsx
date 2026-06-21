@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getAdminDocs, addAdminDoc, updateAdminDoc, deleteAdminDoc } from "@/app/actions/admin-db";
+import { useCloudinaryTracker } from "@/hooks/use-cloudinary-tracker";
 import { AdminImageUploadField } from "@/components/admin-image-upload-field";
 import { AdminGalleryUpload } from "@/components/admin-gallery-upload";
 import { Button } from "@/components/ui/button";
@@ -64,6 +65,19 @@ export default function ProductsPage() {
   const [form, setForm] = useState(initialForm);
   const [featuresInput, setFeaturesInput] = useState("");
   const [tagsInput, setTagsInput] = useState("");
+  const [originalUrls, setOriginalUrls] = useState<string[]>([]);
+
+  const { trackUpload, handleSave, handleCancel, handleDeleteDoc, extractUrls } = useCloudinaryTracker();
+  const isSavedRef = useRef(false);
+
+  useEffect(() => {
+    if (!open) {
+      if (!isSavedRef.current) {
+        handleCancel();
+      }
+      isSavedRef.current = false;
+    }
+  }, [open, handleCancel]);
 
   const [confirmState, setConfirmState] = useState<{
     open: boolean;
@@ -126,17 +140,21 @@ export default function ProductsPage() {
         ...(editingId ? {} : { createdAt: Date.now() }),
       };
 
+      isSavedRef.current = true;
       if (editingId) {
         await updateAdminDoc("products", editingId, productData);
       } else {
         await addAdminDoc("products", productData);
       }
 
+      await handleSave(extractUrls(productData), originalUrls);
+
       setOpen(false);
       setEditingId(null);
       setForm(initialForm);
       setFeaturesInput("");
       setTagsInput("");
+      setOriginalUrls([]);
       fetchProducts();
     } catch (error) {
       console.error("Error saving product:", error);
@@ -160,16 +178,22 @@ export default function ProductsPage() {
     setFeaturesInput(Array.isArray(product.features) ? product.features.join(", ") : "");
     setTagsInput(Array.isArray(product.tags) ? product.tags.join(", ") : "");
     setEditingId(product.id);
+    setOriginalUrls(extractUrls(product));
+    isSavedRef.current = false;
     setOpen(true);
   };
 
   const handleDelete = (id: string) => {
+    const productToDelete = products.find((p) => p.id === id);
     showConfirm(
       "Delete Product",
       "This action cannot be undone.",
       async () => {
         try {
           await deleteAdminDoc("products", id);
+          if (productToDelete) {
+            await handleDeleteDoc(productToDelete);
+          }
           fetchProducts();
         } catch (error) {
           console.error("Error deleting product:", error);
@@ -204,7 +228,7 @@ export default function ProductsPage() {
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button onClick={() => { setForm(initialForm); setFeaturesInput(""); setEditingId(null); }}>
+            <Button onClick={() => { setForm(initialForm); setFeaturesInput(""); setEditingId(null); setOriginalUrls([]); isSavedRef.current = false; }}>
               <Plus className="mr-2 size-4" />
               Add Product
             </Button>
@@ -301,6 +325,7 @@ export default function ProductsPage() {
                     onChange={(value) => setForm((current) => ({ ...current, image: value }))}
                     placeholder="https://..."
                     folder="products"
+                    onUploadSuccess={trackUpload}
                   />
                 </div>
                 <div className="space-y-2 flex flex-col justify-end">
@@ -318,6 +343,7 @@ export default function ProductsPage() {
                   value={form.images || []}
                   onChange={(value) => setForm((current) => ({ ...current, images: value }))}
                   folder="products"
+                  onUploadSuccess={trackUpload}
                 />
               </div>
             </div>

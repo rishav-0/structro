@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { addAdminDoc, deleteAdminDoc, getAdminDocs, updateAdminDoc } from "@/app/actions/admin-db";
+import { useCloudinaryTracker } from "@/hooks/use-cloudinary-tracker";
 import { AdminImageUploadField } from "@/components/admin-image-upload-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -64,6 +65,19 @@ export default function NewLaunchesAdminPage() {
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(initialForm);
+  const [originalUrls, setOriginalUrls] = useState<string[]>([]);
+
+  const { trackUpload, handleSave, handleCancel, handleDeleteDoc, extractUrls } = useCloudinaryTracker();
+  const isSavedRef = useRef(false);
+
+  useEffect(() => {
+    if (!open) {
+      if (!isSavedRef.current) {
+        handleCancel();
+      }
+      isSavedRef.current = false;
+    }
+  }, [open, handleCancel]);
 
   const [confirmState, setConfirmState] = useState<{
     open: boolean;
@@ -119,6 +133,8 @@ export default function NewLaunchesAdminPage() {
   const resetForm = () => {
     setForm(initialForm);
     setEditingId(null);
+    setOriginalUrls([]);
+    isSavedRef.current = false;
   };
 
   const handleSubmit = async () => {
@@ -145,11 +161,14 @@ export default function NewLaunchesAdminPage() {
         ...(editingId ? {} : { createdAt: Date.now() }),
       };
 
+      isSavedRef.current = true;
       if (editingId) {
         await updateAdminDoc("new-launches", editingId, launchData);
       } else {
         await addAdminDoc("new-launches", launchData);
       }
+
+      await handleSave(extractUrls(launchData), originalUrls);
 
       setOpen(false);
       resetForm();
@@ -177,16 +196,22 @@ export default function NewLaunchesAdminPage() {
       status: launch.status || "active",
     });
     setEditingId(launch.id);
+    setOriginalUrls(extractUrls(launch));
+    isSavedRef.current = false;
     setOpen(true);
   };
 
   const handleDelete = (id: string) => {
+    const launchToDelete = launches.find((l) => l.id === id);
     showConfirm(
       "Delete New Launch",
       "This action cannot be undone.",
       async () => {
         try {
           await deleteAdminDoc("new-launches", id);
+          if (launchToDelete) {
+            await handleDeleteDoc(launchToDelete);
+          }
           fetchLaunches();
         } catch (error) {
           console.error("Error deleting new launch:", error);
@@ -263,7 +288,7 @@ export default function NewLaunchesAdminPage() {
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button onClick={resetForm}>
+            <Button onClick={() => { resetForm(); setOriginalUrls([]); isSavedRef.current = false; }}>
               <Plus className="mr-2 size-4" />
               New Launch
             </Button>
@@ -311,6 +336,7 @@ export default function NewLaunchesAdminPage() {
                   onChange={(value) => setForm((current) => ({ ...current, image: value }))}
                   placeholder="https://..."
                   folder="new-launches"
+                  onUploadSuccess={trackUpload}
                 />
               </div>
 

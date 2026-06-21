@@ -1,15 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getAdminDocs, addAdminDoc, updateAdminDoc, deleteAdminDoc } from "@/app/actions/admin-db";
+import { useCloudinaryTracker } from "@/hooks/use-cloudinary-tracker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
-import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Pencil, Trash2, Search, Upload, LoaderCircle, ExternalLink } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Plus, Pencil, Trash2, Upload, LoaderCircle, ExternalLink, FileText } from "lucide-react";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
-import { AdminPagination } from "@/components/admin-pagination";
 
 interface Brochure {
   id: string;
@@ -24,17 +22,26 @@ const initialForm: Omit<Brochure, "id" | "createdAt" | "updatedAt"> = {
   fileUrl: "",
 };
 
-const ITEMS_PER_PAGE = 10;
-
 export default function BrochuresPage() {
   const [brochures, setBrochures] = useState<Brochure[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(initialForm);
   const [uploading, setUploading] = useState(false);
+  const [originalUrls, setOriginalUrls] = useState<string[]>([]);
+
+  const { trackUpload, handleSave, handleCancel, handleDeleteDoc, extractUrls } = useCloudinaryTracker();
+  const isSavedRef = useRef(false);
+
+  useEffect(() => {
+    if (!open) {
+      if (!isSavedRef.current) {
+        handleCancel();
+      }
+      isSavedRef.current = false;
+    }
+  }, [open, handleCancel]);
 
   const [confirmState, setConfirmState] = useState<{
     open: boolean;
@@ -88,11 +95,23 @@ export default function BrochuresPage() {
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
+    if (files.length > 1) {
+      alert("You can only upload one brochure at a time.");
+      return;
+    }
+
+    const file = files[0];
     if (file.type !== "application/pdf") {
       alert("Only PDF files are supported.");
+      return;
+    }
+
+    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+    if (file.size > MAX_FILE_SIZE) {
+      alert("File size exceeds the 10MB limit.");
       return;
     }
 
@@ -113,6 +132,7 @@ export default function BrochuresPage() {
       }
 
       setForm({ ...form, fileUrl: data.secureUrl });
+      trackUpload(data.secureUrl);
     } catch (err) {
       console.error("Upload error:", err);
       alert(err instanceof Error ? err.message : "Upload failed.");
@@ -126,6 +146,10 @@ export default function BrochuresPage() {
       alert("Title and file are required.");
       return;
     }
+    if (!editingId && brochures.length >= 1) {
+      alert("Only one brochure is allowed. Please edit or delete the existing brochure.");
+      return;
+    }
     try {
       const data = {
         ...form,
@@ -133,15 +157,19 @@ export default function BrochuresPage() {
         ...(editingId ? {} : { createdAt: Date.now() }),
       };
 
+      isSavedRef.current = true;
       if (editingId) {
         await updateAdminDoc("brochures", editingId, data);
       } else {
         await addAdminDoc("brochures", data);
       }
 
+      await handleSave(extractUrls(data), originalUrls);
+
       setOpen(false);
       setEditingId(null);
       setForm(initialForm);
+      setOriginalUrls([]);
       fetchBrochures();
     } catch (error) {
       console.error("Error saving brochure:", error);
@@ -154,16 +182,22 @@ export default function BrochuresPage() {
       fileUrl: brochure.fileUrl,
     });
     setEditingId(brochure.id);
+    setOriginalUrls(extractUrls(brochure));
+    isSavedRef.current = false;
     setOpen(true);
   };
 
   const handleDelete = (id: string) => {
+    const brochureToDelete = brochures.find((b) => b.id === id);
     showConfirm(
       "Delete Brochure",
       "This action cannot be undone.",
       async () => {
         try {
           await deleteAdminDoc("brochures", id);
+          if (brochureToDelete) {
+            await handleDeleteDoc(brochureToDelete);
+          }
           fetchBrochures();
         } catch (error) {
           console.error("Error deleting brochure:", error);
@@ -174,193 +208,161 @@ export default function BrochuresPage() {
     );
   };
 
-  const filteredBrochures = brochures.filter(
-    (b) => b.title.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const totalPages = Math.ceil(filteredBrochures.length / ITEMS_PER_PAGE);
-  const paginatedBrochures = filteredBrochures.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [search]);
+  const brochure = brochures[0];
 
   return (
     <>
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Brochures</h1>
-          <p className="mt-1 text-neutral-400">Manage company brochure PDFs</p>
+          <p className="mt-1 text-neutral-400">Manage company brochure PDF</p>
         </div>
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => { setForm(initialForm); setEditingId(null); }}>
-              <Plus className="mr-2 size-4" />
-              Add Brochure
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-neutral-900 text-white border-neutral-800">
-            <DialogHeader>
-              <DialogTitle>{editingId ? "Edit Brochure" : "Add Brochure"}</DialogTitle>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <label className="text-sm font-medium">Title</label>
-                <Input
-                  value={form.title}
-                  onChange={(e) => setForm({ ...form, title: e.target.value })}
-                  placeholder="e.g. Company Brochure 2025"
-                  className="bg-neutral-800 border-neutral-700"
-                />
-              </div>
-              <div className="grid gap-2">
-                <label className="text-sm font-medium">PDF File</label>
-                <div className="flex items-center gap-3">
-                  <label className="cursor-pointer">
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      className="hidden"
-                      onChange={handleFileUpload}
-                      disabled={uploading}
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      className="bg-transparent"
-                      disabled={uploading}
-                      asChild
-                    >
-                      <span>
-                        {uploading ? (
-                          <LoaderCircle className="mr-2 size-4 animate-spin" />
-                        ) : (
-                          <Upload className="mr-2 size-4" />
-                        )}
-                        {uploading ? "Uploading..." : "Upload PDF"}
-                      </span>
-                    </Button>
-                  </label>
-                  {form.fileUrl && (
-                    <a
-                      href={form.fileUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-primary hover:underline flex items-center gap-1"
-                    >
-                      <ExternalLink className="size-3" />
-                      View PDF
-                    </a>
-                  )}
+        {!brochure && !loading && (
+          <Button onClick={() => { setForm(initialForm); setEditingId(null); setOriginalUrls([]); isSavedRef.current = false; setOpen(true); }}>
+            <Plus className="mr-2 size-4" />
+            Upload Brochure
+          </Button>
+        )}
+      </div>
+
+      {loading ? (
+        <div className="p-8 text-neutral-400">Loading...</div>
+      ) : brochure ? (
+        <div className="rounded-xl border border-white/10 bg-white/5 p-6 max-w-2xl">
+          <div className="flex items-start gap-4">
+            <div className="p-3 bg-primary/10 rounded-lg text-primary shrink-0">
+              <FileText className="size-8" />
+            </div>
+            <div className="flex-1 space-y-1">
+              <div className="flex items-center justify-between">
+                <h3 className="font-semibold text-lg text-white">{brochure.title}</h3>
+                <div className="flex items-center gap-2">
+                  <Button variant="ghost" size="icon" onClick={() => handleEdit(brochure)}>
+                    <Pencil className="size-4 text-neutral-400 hover:text-white" />
+                  </Button>
+                  <Button variant="ghost" size="icon" onClick={() => handleDelete(brochure.id)}>
+                    <Trash2 className="size-4 text-red-400 hover:text-red-300" />
+                  </Button>
                 </div>
-                {form.fileUrl && (
-                  <Input
-                    value={form.fileUrl}
-                    onChange={(e) => setForm({ ...form, fileUrl: e.target.value })}
-                    placeholder="https://..."
-                    className="bg-neutral-800 border-neutral-700 text-xs mt-2"
-                  />
-                )}
-                <p className="text-xs text-neutral-500">
-                  Upload a PDF or paste a URL directly.
-                </p>
+              </div>
+              <p className="text-sm text-neutral-400">
+                Uploaded on {new Date(brochure.createdAt).toLocaleDateString()}
+              </p>
+              <div className="pt-2">
+                <a
+                  href={brochure.fileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+                >
+                  <ExternalLink className="size-4" />
+                  View & Download PDF
+                </a>
               </div>
             </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setOpen(false)} className="bg-transparent">Cancel</Button>
-              <Button onClick={() => showConfirm(
-                editingId ? "Update Brochure?" : "Create Brochure?",
-                editingId ? "Save changes to this brochure?" : "Create this new brochure?",
-                handleSubmit,
-                editingId ? "Update" : "Create"
-              )}>{editingId ? "Update" : "Create"}</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      <div className="mb-6 flex items-center justify-between gap-4">
-        <div className="relative max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-500" />
-          <Input
-            placeholder="Search brochures..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 bg-neutral-900 border-neutral-800"
-          />
+          </div>
         </div>
-        <div className="text-sm text-neutral-400">
-          {filteredBrochures.length} brochure{filteredBrochures.length !== 1 ? "s" : ""}
+      ) : (
+        <div className="rounded-xl border border-dashed border-white/20 bg-white/5 p-12 text-center max-w-2xl flex flex-col items-center justify-center gap-4">
+          <div className="p-4 bg-white/5 rounded-full text-neutral-400">
+            <FileText className="size-12" />
+          </div>
+          <div className="space-y-1">
+            <h3 className="font-semibold text-lg text-white">No Brochure Uploaded</h3>
+            <p className="text-sm text-neutral-400">
+              Upload your company brochure PDF to show it in the website footer.
+            </p>
+          </div>
+          <Button onClick={() => { setForm(initialForm); setEditingId(null); setOriginalUrls([]); isSavedRef.current = false; setOpen(true); }}>
+            <Plus className="mr-2 size-4" />
+            Upload Brochure
+          </Button>
         </div>
-      </div>
+      )}
 
-      <div className="rounded-xl border border-white/10 bg-white/5">
-        <CardHeader className="border-b border-white/10">
-          <CardTitle>All Brochures</CardTitle>
-        </CardHeader>
-        <CardContent className="p-0">
-          {loading ? (
-            <div className="p-8 text-center text-neutral-400">Loading...</div>
-          ) : filteredBrochures.length === 0 ? (
-            <div className="p-8 text-center text-neutral-400">No brochures found</div>
-          ) : (
-            <>
-              <Table>
-                <TableHeader>
-                  <TableRow className="border-white/5 hover:bg-transparent">
-                    <TableHead className="text-neutral-400">Title</TableHead>
-                    <TableHead className="text-neutral-400">File</TableHead>
-                    <TableHead className="text-neutral-400">Date</TableHead>
-                    <TableHead className="text-right text-neutral-400">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {paginatedBrochures.map((brochure) => (
-                    <TableRow key={brochure.id} className="border-white/5">
-                      <TableCell className="font-medium">{brochure.title}</TableCell>
-                      <TableCell>
-                        <a
-                          href={brochure.fileUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-primary hover:underline flex items-center gap-1"
-                        >
-                          <ExternalLink className="size-3" />
-                          View PDF
-                        </a>
-                      </TableCell>
-                      <TableCell className="text-neutral-400">
-                        {brochure.createdAt ? new Date(brochure.createdAt).toLocaleDateString() : "-"}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <Button variant="ghost" size="icon" onClick={() => handleEdit(brochure)}>
-                            <Pencil className="size-4" />
-                          </Button>
-                          <Button variant="ghost" size="icon" onClick={() => handleDelete(brochure.id)}>
-                            <Trash2 className="size-4 text-red-400" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              <AdminPagination 
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-                totalItems={filteredBrochures.length}
-                itemsPerPage={ITEMS_PER_PAGE}
+      {/* Main Dialog (Create/Edit) */}
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-neutral-900 text-white border-neutral-800">
+          <DialogHeader>
+            <DialogTitle>{editingId ? "Edit Brochure" : "Upload Brochure"}</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <label className="text-sm font-medium">Title</label>
+              <Input
+                value={form.title}
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
+                placeholder="e.g. Company Brochure 2025"
+                className="bg-neutral-800 border-neutral-700"
               />
-            </>
-          )}
-        </CardContent>
-      </div>
+            </div>
+            <div className="grid gap-2">
+              <label className="text-sm font-medium">PDF File</label>
+              <div className="flex items-center gap-3">
+                <label className="cursor-pointer">
+                  <input
+                    type="file"
+                    accept="application/pdf"
+                    multiple={false}
+                    className="hidden"
+                    onChange={handleFileUpload}
+                    disabled={uploading}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="bg-transparent"
+                    disabled={uploading}
+                    asChild
+                  >
+                    <span>
+                      {uploading ? (
+                        <LoaderCircle className="mr-2 size-4 animate-spin" />
+                      ) : (
+                        <Upload className="mr-2 size-4" />
+                      )}
+                      {uploading ? "Uploading..." : "Upload PDF"}
+                    </span>
+                  </Button>
+                </label>
+                {form.fileUrl && (
+                  <a
+                    href={form.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-primary hover:underline flex items-center gap-1"
+                  >
+                    <ExternalLink className="size-3" />
+                    View PDF
+                  </a>
+                )}
+              </div>
+              {form.fileUrl && (
+                <Input
+                  value={form.fileUrl}
+                  onChange={(e) => setForm({ ...form, fileUrl: e.target.value })}
+                  placeholder="https://..."
+                  className="bg-neutral-800 border-neutral-700 text-xs mt-2"
+                />
+              )}
+              <p className="text-xs text-neutral-500">
+                Upload a PDF or paste a URL directly.
+              </p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setOpen(false)} className="bg-transparent">Cancel</Button>
+            <Button onClick={() => showConfirm(
+              editingId ? "Update Brochure?" : "Create Brochure?",
+              editingId ? "Save changes to this brochure?" : "Create this new brochure?",
+              handleSubmit,
+              editingId ? "Update" : "Create"
+            )}>{editingId ? "Update" : "Create"}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <ConfirmDialog
         open={confirmState.open}
         title={confirmState.title}
