@@ -10,9 +10,12 @@ export function ShareButtons({ title }: { title: string }) {
   const [isShareSupported, setIsShareSupported] = useState(false);
 
   useEffect(() => {
-    if (typeof navigator !== "undefined" && !!navigator.share) {
-      setIsShareSupported(true);
-    }
+    const raf = requestAnimationFrame(() => {
+      if (typeof navigator !== "undefined" && !!navigator.share) {
+        setIsShareSupported(true);
+      }
+    });
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   const handleCopyLink = async () => {

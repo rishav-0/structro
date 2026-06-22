@@ -1,6 +1,7 @@
 import "server-only";
 
 import { adminDb } from "./firebase-admin";
+import { withRetry } from "./retry";
 import { cache } from "react";
 
 type PublicCollectionConfig = {
@@ -64,35 +65,25 @@ export const getPublicCollectionData = cache(async function getPublicCollectionD
   }
 
   const config = publicCollectionConfigs[collectionName];
-  const snapshot = await adminDb.collection(collectionName).get();
 
-  const docs = snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  })) as unknown as Array<T & Record<string, unknown>>;
+  const docs = await withRetry(async () => {
+    let ref: FirebaseFirestore.Query | FirebaseFirestore.CollectionReference =
+      adminDb.collection(collectionName);
 
-  const filteredDocs = config.filters
-    ? docs.filter((doc) => config.filters!.every((filter) => doc[filter.field] === filter.value))
-    : docs;
-
-  filteredDocs.sort((left, right) => {
-    const leftValue = left[config.orderByField];
-    const rightValue = right[config.orderByField];
-
-    if (leftValue == null && rightValue == null) return 0;
-    if (leftValue == null) return 1;
-    if (rightValue == null) return -1;
-
-    if (leftValue < rightValue) {
-      return config.orderDirection === "asc" ? -1 : 1;
+    if (config.filters) {
+      for (const filter of config.filters) {
+        ref = ref.where(filter.field, "==", filter.value);
+      }
     }
 
-    if (leftValue > rightValue) {
-      return config.orderDirection === "asc" ? 1 : -1;
-    }
+    ref = ref.orderBy(config.orderByField, config.orderDirection);
 
-    return 0;
+    const snapshot = await ref.get();
+    return snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as unknown as Array<T & Record<string, unknown>>;
   });
 
-  return filteredDocs as T[];
+  return docs as T[];
 });

@@ -97,6 +97,24 @@ async function fetchDbCollection<T>(collectionName: string, limit = 50): Promise
   }
 }
 
+async function fetchDbCollectionWithFilter<T>(
+  collectionName: string,
+  field: string,
+  value: string,
+  limit = 50
+): Promise<T[]> {
+  try {
+    const snapshot = await adminDb
+      .collection(collectionName)
+      .where(field, "==", value)
+      .limit(limit)
+      .get();
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as T));
+  } catch {
+    return [];
+  }
+}
+
 function extractServiceFeatures(service: Record<string, unknown>): string[] {
   const features: string[] = [];
   if (Array.isArray(service.features)) {
@@ -230,7 +248,7 @@ async function fetchProjects(): Promise<ChatbotProject[]> {
 }
 
 async function fetchFaqs(): Promise<ChatbotFAQ[]> {
-  const dbFaqs = await fetchDbCollection<Record<string, unknown>>("faqs");
+  const dbFaqs = await fetchDbCollectionWithFilter<Record<string, unknown>>("faqs", "status", "active");
   return dbFaqs
     .map(transformDbFaq)
     .filter((f) => f.question && f.answer) as ChatbotFAQ[];

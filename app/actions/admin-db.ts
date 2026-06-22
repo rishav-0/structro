@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import { adminDb } from "@/lib/firebase-admin";
 import { deleteCloudinaryFile, getPublicIdFromUrl } from "@/lib/cloudinary";
 
-async function verifyAdmin() {
+export async function verifyAdmin() {
   const session = await auth();
   if (!session || session.user?.role !== "admin") {
     throw new Error("Unauthorized");

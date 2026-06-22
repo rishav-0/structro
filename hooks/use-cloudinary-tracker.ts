@@ -55,9 +55,9 @@ export function useCloudinaryTracker() {
   }, [uploadedUrls, resetTracker]);
 
   // Helper to extract Cloudinary URLs from any document structure
-  const extractUrls = useCallback((doc: any): string[] => {
+  const extractUrls = useCallback((doc: unknown): string[] => {
     const urls: string[] = [];
-    function recurse(current: any) {
+    function recurse(current: unknown) {
       if (!current) return;
       if (typeof current === "string") {
         if (current.includes("cloudinary.com")) {
@@ -68,8 +68,8 @@ export function useCloudinaryTracker() {
           recurse(item);
         }
       } else if (typeof current === "object") {
-        for (const key of Object.keys(current)) {
-          recurse(current[key]);
+        for (const key of Object.keys(current as Record<string, unknown>)) {
+          recurse((current as Record<string, unknown>)[key]);
         }
       }
     }
@@ -78,7 +78,7 @@ export function useCloudinaryTracker() {
   }, []);
 
   // When a document is deleted entirely
-  const handleDeleteDoc = useCallback(async (doc: any) => {
+  const handleDeleteDoc = useCallback(async (doc: unknown) => {
     const docUrls = extractUrls(doc);
     if (docUrls.length > 0) {
       await deleteMultipleCloudinaryAssetsByUrls(docUrls);

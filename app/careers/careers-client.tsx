@@ -57,8 +57,8 @@ export function CareersClient({ jobs }: { jobs: Career[] }) {
         resumeUrl: "",
         message: ""
       });
-    } catch (err: any) {
-      setError(err.message || "Failed to submit application. Please try again.");
+    } catch {
+      setError("Failed to submit application. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -77,7 +77,7 @@ export function CareersClient({ jobs }: { jobs: Career[] }) {
               Join Our Growing Team
             </h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-              Explore our active career opportunities. Click "Apply Now" to submit your application via our official Google Form.
+              Explore our active career opportunities. Click &quot;Apply Now&quot; to submit your application via our official Google Form.
             </p>
           </div>
 

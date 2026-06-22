@@ -4,7 +4,6 @@ import { useEffect } from "react"
 import WhatsAppButton from "@/components/WhatsAppButton"
 import dynamic from "next/dynamic"
 import { usePathname } from "next/navigation"
-import { ChatbotProvider } from "./chatbot-provider"
 
 const Chatbot = dynamic(() => import("@/components/Chatbot"), {
   ssr: false,
@@ -38,11 +37,7 @@ export default function ClientLayout({
       {children}
       {!isAdminRoute && footer}
       {!isAdminRoute && <WhatsAppButton />}
-      {!isAdminRoute && (
-        <ChatbotProvider autoRefreshInterval={180000}>
-          <Chatbot />
-        </ChatbotProvider>
-      )}
+      {!isAdminRoute && <Chatbot />}
     </>
   )
 }

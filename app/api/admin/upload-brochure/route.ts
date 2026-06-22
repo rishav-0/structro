@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/auth";
+import { verifyAdmin } from "@/app/actions/admin-db";
 import { uploadAdminFile } from "@/lib/cloudinary";
+import { checkRateLimit, rateLimitResponse } from "@/lib/rate-limiter";
 
 export const runtime = "nodejs";
 
@@ -8,11 +9,13 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 export async function POST(request: Request) {
   try {
-    const session = await auth();
-
-    if (!session || session.user?.role !== "admin") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const rateKey = "upload-brochure";
+    const limit = checkRateLimit(rateKey, 20, 60_000);
+    if (!limit.allowed) {
+      return rateLimitResponse(limit.resetIn);
     }
+
+    await verifyAdmin();
 
     const formData = await request.formData();
     const file = formData.get("file");
@@ -48,12 +51,7 @@ export async function POST(request: Request) {
     console.error("File upload failed", error);
 
     return NextResponse.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Unable to upload the file right now.",
-      },
+      { error: "Unable to upload the file right now. Please try again." },
       { status: 500 }
     );
   }

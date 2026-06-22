@@ -38,8 +38,12 @@ export function ContactClient() {
     setIsSubmitting(true);
     setSubmitError("");
     try {
-      await submitEnquiry(formData);
-      setIsSubmitted(true);
+      const result = await submitEnquiry(formData);
+      if (result.success) {
+        setIsSubmitted(true);
+      } else {
+        setSubmitError(result.error || "Failed to submit. Please try again.");
+      }
     } catch (error) {
       console.error("Error submitting enquiry:", error);
       setSubmitError("Failed to submit. Please try again or contact us directly.");

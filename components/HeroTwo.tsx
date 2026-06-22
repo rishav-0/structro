@@ -43,11 +43,14 @@ export default function HeroTwo() {
   }, []);
 
   useEffect(() => {
-    setIsMounted(true);
+    const raf = requestAnimationFrame(() => setIsMounted(true));
     const timer = setInterval(() => {
       handleNext();
     }, 6000);
-    return () => clearInterval(timer);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearInterval(timer);
+    };
   }, [currentSlide, handleNext]);
 
   return (

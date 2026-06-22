@@ -1,4 +1,5 @@
 import { v2 as cloudinary, type UploadApiResponse } from "cloudinary";
+import { withRetry } from "./retry";
 
 let configured = false;
 
@@ -46,7 +47,7 @@ export async function uploadAdminImage({
 }): Promise<UploadApiResponse> {
   configureCloudinary();
 
-  return new Promise((resolve, reject) => {
+  return withRetry(() => new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         folder: `structro/${sanitizeUploadFolder(folder)}`,
@@ -70,7 +71,7 @@ export async function uploadAdminImage({
     );
 
     uploadStream.end(buffer);
-  });
+  }));
 }
 
 export async function uploadAdminFile({
@@ -82,7 +83,7 @@ export async function uploadAdminFile({
 }): Promise<UploadApiResponse> {
   configureCloudinary();
 
-  return new Promise((resolve, reject) => {
+  return withRetry(() => new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         folder: `structro/${sanitizeUploadFolder(folder)}`,
@@ -106,7 +107,7 @@ export async function uploadAdminFile({
     );
 
     uploadStream.end(buffer);
-  });
+  }));
 }
 
 export function getPublicIdFromUrl(url: string): { publicId: string; resourceType: "image" | "raw" } | null {
@@ -143,10 +144,10 @@ export function getPublicIdFromUrl(url: string): { publicId: string; resourceTyp
 export async function deleteCloudinaryFile(
   publicId: string,
   resourceType: "image" | "raw" = "image"
-): Promise<any> {
+): Promise<unknown> {
   configureCloudinary();
 
-  return new Promise((resolve, reject) => {
+  return withRetry(() => new Promise((resolve, reject) => {
     cloudinary.uploader.destroy(
       publicId,
       { resource_type: resourceType, invalidate: true },
@@ -158,5 +159,5 @@ export async function deleteCloudinaryFile(
         resolve(result);
       }
     );
-  });
+  }));
 }

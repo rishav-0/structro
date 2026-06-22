@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/auth";
+import { verifyAdmin } from "@/app/actions/admin-db";
 import { adminDb } from "@/lib/firebase-admin";
 
 export const runtime = "nodejs";
@@ -663,10 +663,7 @@ const productsData = [
 
 export async function GET() {
   try {
-    const session = await auth();
-    if (!session || session.user?.role !== "admin") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    await verifyAdmin();
 
     const results: Record<string, { written: string[]; errors: string[] }> = {
       services: { written: [], errors: [] },
@@ -715,6 +712,7 @@ export async function GET() {
       details: results,
     });
   } catch (e) {
-    return NextResponse.json({ error: String(e) }, { status: 500 });
+    console.error("Seed failed:", e);
+    return NextResponse.json({ error: "Seeding failed. Please try again." }, { status: 500 });
   }
 }

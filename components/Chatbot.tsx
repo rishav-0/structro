@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { MessageCircle, X, Send, Bot, User, ChevronDown, RefreshCw } from "lucide-react";
-import { useChatbotDataSafe } from "@/app/chatbot-provider";
+import { fetchChatbotData, type ChatbotData } from "@/app/actions/chatbot-data";
 
 interface Message {
   role: "bot" | "user";
@@ -42,7 +42,7 @@ function extractKeywords(text: string): string[] {
   return words.filter((w) => w.length > 2 && !STOP_WORDS.has(w));
 }
 
-function fuzzyMatch(a: string, b: string, threshold = 0.6): boolean {
+function fuzzyMatch(a: string, b: string): boolean {
   const normalizedA = normalizeText(a);
   const normalizedB = normalizeText(b);
   
@@ -64,11 +64,11 @@ function fuzzyMatch(a: string, b: string, threshold = 0.6): boolean {
   return false;
 }
 
-function buildSearchIndex(data: ReturnType<typeof useChatbotDataSafe>): SearchableItem[] {
+function buildSearchIndex(data: ChatbotData | null): SearchableItem[] {
   const items: SearchableItem[] = [];
-  const { getServices, getProducts, getProjects, getFaqs, getCompany, getProcess } = data;
+  if (!data) return items;
+  const { services, products, projects, faqs, company, process } = data;
 
-  const company = getCompany();
   if (company) {
     items.push({
       id: "company",
@@ -115,7 +115,6 @@ function buildSearchIndex(data: ReturnType<typeof useChatbotDataSafe>): Searchab
     }
   }
 
-  const process = getProcess();
   if (process) {
     items.push({
       id: "process",
@@ -144,7 +143,7 @@ function buildSearchIndex(data: ReturnType<typeof useChatbotDataSafe>): Searchab
     });
   }
 
-  getServices().forEach((service) => {
+  services.forEach((service) => {
     items.push({
       id: service.id,
       type: "service",
@@ -162,7 +161,7 @@ function buildSearchIndex(data: ReturnType<typeof useChatbotDataSafe>): Searchab
     });
   });
 
-  getProducts().forEach((product) => {
+  products.forEach((product) => {
     items.push({
       id: product.id,
       type: "product",
@@ -179,7 +178,7 @@ function buildSearchIndex(data: ReturnType<typeof useChatbotDataSafe>): Searchab
     });
   });
 
-  getProjects().forEach((project) => {
+  projects.forEach((project) => {
     items.push({
       id: project.id,
       type: "project",
@@ -196,7 +195,7 @@ function buildSearchIndex(data: ReturnType<typeof useChatbotDataSafe>): Searchab
     });
   });
 
-  getFaqs().forEach((faq) => {
+  faqs.forEach((faq) => {
     items.push({
       id: faq.id,
       type: "faq",
@@ -247,9 +246,9 @@ function detectIntent(query: string): { intent: string; keywords: string[] } {
   return { intent: "search", keywords: kw };
 }
 
-function generateResponse(query: string, _results: SearchableItem[], companyGetter: ReturnType<typeof useChatbotDataSafe>["getCompany"], allItems: SearchableItem[]): string {
+function generateResponse(query: string, _results: SearchableItem[], chatbotData: ChatbotData | null, allItems: SearchableItem[]): string {
   const { intent, keywords } = detectIntent(query);
-  const companyInfo = companyGetter();
+  const companyInfo = chatbotData?.company || null;
   const name = companyInfo?.name || "Structro Infratech";
   const contact = companyInfo?.contact;
 
@@ -506,13 +505,40 @@ const Chatbot = () => {
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [chatbotData, setChatbotData] = useState<ChatbotData | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   
-  const chatbotData = useChatbotDataSafe();
-  const { getCompany, isLoading, error, refresh } = chatbotData;
-  
   const searchIndex = useMemo(() => buildSearchIndex(chatbotData), [chatbotData]);
+  
+  const loadData = useCallback(async () => {
+    if (dataLoaded) return;
+    setIsLoading(true);
+    try {
+      const data = await fetchChatbotData();
+      setChatbotData(data);
+      setDataLoaded(true);
+    } catch (err) {
+      console.error("Failed to load chatbot data:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [dataLoaded]);
+  
+  const refresh = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const data = await fetchChatbotData();
+      setChatbotData(data);
+      setDataLoaded(true);
+    } catch (err) {
+      console.error("Failed to refresh chatbot data:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
   
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -524,9 +550,10 @@ const Chatbot = () => {
   
   useEffect(() => {
     if (isOpen) {
+      loadData();
       setTimeout(() => inputRef.current?.focus(), 300);
     }
-  }, [isOpen]);
+  }, [isOpen, loadData]);
   
   const handleSend = useCallback(
     (text?: string) => {
@@ -538,12 +565,12 @@ const Chatbot = () => {
       setIsTyping(true);
       
       setTimeout(() => {
-        const response = generateResponse(msg, [], getCompany, searchIndex);
+        const response = generateResponse(msg, [], chatbotData, searchIndex);
         setMessages((prev) => [...prev, { role: "bot", text: response }]);
         setIsTyping(false);
       }, 400 + Math.random() * 600);
     },
-    [input, searchIndex, getCompany]
+    [input, searchIndex, chatbotData]
   );
   
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -601,7 +628,7 @@ const Chatbot = () => {
                 Structro Assistant
               </h3>
               <p className="text-white/70 text-xs mt-0.5">
-                {isLoading ? "Loading data..." : error ? "Using cached data" : "Ask me anything"}
+                {isLoading ? "Loading data..." : "Ask me anything"}
               </p>
             </div>
             <div className="flex items-center gap-1 relative">

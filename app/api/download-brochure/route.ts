@@ -49,6 +49,6 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error("Brochure proxy download failed:", error);
-    return NextResponse.json({ error: "Failed to fetch brochure" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch brochure. Please try again." }, { status: 500 });
   }
 }

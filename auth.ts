@@ -1,9 +1,6 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 
-import { db } from "@/lib/firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-
 const ADMIN_EMAILS = process.env.ADMIN_EMAILS?.split(",") || [];
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -19,7 +16,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
 
   callbacks: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async signIn({ user }) {
       // Reject any login attempt from non-admin emails
       if (!user.email || !ADMIN_EMAILS.includes(user.email)) {
