@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { adminDb } from "@/lib/firebase-admin";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -24,11 +25,39 @@ interface NewLaunch {
   status?: "active" | "inactive";
 }
 
+async function getLaunch(id: string): Promise<NewLaunch | null> {
+  try {
+    const snapshot = await adminDb.collection("new-launches").get();
+    const launches = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as NewLaunch));
+    const launch = launches.find((l) => {
+      const dbId = String(l.id).trim().toLowerCase();
+      const searchId = id.trim().toLowerCase();
+      return dbId === searchId;
+    });
+    return launch && launch.status !== "inactive" ? launch : null;
+  } catch (e) {
+    console.error("Error fetching launch project:", e);
+    return null;
+  }
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const launch = await getLaunch(id);
+  
+  if (!launch) {
+    return { title: 'Project Not Found | Structro Infratech' };
+  }
+  
+  return {
+    title: `${launch.title} | Structro Infratech`,
+    description: launch.description,
+  };
+}
+
 export default async function NewLaunchPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const launchSnapshot = await adminDb.collection("new-launches").doc(id).get();
-  const launchFromDb = launchSnapshot.exists ? ({ id: launchSnapshot.id, ...launchSnapshot.data() } as NewLaunch) : null;
-  const launch = launchFromDb && launchFromDb.status !== "inactive" ? launchFromDb : null;
+  const launch = await getLaunch(id);
 
   if (!launch) {
     notFound();

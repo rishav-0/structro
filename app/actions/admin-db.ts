@@ -3,6 +3,7 @@
 import { auth } from "@/auth";
 import { adminDb } from "@/lib/firebase-admin";
 import { deleteCloudinaryFile, getPublicIdFromUrl } from "@/lib/cloudinary";
+import { revalidatePath } from "next/cache";
 
 export async function verifyAdmin() {
   const session = await auth();
@@ -31,17 +32,20 @@ export async function getAdminDoc(collectionName: string, docId: string) {
 export async function addAdminDoc(collectionName: string, data: Record<string, unknown>) {
   await verifyAdmin();
   const ref = await adminDb.collection(collectionName).add(data);
+  revalidatePath('/', 'layout');
   return ref.id;
 }
 
 export async function updateAdminDoc(collectionName: string, docId: string, data: Record<string, unknown>) {
   await verifyAdmin();
   await adminDb.collection(collectionName).doc(docId).update(data);
+  revalidatePath('/', 'layout');
 }
 
 export async function deleteAdminDoc(collectionName: string, docId: string) {
   await verifyAdmin();
   await adminDb.collection(collectionName).doc(docId).delete();
+  revalidatePath('/', 'layout');
 }
 
 export async function deleteMultipleCloudinaryAssetsByUrls(urls: string[]) {

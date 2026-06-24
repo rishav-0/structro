@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { getPublicCollectionData } from "@/lib/public-db-server";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/container";
@@ -27,16 +28,37 @@ interface Product {
   imageAlt?: string;
 }
 
-export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  let product: Product | null = null;
-  
+async function getProduct(id: string): Promise<Product | null> {
   try {
     const dbProducts = await getPublicCollectionData<Product>("products");
-    product = dbProducts.find((productItem) => productItem.id === id) || null;
+    return dbProducts.find((productItem) => {
+      const dbId = String(productItem.id).trim().toLowerCase();
+      const searchId = id.trim().toLowerCase();
+      return dbId === searchId;
+    }) || null;
   } catch (e) {
     console.error("Error fetching product:", e);
+    return null;
   }
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const product = await getProduct(id);
+  
+  if (!product) {
+    return { title: 'Product Not Found | Structro Infratech' };
+  }
+  
+  return {
+    title: `${product.title} | Structro Infratech`,
+    description: product.description,
+  };
+}
+
+export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const product = await getProduct(id);
 
   if (!product) return notFound();
 

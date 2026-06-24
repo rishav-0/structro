@@ -70,19 +70,23 @@ export const getPublicCollectionData = cache(async function getPublicCollectionD
     let ref: FirebaseFirestore.Query | FirebaseFirestore.CollectionReference =
       adminDb.collection(collectionName);
 
-    if (config.filters) {
-      for (const filter of config.filters) {
-        ref = ref.where(filter.field, "==", filter.value);
-      }
-    }
-
     ref = ref.orderBy(config.orderByField, config.orderDirection);
 
     const snapshot = await ref.get();
-    return snapshot.docs.map((doc) => ({
+    let results = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     })) as unknown as Array<T & Record<string, unknown>>;
+
+    if (config.filters) {
+      for (const filter of config.filters) {
+        results = results.filter(
+          (doc) => doc[filter.field] === filter.value
+        );
+      }
+    }
+
+    return results;
   });
 
   return docs as T[];

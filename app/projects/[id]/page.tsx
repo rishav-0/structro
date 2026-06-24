@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { getPublicCollectionData } from "@/lib/public-db-server";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/container";
@@ -49,31 +50,64 @@ function buildProjectNarrative(project: Project) {
   return context;
 }
 
-export default async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  let project: Project | null = null;
-  let serviceTitle = "";
-  
+async function getProject(id: string): Promise<Project | null> {
+  console.log("getProject called with id:", id);
   try {
     const dbProjects = (await getPublicCollectionData("projects")) as Project[];
-    project = dbProjects.find((projectItem) => String(projectItem.id) === id) || null;
+    const found = dbProjects.find((projectItem) => {
+      const dbId = String(projectItem.id).trim().toLowerCase();
+      const searchId = id.trim().toLowerCase();
+      return dbId === searchId;
+    }) || null;
+    console.log("getProject found project title:", found ? found.title : "null");
+    return found;
+  } catch (e) {
+    console.error("Error fetching project:", e);
+    return null;
+  }
+}
 
-    if (project && project.serviceId) {
-      const serviceId = project.serviceId;
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  console.log("generateMetadata called with id:", id);
+  const project = await getProject(id);
+  
+  if (!project) {
+    console.log("generateMetadata: project not found, returning fallback");
+    return { title: 'Project Not Found | Structro Infratech' };
+  }
+  
+  const projectTitle = project.title || project.alt || (typeof project.id === 'string' && project.id.length > 5 ? 'Project Details' : `Project ${project.id}`);
+  console.log("generateMetadata returning title:", `${projectTitle} | Structro Infratech`);
+  
+  return {
+    title: `${projectTitle} | Structro Infratech`,
+    description: project.summary || buildProjectNarrative(project),
+  };
+}
+
+export default async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const project = await getProject(id);
+  
+  if (!project || project.visible === false) return notFound();
+  
+  let serviceTitle = "";
+  if (project.serviceId) {
+    try {
       const dbServices = await getPublicCollectionData("services") as { id: string; title: string }[];
-      const matchedService = dbServices.find((s) => s.id === serviceId);
+      const matchedService = dbServices.find((s) => s.id === project.serviceId);
       if (matchedService) {
         serviceTitle = matchedService.title;
       }
+    } catch (e) {
+      console.error("Error fetching services:", e);
     }
-  } catch (e) {
-    console.error("Error fetching from DB:", e);
   }
-
-  if (!project || project.visible === false) return notFound();
 
   const projectSummary = project.summary || buildProjectNarrative(project);
   const displayCategory = serviceTitle || project.category;
+  const projectTitle = project.title || project.alt || (typeof project.id === 'string' && project.id.length > 5 ? 'Project Details' : `Project ${project.id}`);
 
   return (
     <div className="bg-white">
@@ -96,7 +130,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                 </span>
               )}
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 md:text-6xl">
-                {project.title || project.alt}
+                {projectTitle}
               </h1>
 
              
