@@ -3,7 +3,7 @@ import { ProjectsClient } from "./projects-client";
 import { getPublicCollectionData } from '@/lib/public-db-server';
 import { Suspense } from 'react';
 
-export const revalidate = 3600; // Cache page static response for 1 hour
+export const revalidate = 60; // ISR: revalidate every 60s as safety net (admin changes trigger immediate revalidation via tags)
 
 export const metadata: Metadata = {
   title: 'Project Portfolio | Bridges, PEB & Steel Structures | Structro Infratech Guwahati',

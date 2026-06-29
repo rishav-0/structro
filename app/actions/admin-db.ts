@@ -3,12 +3,25 @@
 import { auth } from "@/auth";
 import { adminDb } from "@/lib/firebase-admin";
 import { deleteCloudinaryFile, getPublicIdFromUrl } from "@/lib/cloudinary";
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 export async function verifyAdmin() {
   const session = await auth();
   if (!session || session.user?.role !== "admin") {
     throw new Error("Unauthorized");
+  }
+}
+
+/**
+ * Revalidate all public-facing data caches.
+ * Called after any admin mutation so Vercel serves fresh data immediately.
+ */
+function revalidatePublicData(collectionName?: string) {
+  // Always revalidate the global tag (busts ALL collection caches)
+  revalidateTag("public-data", { expire: 0 });
+  // Also revalidate the specific collection tag for targeted invalidation
+  if (collectionName) {
+    revalidateTag(`collection-${collectionName}`, { expire: 0 });
   }
 }
 
@@ -32,20 +45,20 @@ export async function getAdminDoc(collectionName: string, docId: string) {
 export async function addAdminDoc(collectionName: string, data: Record<string, unknown>) {
   await verifyAdmin();
   const ref = await adminDb.collection(collectionName).add(data);
-  revalidatePath('/', 'layout');
+  revalidatePublicData(collectionName);
   return ref.id;
 }
 
 export async function updateAdminDoc(collectionName: string, docId: string, data: Record<string, unknown>) {
   await verifyAdmin();
   await adminDb.collection(collectionName).doc(docId).update(data);
-  revalidatePath('/', 'layout');
+  revalidatePublicData(collectionName);
 }
 
 export async function deleteAdminDoc(collectionName: string, docId: string) {
   await verifyAdmin();
   await adminDb.collection(collectionName).doc(docId).delete();
-  revalidatePath('/', 'layout');
+  revalidatePublicData(collectionName);
 }
 
 export async function deleteMultipleCloudinaryAssetsByUrls(urls: string[]) {
@@ -67,4 +80,3 @@ export async function deleteMultipleCloudinaryAssetsByUrls(urls: string[]) {
 
   return Promise.all(deletePromises);
 }
-

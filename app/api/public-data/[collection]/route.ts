@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 
 import { getPublicCollectionData } from "@/lib/public-db-server";
 
+// Ensure this route is always dynamic (never statically generated)
+export const dynamic = "force-dynamic";
+
 // This API route is server-side only. Ensure no client-side code imports this file.
 export async function GET(
   _request: Request,

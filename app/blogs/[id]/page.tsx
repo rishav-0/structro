@@ -9,6 +9,8 @@ import Link from "next/link";
 import { ShareButtons } from "@/components/ShareButtons";
 import { BackButton } from "@/components/ui/back-button";
 
+export const revalidate = 60; // ISR: revalidate every 60s as safety net
+
 interface BlogPost {
   id: string;
   title: string;

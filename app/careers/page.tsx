@@ -5,6 +5,8 @@ import { getPublicCollectionData } from "@/lib/public-db-server";
 import { Award, Shield, GraduationCap, Users } from "lucide-react";
 import { CareersClient } from "./careers-client";
 
+export const revalidate = 60; // ISR: revalidate every 60s as safety net
+
 export const metadata: Metadata = {
   title: 'Careers | Structro Infratech - Join Our Team of Engineers',
   description: 'Build your career with Structro Infratech. We are hiring skilled engineers, project managers, and technicians for bridge and steel structure projects across Northeast India.',

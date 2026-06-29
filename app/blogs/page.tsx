@@ -7,6 +7,8 @@ import { ArrowUpRight, Calendar, User, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+export const revalidate = 60; // ISR: revalidate every 60s as safety net (admin changes trigger immediate revalidation via tags)
+
 export const metadata: Metadata = {
   title: 'Blog | Structro Infratech - Engineering Insights & Updates',
   description: 'Read the latest articles on bridge engineering, steel structures, PEB buildings, and infrastructure projects from Structro Infratech.',

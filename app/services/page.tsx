@@ -8,7 +8,7 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { getPublicCollectionData } from "@/lib/public-db-server";
 
-export const revalidate = 3600; // Cache page static response for 1 hour
+export const revalidate = 60; // ISR: revalidate every 60s as safety net (admin changes trigger immediate revalidation via tags)
 
 // Scale signals per service — tells buyers minimum project scope at a glance
 const serviceScaleSignals: Record<string, string> = {

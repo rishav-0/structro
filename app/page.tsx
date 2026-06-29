@@ -1,7 +1,7 @@
 import { HomeClient } from "./home-client";
 import { getPublicCollectionData } from "@/lib/public-db-server";
 
-export const revalidate = 3600; // Cache page static response for 1 hour
+export const revalidate = 60; // ISR: revalidate every 60s as safety net (admin changes trigger immediate revalidation via tags)
 
 interface ServiceInfo {
   id: string;

@@ -2,7 +2,7 @@ import "server-only";
 
 import { adminDb } from "./firebase-admin";
 import { withRetry } from "./retry";
-import { cache } from "react";
+import { unstable_cache } from "next/cache";
 
 type PublicCollectionConfig = {
   orderByField: string;
@@ -57,9 +57,16 @@ function isPublicCollectionName(collectionName: string): collectionName is Publi
   return collectionName in publicCollectionConfigs;
 }
 
-export const getPublicCollectionData = cache(async function getPublicCollectionData<
-  T = Record<string, unknown>,
->(collectionName: string): Promise<T[]> {
+/**
+ * Fetches data from a Firestore collection with proper Next.js caching + tag-based revalidation.
+ *
+ * Uses `unstable_cache` with tags so that admin mutations can call `revalidateTag`
+ * to bust the cache on-demand — this is what makes Vercel deployments update immediately
+ * after admin changes, instead of waiting for the ISR revalidation timer.
+ */
+async function fetchCollectionFromFirestore<T = Record<string, unknown>>(
+  collectionName: string
+): Promise<T[]> {
   if (!isPublicCollectionName(collectionName)) {
     throw new Error(`Unsupported public collection: ${collectionName}`);
   }
@@ -90,4 +97,32 @@ export const getPublicCollectionData = cache(async function getPublicCollectionD
   });
 
   return docs as T[];
-});
+}
+
+/**
+ * Get public collection data with Next.js Data Cache (tag-based revalidation).
+ *
+ * Each collection is tagged with both `"public-data"` (global) and
+ * `"collection-{name}"` (per-collection) for granular invalidation.
+ *
+ * Cache revalidates every 60 seconds as a safety net, but admin mutations
+ * trigger immediate revalidation via `revalidateTag`.
+ */
+export function getPublicCollectionData<T = Record<string, unknown>>(
+  collectionName: string
+): Promise<T[]> {
+  if (!isPublicCollectionName(collectionName)) {
+    throw new Error(`Unsupported public collection: ${collectionName}`);
+  }
+
+  const cachedFetch = unstable_cache(
+    () => fetchCollectionFromFirestore<T>(collectionName),
+    [`public-collection-${collectionName}`],
+    {
+      tags: ["public-data", `collection-${collectionName}`],
+      revalidate: 60, // Safety net: refetch every 60s even without explicit revalidation
+    }
+  );
+
+  return cachedFetch();
+}

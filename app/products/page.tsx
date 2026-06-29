@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { getPublicCollectionData } from "@/lib/public-db-server";
 
-export const revalidate = 3600; // Cache page static response for 1 hour
+export const revalidate = 60; // ISR: revalidate every 60s as safety net (admin changes trigger immediate revalidation via tags)
 
 type Product = {
   id: string;
