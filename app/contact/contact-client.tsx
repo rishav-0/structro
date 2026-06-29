@@ -94,7 +94,7 @@ export function ContactClient() {
               {
                 icon: <Clock className="w-6 h-6 text-primary" />,
                 title: "Working Hours",
-                details: ["Mon - Sat: 9AM - 6PM", "Sun: Closed"],
+                details: ["Mon - Sat: 10AM - 7PM", "Sun: Closed"],
                 link: "#"
               }
             ].map((item, index) => (

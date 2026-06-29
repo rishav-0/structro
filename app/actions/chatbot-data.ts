@@ -296,7 +296,7 @@ function buildCompanyInfo(): ChatbotCompany {
       headOffice:
         "1st Floor, Silver Square, Christian Basti, G.S Road, Guwahati, Assam - 781005",
       workshop: "Guwahati-Accoland-Rani Rd, South Rani, Guwahati-31",
-      hours: "Mon - Sat: 9AM - 6PM | Sun: Closed",
+      hours: "Mon - Sat: 10AM - 7PM | Sun: Closed",
       whatsapp: "+91-9678027684",
     },
     type: "company",
