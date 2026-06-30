@@ -102,7 +102,7 @@ export default function AboutPage() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">VISION</h3>
-                  <p className="text-gray-600">To become Northeast India’s most trusted structural engineering and infrastructure company by delivering resilient, future-ready, and high-performance infrastructure solutions built on innovation, precision, and accountability.</p>
+                  <p className="text-gray-600">Engineering structures that stand stronger today and create value for generations tomorrow.</p>
                 </div>
               </div>
               <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 flex gap-6 items-start">
@@ -301,15 +301,15 @@ export default function AboutPage() {
             <div className="border-l-4 border-accent pl-6 py-2 bg-accent/5 rounded-r-xl p-4">
               <h3 className="text-accent text-xs font-bold uppercase tracking-[0.2em] mb-2">Vision Statement</h3>
               <p className="text-lg font-bold text-gray-900 italic leading-relaxed">
-                &ldquo;To become Northeast India&apos;s most trusted engineering and infrastructure company by delivering world-class steel construction, sustainable solutions, and technically superior projects that create lasting value.&rdquo;
+                &ldquo;To engineer and build resilient infrastructure that powers industries, strengthens communities, and creates lasting value through world-class structural steel solutions and EPC excellence.&rdquo;
               </p>
             </div>
 
             {/* Closing Message */}
             <div className="border-t border-gray-150 pt-8">
-              <h3 className="text-accent text-xs font-bold uppercase tracking-[0.2em] mb-3">Closing Message</h3>
+              <h3 className="text-accent text-xs font-bold uppercase tracking-[0.2em] mb-3">Our mission</h3>
               <p className="text-gray-600 leading-relaxed text-lg">
-                Our mission is to raise the standard of construction across Northeast India through innovation, integrity, and engineering excellence. Every project we undertake reflects our commitment to building stronger industries, safer infrastructure, and lasting partnerships.
+                To deliver safe, innovative, and high-quality engineering solutions through technical excellence, precision execution, and an unwavering commitment to our clients, people, and communities.
               </p>
             </div>
 
