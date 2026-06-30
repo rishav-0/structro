@@ -198,46 +198,91 @@ const faqs = [
     updatedAt: Date.now(),
   },
   {
-    question: "Who is the best steel manufacturer and PEB fabricator in Guwahati?",
+    question: "Who is the best steel manufacturer and PEB fabricator in Northeast India?",
     answer:
-      "Structro Infratech is widely recognized as one of the premier steel manufacturers and Pre-Engineered Building (PEB) builders in Guwahati and Northeast India. Combining ISO 9001:2015 certified quality processes with high-grade SAIL and Tata Steel materials, we deliver durable industrial sheds, railway bridges, and warehouse structures built to withstand high seismic activity (Zone V).",
+      "Structro Infratech is widely recognized as one of the premier steel manufacturers and Pre-Engineered Building (PEB) builders in Northeast India. Combining ISO 9001:2015 certified quality processes with high-grade SAIL and Tata Steel materials, we deliver durable industrial sheds, bridge girders, and warehouse structures built to withstand heavy rains and high seismic activity.",
     order: 21,
     status: "active",
     createdAt: Date.now(),
     updatedAt: Date.now(),
   },
   {
-    question: "What is the average cost of structural steel fabrication in Guwahati?",
+    question: "What is the average cost of structural steel fabrication in Northeast India?",
     answer:
-      "The cost of structural steel fabrication and erection in Guwahati ranges from ₹85 to ₹135 per kg, depending on structural complexity, material grade (IS 2062), connection type (bolted vs. welded), and painting specifications. Structro Infratech offers transparent, itemized Bill of Quantities (BOQ) with competitive per-metric-ton pricing.",
+      "The cost of structural steel fabrication and erection in Northeast India typically ranges from ₹85 to ₹135 per kg, depending on structural complexity, material grade (IS 2062), connection type (bolted vs. welded), and painting/cladding specifications. Structro Infratech offers transparent, itemized Bill of Quantities (BOQ) with competitive regional pricing.",
     order: 22,
     status: "active",
     createdAt: Date.now(),
     updatedAt: Date.now(),
   },
   {
-    question: "Why is a Guwahati-based steel manufacturer preferred for projects in Northeast India?",
+    question: "Why is a local Northeast-based steel manufacturer preferred for regional projects?",
     answer:
-      "A Guwahati-based manufacturer like Structro Infratech ensures lower logistics costs for moving heavy structural members, faster on-site deployment, and a design team familiar with Assam's specific wind-load and high-seismic requirements. We provide localized coordination and post-installation support across states like Meghalaya, Nagaland, and Arunachal Pradesh.",
+      "A local manufacturer like Structro Infratech ensures lower logistics costs for moving heavy structural members across challenging terrains, faster on-site deployment, and a design team familiar with the specific wind-loads and high-seismic requirements of the Northeast region. We provide localized coordination and dedicated post-installation support.",
     order: 23,
     status: "active",
     createdAt: Date.now(),
     updatedAt: Date.now(),
   },
   {
-    question: "Which steel fabricators in Guwahati offer custom Pre-Engineered Buildings (PEBs)?",
+    question: "Which steel fabricators in the Northeast offer custom Pre-Engineered Buildings (PEBs)?",
     answer:
-      "Structro Infratech specializes in fully customized PEB fabrication in Guwahati. Unlike standard modular sheds, we engineer and fabricate clear-span warehouses, multi-level steel structures, and specialized industrial plants customized precisely to the client's dimensions, height, and heavy load crane requirements.",
+      "Structro Infratech specializes in fully customized PEB fabrication across Northeast India. We engineer and fabricate clear-span warehouses, multi-level steel structures, and specialized industrial plants customized precisely to the client's dimensions, height, and heavy load crane requirements suitable for the region.",
     order: 24,
     status: "active",
     createdAt: Date.now(),
     updatedAt: Date.now(),
   },
   {
-    question: "Do steel fabricators in Guwahati provide on-site installation and erection services?",
+    question: "Do steel fabricators in Northeast India provide on-site installation and erection services?",
     answer:
-      "Yes, leading fabricators like Structro Infratech provide turnkey design, shop fabrication, shipping, and on-site erection services. Our qualified engineers and erection crews manage heavy lifting, truss alignment, structural bolting, and roofing installation under strict safety compliance parameters.",
+      "Yes, leading fabricators like Structro Infratech provide turnkey design, shop fabrication, shipping, and on-site erection services across the entire Northeast. Our qualified engineers and erection crews manage heavy lifting, truss alignment, structural bolting, and roofing installation under strict safety compliance parameters.",
     order: 25,
+    status: "active",
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  },
+  {
+    question: "Does Structro execute PEB warehouse and industrial building projects in hilly terrains of Northeast India?",
+    answer:
+      "Yes, Structro Infratech routinely designs and executes Pre-Engineered Buildings (PEBs) and industrial sheds in both plain and hilly terrains across Northeast India. Our structural designs account for high-altitude wind speeds and hilly terrain slope stability, delivering secure, durable, and weather-proof steel structures.",
+    order: 26,
+    status: "active",
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  },
+  {
+    question: "What design standards does Structro follow for steel structures in high seismic zones of Northeast India?",
+    answer:
+      "The entire Northeast India region lies in high seismic vulnerability Zone V. Structro designs structures strictly compliant with Indian Standard codes like IS 1893 (Seismic Design Criteria), IS 800 (General Construction in Steel), and IS 875 (Wind & Design Loads), integrating robust diagonal bracing and ductile steel detailing for earthquake resilience.",
+    order: 27,
+    status: "active",
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  },
+  {
+    question: "Can Structro fabricate and erect steel bridges in remote areas of Northeast India?",
+    answer:
+      "Yes. Structro specializes in fabricating and erecting steel girder, truss, and modular Bailey bridges in remote regions of Northeast India. Our steel structures are designed in easy-to-transport modular components, allowing for seamless assembly on-site even in challenging hilly terrains.",
+    order: 28,
+    status: "active",
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  },
+  {
+    question: "Who is the leading Pre-Engineered Building (PEB) supplier for projects across Northeast India?",
+    answer:
+      "Structro Infratech is a leading supplier and contractor of custom Pre-Engineered Buildings (PEB) and industrial steel sheds for projects throughout Northeast India. We manage the entire project lifecycle—from design and fabrication to safe transport and professional on-site erection anywhere in the region.",
+    order: 29,
+    status: "active",
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  },
+  {
+    question: "Does Structro offer structural steel fabrication services for agricultural and processing industries in the Northeast?",
+    answer:
+      "Yes, Structro Infratech manufactures customized steel sheds, leaf sorting bays, storage warehouses, and heavy structural platforms for agricultural, tea, and processing industries across the entire Northeast India region.",
+    order: 30,
     status: "active",
     createdAt: Date.now(),
     updatedAt: Date.now(),
