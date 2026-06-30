@@ -331,7 +331,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="group cursor-pointer">
               <div className="relative aspect-[4/3] overflow-hidden rounded-lg mb-6">
-                <Image src="/images/process/f.jpeg" alt="Structural Design" fill className="object-cover grayscale group-hover:scale-105 transition-all duration-700" />
+                <Image src="/about/design.png" alt="Structural Design" fill className="object-cover grayscale group-hover:scale-105 transition-all duration-700" />
               </div>
               <p className="text-accent text-sm font-bold uppercase tracking-wider mb-2">MODELING & ANALYSIS</p>
               <h3 className="text-xl font-bold text-gray-900">STRUCTURAL DESIGN</h3>
