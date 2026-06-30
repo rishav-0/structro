@@ -196,12 +196,16 @@ export default async function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-500 text-xs">
+          <p className="text-gray-500 text-xs text-center md:text-left">
             © {new Date().getFullYear()} Structro Infratech. All rights reserved.
           </p>
-          <div className="flex gap-6 text-xs text-gray-500">
+          <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6 text-xs text-gray-500">
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+            <span className="hidden md:inline text-gray-700">|</span>
+            <p className="text-gray-600 text-[10px] uppercase tracking-widest">
+              Designed and Developed by <a href="https://cinzmedia.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors font-semibold">Cinzmedia</a>
+            </p>
           </div>
         </div>
       </Container>

@@ -4,6 +4,8 @@ import { featuredProductsData, newLaunchesData, projectsData, servicesData } fro
 import { getPublicCollectionData } from "@/lib/public-db-server";
 import { getSiteUrl, publicTopLevelRoutes } from "@/lib/site";
 
+export const dynamic = "force-static";
+
 type RouteEntry = {
   url: string;
   lastModified?: string | Date;

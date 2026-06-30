@@ -193,42 +193,126 @@ export default function AboutPage() {
 
       {/* Leadership Section */}
       <Container className="py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
-          <div className="lg:col-span-1">
-            <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4">
-              THE VISIONARY
-            </p>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
-              LEADERSHIP.
-            </h2>
-            <div className="rounded-lg overflow-hidden mb-6">
-              <Image src="/about/nipu.png" alt="Nipu Baishya, Managing Director" width={800} height={1000} className="w-full h-auto object-contain" />
+        <div className="text-center mb-16">
+          <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4">
+            Managing Director
+          </p>
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
+            LEADERSHIP PROFILE.
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 items-start">
+          {/* Left Profile Card */}
+          <div className="lg:col-span-1 lg:sticky lg:top-24">
+            <div className="bg-white rounded-2xl border border-gray-150 shadow-sm overflow-hidden p-6">
+              <div className="rounded-xl overflow-hidden mb-6 bg-gray-50 border border-gray-100">
+                <Image 
+                  src="/about/nipu.png" 
+                  alt="Nipu Baishya, Managing Director" 
+                  width={800} 
+                  height={1000} 
+                  className="w-full h-auto object-cover aspect-[4/5] hover:scale-102 transition-transform duration-500" 
+                />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900">Nipu Baishya</h3>
+              <p className="text-accent font-semibold uppercase tracking-wider text-sm mt-1">Managing Director</p>
+              
+              <div className="mt-6 pt-6 border-t border-gray-100">
+                <p className="text-gray-600 italic leading-relaxed text-sm relative pl-6">
+                  <span className="absolute left-0 top-0 text-2xl text-accent font-serif leading-none">&ldquo;</span>
+                  Driving engineering excellence across Northeast India through innovation, precision, and uncompromising quality.
+                  <span className="text-2xl text-accent font-serif leading-none">&rdquo;</span>
+                </p>
+              </div>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900">Nipu Baishya</h3>
-            <p className="text-accent font-medium uppercase tracking-wider text-sm mt-1">Managing Director</p>
           </div>
-          <div className="lg:col-span-2 lg:pt-24">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">
-              A LEGACY OF TECHNICAL RIGOR AND REGIONAL COMMITMENT.
-            </h3>
-            <div className="space-y-6 text-gray-600 leading-relaxed text-lg mb-12">
-              <p>
-                Nipu Baishya brings extensive specialized technical expertise to the structural landscape of Northeast India. As the driving energy behind Structro Infra Tech, he has transitioned the organization from a four-person visionary mission to an industry benchmark for seismic-resilient construction today.
-              </p>
-              <p>
-                His leadership is defined by an uncompromising &quot;Engineering-First&quot; philosophy, where every joint, weld, and foundation is treated as a critical link in regional safety. Under his tenure, the firm has delivered over 500+ projects, consistently bridging the gap between sophisticated corporate-grade engineering and the unique geotechnical complexities of the Brahmaputra valley.
-              </p>
-            </div>
-            <div className="flex gap-12 border-t border-gray-200 pt-8">
-              <div>
-                <p className="text-sm text-gray-500 uppercase tracking-wider font-bold mb-1">FOCUS</p>
-                <p className="font-bold text-gray-900">SEISMIC RETROFITTING & PEB</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500 uppercase tracking-wider font-bold mb-1">EXPERTISE</p>
-                <p className="font-bold text-gray-900">INDUSTRIAL OPERATIONS</p>
+
+          {/* Right Profile Details */}
+          <div className="lg:col-span-2 space-y-12">
+            {/* Legacy Section */}
+            <div>
+              <h3 className="text-accent text-xs font-bold uppercase tracking-[0.2em] mb-3">THE VISIONARY LEADERSHIP</h3>
+              <h4 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
+                A Legacy of Technical Excellence
+              </h4>
+              <div className="space-y-6 text-gray-600 leading-relaxed text-lg">
+                <p>
+                  As the Managing Director of Structro Infra Tech, Nipu Baishya has led the company from a small engineering venture into a trusted EPC and structural steel organization serving industrial, commercial, and infrastructure sectors across Northeast India. His vision is built on technical rigor, disciplined execution, and long-term client relationships.
+                </p>
+                <p>
+                  With expertise in Pre-Engineered Buildings (PEB), heavy structural steel, industrial fabrication, bridge structures, and turnkey EPC execution, he has established an engineering-first culture where every drawing, weld, connection, and foundation is treated as a critical component of project success.
+                </p>
               </div>
             </div>
+
+            {/* Leadership Philosophy */}
+            <div className="bg-gray-50 rounded-2xl border border-gray-150 p-8">
+              <h3 className="text-accent text-xs font-bold uppercase tracking-[0.2em] mb-4">Core Principles</h3>
+              <h4 className="text-xl font-bold text-gray-900 mb-6">Leadership Philosophy</h4>
+              <ul className="space-y-4">
+                {[
+                  "Engineering before aesthetics.",
+                  "Safety without compromise.",
+                  "Quality in every fabrication and installation.",
+                  "Transparency with clients and stakeholders.",
+                  "Continuous innovation through technology and skilled manpower."
+                ].map((item, index) => (
+                  <li key={index} className="flex items-start gap-3 text-gray-700">
+                    <CheckCircle2 className="w-5 h-5 text-accent shrink-0 mt-0.5" />
+                    <span className="font-medium">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Core Expertise (Table / Grid) */}
+            <div>
+              <h3 className="text-accent text-xs font-bold uppercase tracking-[0.2em] mb-3">Domain Knowledge</h3>
+              <h4 className="text-xl font-bold text-gray-900 mb-6">Core Expertise</h4>
+              
+              <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-gray-50 border-b border-gray-200">
+                      <th className="px-6 py-4 text-sm font-bold text-gray-900 uppercase tracking-wider w-1/2">Focus Areas</th>
+                      <th className="px-6 py-4 text-sm font-bold text-gray-900 uppercase tracking-wider w-1/2">Specialization</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 bg-white">
+                    {[
+                      { focus: "Pre-Engineered Buildings (PEB)", spec: "Industrial EPC Projects" },
+                      { focus: "Heavy Structural Steel", spec: "Project Management" },
+                      { focus: "Steel Bridges & Infrastructure", spec: "Fabrication Excellence" },
+                      { focus: "Industrial Sheds & Warehouses", spec: "Quality & Safety Systems" },
+                      { focus: "Design Coordination", spec: "Business Strategy & Leadership" }
+                    ].map((row, idx) => (
+                      <tr key={idx} className="hover:bg-gray-50 transition-colors duration-150">
+                        <td className="px-6 py-4 text-gray-700 font-medium text-base">{row.focus}</td>
+                        <td className="px-6 py-4 text-gray-600 text-base">{row.spec}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Vision Statement */}
+            <div className="border-l-4 border-accent pl-6 py-2 bg-accent/5 rounded-r-xl p-4">
+              <h3 className="text-accent text-xs font-bold uppercase tracking-[0.2em] mb-2">Vision Statement</h3>
+              <p className="text-lg font-bold text-gray-900 italic leading-relaxed">
+                &ldquo;To become Northeast India&apos;s most trusted engineering and infrastructure company by delivering world-class steel construction, sustainable solutions, and technically superior projects that create lasting value.&rdquo;
+              </p>
+            </div>
+
+            {/* Closing Message */}
+            <div className="border-t border-gray-150 pt-8">
+              <h3 className="text-accent text-xs font-bold uppercase tracking-[0.2em] mb-3">Closing Message</h3>
+              <p className="text-gray-600 leading-relaxed text-lg">
+                Our mission is to raise the standard of construction across Northeast India through innovation, integrity, and engineering excellence. Every project we undertake reflects our commitment to building stronger industries, safer infrastructure, and lasting partnerships.
+              </p>
+            </div>
+
           </div>
         </div>
       </Container>
