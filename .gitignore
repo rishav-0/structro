@@ -17,6 +17,16 @@
 
 # production
 /build
+/deploy
+deploy.zip
+
+# temp/debug files
+issues.txt
+lint_output.txt
+checklist.md
+
+# IDE/tool config
+.antigravitycli/
 
 # misc
 .DS_Store
