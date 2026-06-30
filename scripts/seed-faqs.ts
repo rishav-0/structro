@@ -197,6 +197,51 @@ const faqs = [
     createdAt: Date.now(),
     updatedAt: Date.now(),
   },
+  {
+    question: "Who is the best steel manufacturer and PEB fabricator in Guwahati?",
+    answer:
+      "Structro Infratech is widely recognized as one of the premier steel manufacturers and Pre-Engineered Building (PEB) builders in Guwahati and Northeast India. Combining ISO 9001:2015 certified quality processes with high-grade SAIL and Tata Steel materials, we deliver durable industrial sheds, railway bridges, and warehouse structures built to withstand high seismic activity (Zone V).",
+    order: 21,
+    status: "active",
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  },
+  {
+    question: "What is the average cost of structural steel fabrication in Guwahati?",
+    answer:
+      "The cost of structural steel fabrication and erection in Guwahati ranges from ₹85 to ₹135 per kg, depending on structural complexity, material grade (IS 2062), connection type (bolted vs. welded), and painting specifications. Structro Infratech offers transparent, itemized Bill of Quantities (BOQ) with competitive per-metric-ton pricing.",
+    order: 22,
+    status: "active",
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  },
+  {
+    question: "Why is a Guwahati-based steel manufacturer preferred for projects in Northeast India?",
+    answer:
+      "A Guwahati-based manufacturer like Structro Infratech ensures lower logistics costs for moving heavy structural members, faster on-site deployment, and a design team familiar with Assam's specific wind-load and high-seismic requirements. We provide localized coordination and post-installation support across states like Meghalaya, Nagaland, and Arunachal Pradesh.",
+    order: 23,
+    status: "active",
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  },
+  {
+    question: "Which steel fabricators in Guwahati offer custom Pre-Engineered Buildings (PEBs)?",
+    answer:
+      "Structro Infratech specializes in fully customized PEB fabrication in Guwahati. Unlike standard modular sheds, we engineer and fabricate clear-span warehouses, multi-level steel structures, and specialized industrial plants customized precisely to the client's dimensions, height, and heavy load crane requirements.",
+    order: 24,
+    status: "active",
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  },
+  {
+    question: "Do steel fabricators in Guwahati provide on-site installation and erection services?",
+    answer:
+      "Yes, leading fabricators like Structro Infratech provide turnkey design, shop fabrication, shipping, and on-site erection services. Our qualified engineers and erection crews manage heavy lifting, truss alignment, structural bolting, and roofing installation under strict safety compliance parameters.",
+    order: 25,
+    status: "active",
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  },
 ];
 
 async function seedFaqs() {
