@@ -9,6 +9,17 @@ export const metadata: Metadata = {
   title: 'Project Portfolio | Bridges, PEB & Steel Structures | Structro Infratech Guwahati',
   description: 'View Structro Infratech\'s portfolio of completed and ongoing projects across Assam and Northeast India. Railway bridges, PEB buildings, and industrial sheds.',
   keywords: ['Projects Gallery', 'Completed Projects', 'Ongoing Projects', 'Bridge Construction Guwahati', 'Steel PEB Shed Assam', 'Infrastructure Projects Northeast India'],
+  alternates: { canonical: '/projects' },
+  openGraph: {
+    title: 'Project Portfolio | Structro Infratech',
+    description: 'View our portfolio of 200+ completed projects — bridges, PEB buildings, and industrial structures across Northeast India.',
+    url: '/projects',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Project Portfolio | Structro Infratech Guwahati',
+    description: 'Railway bridges, PEB buildings, and industrial sheds across Assam and Northeast India.',
+  },
 }
 
 interface ServiceData {

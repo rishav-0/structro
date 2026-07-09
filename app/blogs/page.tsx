@@ -11,8 +11,19 @@ export const revalidate = 60; // ISR: revalidate every 60s as safety net (admin 
 
 export const metadata: Metadata = {
   title: 'Blog | Structro Infratech - Engineering Insights & Updates',
-  description: 'Read the latest articles on bridge engineering, steel structures, PEB buildings, and infrastructure projects from Structro Infratech.',
-  keywords: ['Blog', 'Engineering', 'Bridge Construction', 'Steel Structures', 'Infrastructure', 'News'],
+  description: 'Read the latest articles on bridge engineering, steel structures, PEB buildings, and infrastructure projects from Structro Infratech, Guwahati.',
+  keywords: ['Blog', 'Engineering', 'Bridge Construction', 'Steel Structures', 'Infrastructure', 'News', 'PEB Buildings Blog'],
+  alternates: { canonical: '/blogs' },
+  openGraph: {
+    title: 'Engineering Blog | Structro Infratech',
+    description: 'Latest articles on bridge engineering, steel structures, PEB buildings, and infrastructure projects.',
+    url: '/blogs',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Blog | Structro Infratech',
+    description: 'Engineering insights on bridge construction, PEB buildings, and steel structures in Northeast India.',
+  },
 }
 
 interface BlogPost {

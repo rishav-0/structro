@@ -5,15 +5,16 @@ import Link from "next/link";
 import { Shield, Eye, Lock, FileText, CheckCircle2 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Structro Infra Tech",
+  title: "Privacy Policy | Structro Infratech",
   description:
-    "Privacy Policy for Structro Infra Tech (Structro Infratech). Learn how we handle client drawings, business communications, vendor onboarding, and project metadata.",
+    "Privacy Policy for Structro Infratech. Learn how we handle client drawings, business communications, vendor onboarding, and project metadata.",
   keywords: [
     "Structro Privacy Policy",
     "Data Protection",
     "Client Confidentiality",
     "Steel Engineering Data",
   ],
+  alternates: { canonical: '/privacy' },
 };
 
 export default function PrivacyPolicyPage() {

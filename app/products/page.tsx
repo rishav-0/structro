@@ -21,7 +21,7 @@ type Product = {
 export const metadata: Metadata = {
   title: "Steel Products | Movable Sheds, Portable PEB Houses & Industrial Tanks | Structro Guwahati",
   description:
-    "Explore Structro Infratech's industrial product range, including portable PEB homes, movable sheds, industrial storage tanks, and readymade steel staircases.",
+    "Explore Structro Infratech's industrial product range, including portable PEB homes, movable sheds, industrial storage tanks, and readymade steel staircases. Available across Northeast India.",
   keywords: [
     "Structro products",
     "Portable PEB houses",
@@ -29,6 +29,17 @@ export const metadata: Metadata = {
     "Industrial Storage Tanks Guwahati",
     "Steel staircases Assam",
   ],
+  alternates: { canonical: '/products' },
+  openGraph: {
+    title: 'Steel Products | Structro Infratech Guwahati',
+    description: 'Portable PEB homes, movable sheds, industrial storage tanks, and readymade steel staircases.',
+    url: '/products',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Steel Products | Structro Infratech',
+    description: 'Industrial product range — portable PEB homes, movable sheds, storage tanks.',
+  },
 };
 
 async function getProducts(): Promise<Product[]> {

@@ -122,15 +122,15 @@ export function HomeClient({
     <div className="bg-white overflow-x-hidden">
       <HeroTwo />
 
-      <div className="w-full bg-white pt-16  relative z-10 ">
+      <div className="w-full bg-white pt-16 relative z-10">
         {/* Experience Numbers Section */}
-        <Container className="mb-12">
+        <Container className="mb-16">
           <motion.div 
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
-            className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 text-center"
+            className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 text-center "
           >
             {stats.map((stat, index) => (
               <motion.div variants={fadeInUp} key={index} className="flex flex-col items-center">
@@ -155,13 +155,90 @@ export function HomeClient({
             ))}
           </motion.div>
         </Container>
-
       </div>
 
       <FoundationalPhilosophy />
       <OurCredentials />
       <StructuralAdvantage />
       <BlogSection />
+
+      {/* What We Do & Citations Section */}
+      <div className="w-full bg-white py-20 border-t border-b border-gray-100 relative z-10">
+        <Container>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            {/* Left: What We Do Paragraphs */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="lg:col-span-7 space-y-6"
+            >
+              <div>
+                <p className="text-primary text-sm font-bold uppercase tracking-[0.2em] mb-4">
+                  What We Do
+                </p>
+                <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
+                  Heavy Steel Engineering & Infrastructure
+                </h2>
+              </div>
+              
+              <p className="text-gray-700 text-lg leading-relaxed">
+                Structro Infratech is an ISO 9001:2015 certified steel engineering and fabrication enterprise based in Guwahati, Assam. Operating a state-of-the-art heavy fabrication workshop equipped with advanced CNC plasma cutters, SAW welding rigs, and automated blasting units, we specialize in the end-to-end design, fabrication, and erection of high-durability steel structures.
+              </p>
+              
+              <p className="text-gray-600 text-base leading-relaxed">
+                Our portfolio spans heavy-duty bridge girders (Plate and Truss types), Pre-Engineered Buildings (PEB) for industrial complexes, large-span warehouse sheds, and strategic defense infrastructure. All our engineering designs are strictly compliant with Indian Standards, including <strong>IS 800:2007</strong> for structural steel design and <strong>IS 1893:2016</strong> for Zone V seismic resistance, guaranteeing structural longevity across Northeast India.
+              </p>
+            </motion.div>
+
+            {/* Right: Statistics & Citations */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="lg:col-span-5 bg-gray-50 border border-gray-200 rounded-md p-8 space-y-8"
+            >
+              <h3 className="text-xl font-bold text-gray-900 border-b border-gray-200 pb-4">
+                Verified Performance Metrics
+              </h3>
+
+              <div className="space-y-6">
+                <div>
+                  <div className="flex items-baseline gap-2 mb-1">
+                    <span className="text-3xl font-bold text-primary">200+</span>
+                    <span className="text-sm font-bold text-gray-800 uppercase tracking-wide">Projects Completed</span>
+                  </div>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Verified by official Project Completion Certificates issued by central and state government authorities, including NHIDCL, state PWD departments, and the Airports Authority of India (AAI) since our founding in 2000.
+                  </p>
+                </div>
+
+                <div>
+                  <div className="flex items-baseline gap-2 mb-1">
+                    <span className="text-3xl font-bold text-primary">100K+</span>
+                    <span className="text-sm font-bold text-gray-800 uppercase tracking-wide">Metric Tons Executed</span>
+                  </div>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Backed by authenticated steel procurement and fabrication logs from primary Indian steel producers (SAIL, Tata Steel, and Jindal Steel), confirming certified grades of structural steel.
+                  </p>
+                </div>
+
+                <div>
+                  <div className="flex items-baseline gap-2 mb-1">
+                    <span className="text-3xl font-bold text-primary">7</span>
+                    <span className="text-sm font-bold text-gray-800 uppercase tracking-wide">Northeastern States</span>
+                  </div>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Verified through active sites and completed project logs in Assam, Arunachal Pradesh, Meghalaya, Mizoram, Manipur, Nagaland, and Tripura, including geologically challenging Zone V seismic terrains.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </Container>
+      </div>
+
       <WhyChooseUs />
     
 

@@ -7,13 +7,24 @@ import { CheckCircle2, Target, ShieldCheck, Factory, Settings, Flame, Activity }
 import { StatsCounter } from "@/components/StatsCounter";
 
 export const metadata: Metadata = {
-  title: 'About Us | Structro Infra Tech',
-  description: 'Learn about Structro Infra Tech — founded in 2000, Northeast India\'s premier steel engineering firm with 55,000 sq.ft in-house fabrication and 200+ completed projects.',
+  title: 'About Us | Structro Infratech — Steel Engineering Since 2000',
+  description: 'Learn about Structro Infratech — Northeast India\'s premier steel engineering firm with 55,000 sq.ft in-house fabrication, 200+ completed projects, and ISO 9001:2015 certification.',
   keywords: ['About Structro', 'Steel Engineering Guwahati', 'Assam Construction Company', 'Northeast India Infrastructure', 'ISO Certified Steel Contractor'],
+  alternates: { canonical: '/about' },
+  openGraph: {
+    title: 'About Us | Structro Infratech',
+    description: 'Northeast India\'s premier steel engineering firm. 200+ projects, 55,000 sq.ft fabrication facility, ISO 9001:2015 certified.',
+    url: '/about',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Structro Infratech — Steel Engineering Since 2000',
+    description: 'Northeast India\'s premier steel engineering firm. 200+ projects, ISO 9001:2015 certified.',
+  },
 }
 
 export default function AboutPage() {
-  
+
   const stats = [
     { label: "PROJECTS", end: 200, suffix: "+" },
     { label: "TONNAGE EXECUTED", end: 100, suffix: "K+" },
@@ -94,7 +105,7 @@ export default function AboutPage() {
                 </p>
               </div>
             </div>
-            
+
             <div className="space-y-6">
               <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 flex gap-6 items-start">
                 <div className="bg-primary/10 p-4 rounded-full shrink-0">
@@ -133,7 +144,7 @@ export default function AboutPage() {
               <p>Our advanced fabrication facility in Guwahati serves as the operational backbone of Structro’s infrastructure capabilities. Designed for precision manufacturing and large-scale structural production, the facility enables us to maintain complete control over fabrication quality, project timelines, and execution efficiency.</p>
               <p>Equipped with modern machinery, certified welding systems, and skilled fabrication teams, the Structro Fabrication Hub supports the production of structural steel systems for industrial buildings, bridge components, infrastructure projects, and customized engineering applications.</p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               {capabilities.map((item, idx) => (
                 <div key={idx} className="border-l-4 border-accent pl-4">
@@ -207,17 +218,17 @@ export default function AboutPage() {
           <div className="lg:col-span-1 lg:sticky lg:top-24">
             <div className="bg-white rounded-2xl border border-gray-150 shadow-sm overflow-hidden p-6">
               <div className="rounded-xl overflow-hidden mb-6 bg-gray-50 border border-gray-100">
-                <Image 
-                  src="/about/nipu.png" 
-                  alt="Nipu Baishya, Managing Director" 
-                  width={800} 
-                  height={1000} 
-                  className="w-full h-auto object-cover aspect-[4/5] hover:scale-102 transition-transform duration-500" 
+                <Image
+                  src="/about/nipu.png"
+                  alt="Nipu Baishya, Managing Director"
+                  width={800}
+                  height={1000}
+                  className="w-full h-auto object-cover aspect-[4/5] hover:scale-102 transition-transform duration-500"
                 />
               </div>
               <h3 className="text-2xl font-bold text-gray-900">Nipu Baishya</h3>
               <p className="text-accent font-semibold uppercase tracking-wider text-sm mt-1">Managing Director</p>
-              
+
               <div className="mt-6 pt-6 border-t border-gray-100">
                 <p className="text-gray-600 italic leading-relaxed text-sm relative pl-6">
                   <span className="absolute left-0 top-0 text-2xl text-accent font-serif leading-none">&ldquo;</span>
@@ -270,7 +281,7 @@ export default function AboutPage() {
             <div>
               <h3 className="text-accent text-xs font-bold uppercase tracking-[0.2em] mb-3">Domain Knowledge</h3>
               <h4 className="text-xl font-bold text-gray-900 mb-6">Core Expertise</h4>
-              
+
               <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
                 <table className="w-full text-left border-collapse">
                   <thead>
@@ -368,7 +379,7 @@ export default function AboutPage() {
               Answering the technical and logistical questions that fuel our heavy-duty infrastructure projects.
             </p>
           </div>
-          
+
           <div className="space-y-4">
             <details className="group bg-white border border-gray-200 rounded-lg open:border-primary/30 transition-all duration-300">
               <summary className="flex items-center justify-between p-6 font-bold text-gray-900 cursor-pointer list-none hover:bg-gray-50">
@@ -381,7 +392,7 @@ export default function AboutPage() {
                 Assam falls in Seismic Zone VI, requiring specialized ductility analysis. We also factor in extremely high soil moisture levels and annual flood patterns when designing foundations.
               </div>
             </details>
-            
+
             <details className="group bg-white border border-gray-200 rounded-lg open:border-primary/30 transition-all duration-300">
               <summary className="flex items-center justify-between p-6 font-bold text-gray-900 cursor-pointer list-none hover:bg-gray-50">
                 <span className="text-lg">02. DO YOU PROVIDE CONSULTANCY FOR EXTERNAL CIVIL CONTRACTORS?</span>
@@ -393,7 +404,7 @@ export default function AboutPage() {
                 Yes. While we are turnkey contractors, we offer pure structural consulting, vetting, and seismic retrofitting kits for other construction firms.
               </div>
             </details>
-            
+
             <details className="group bg-white border border-gray-200 rounded-lg open:border-primary/30 transition-all duration-300">
               <summary className="flex items-center justify-between p-6 font-bold text-gray-900 cursor-pointer list-none hover:bg-gray-50">
                 <span className="text-lg">03. WHAT IS YOUR TYPICAL LEAD TIME FOR PEB INDUSTRIAL SHEDS?</span>
@@ -405,7 +416,7 @@ export default function AboutPage() {
                 For industrial sheds up to 15,000 sq. ft., we typically deliver a turnkey structure within 120 days from soil stabilization completion.
               </div>
             </details>
-            
+
             <details className="group bg-white border border-gray-200 rounded-lg open:border-primary/30 transition-all duration-300">
               <summary className="flex items-center justify-between p-6 font-bold text-gray-900 cursor-pointer list-none hover:bg-gray-50">
                 <span className="text-lg">04. ARE THE FABRICATION COMPONENTS MANUFACTURED IN-HOUSE?</span>
@@ -465,7 +476,7 @@ export default function AboutPage() {
             <p className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4">SERVICE COVERAGE</p>
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Operating Across the Northeast Indian States</h2>
             <p className="text-gray-600 mb-8">From our Guwahati base, we deliver steel engineering solutions across the entire Northeast region.</p>
-          
+
           </div>
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Find Us</h2>
@@ -478,13 +489,13 @@ export default function AboutPage() {
                 <p className="text-sm text-gray-600">Christian Basti, Guwahati, Assam</p>
               </div>
               <div className="bg-gray-200 rounded-lg h-64 overflow-hidden">
-                <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4098.794563896167!2d91.7756357!3d26.1576365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a59003ad2c8c3%3A0x45df74d231f0e84c!2sStructro%20Infra%20Tech!5e1!3m2!1sen!2sin!4v1783584956023!5m2!1sen!2sin" 
-                  width="100%" 
-                  height="100%" 
-                  style={{ border: 0 }} 
-                  allowFullScreen 
-                  loading="lazy" 
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4098.794563896167!2d91.7756357!3d26.1576365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a59003ad2c8c3%3A0x45df74d231f0e84c!2sStructro%20Infra%20Tech!5e1!3m2!1sen!2sin!4v1783584956023!5m2!1sen!2sin"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                 ></iframe>
               </div>
@@ -495,13 +506,13 @@ export default function AboutPage() {
                 <p className="text-sm text-gray-600">Rani, Guwahati, Assam</p>
               </div>
               <div className="bg-gray-200 rounded-lg h-64 overflow-hidden">
-                <iframe 
+                <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4102.698420047236!2d91.5887681!3d26.0463064!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a410007764fb1%3A0x269c33cf41adcb77!2sStructro%20Infra%20Tech%20Rani%20(%20Workshop%20)!5e1!3m2!1sen!2sin!4v1778258046366!5m2!1sen!2sin"
-                  width="100%" 
-                  height="100%" 
-                  style={{ border: 0 }} 
-                  allowFullScreen 
-                  loading="lazy" 
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                 ></iframe>
               </div>

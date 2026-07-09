@@ -5,15 +5,16 @@ import Link from "next/link";
 import { FileCheck, ShieldAlert, Award, FileSpreadsheet, Map } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Structro Infra Tech",
+  title: "Terms of Service | Structro Infratech",
   description:
-    "Terms of Service for Structro Infra Tech (Structro Infratech). Legal terms governing structural fabrication, heavy engineering, site erection, billing milestones, and regional project conditions.",
+    "Terms of Service for Structro Infratech. Legal terms governing structural fabrication, heavy engineering, site erection, billing milestones, and regional project conditions.",
   keywords: [
     "Structro Terms of Service",
     "Construction Contract Terms",
     "Steel Fabrication Guwahati",
     "Guwahati Legal Jurisdiction",
   ],
+  alternates: { canonical: '/terms' },
 };
 
 export default function TermsOfServicePage() {

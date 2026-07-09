@@ -10,7 +10,18 @@ export const revalidate = 60; // ISR: revalidate every 60s as safety net
 export const metadata: Metadata = {
   title: 'Careers | Structro Infratech - Join Our Team of Engineers',
   description: 'Build your career with Structro Infratech. We are hiring skilled engineers, project managers, and technicians for bridge and steel structure projects across Northeast India.',
-  keywords: ['Jobs', 'Careers', 'Hiring', 'Engineer Jobs', 'Construction Jobs', 'Steel Structure Jobs', 'Guwahati'],
+  keywords: ['Jobs', 'Careers', 'Hiring', 'Engineer Jobs Guwahati', 'Construction Jobs Assam', 'Steel Structure Jobs', 'Guwahati'],
+  alternates: { canonical: '/careers' },
+  openGraph: {
+    title: 'Careers | Structro Infratech',
+    description: 'Join Northeast India\'s leading steel engineering team. Open positions for engineers, project managers, and technicians.',
+    url: '/careers',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Careers at Structro Infratech',
+    description: 'Hiring engineers, project managers, and technicians for steel structure projects across NE India.',
+  },
 }
 
 interface Career {

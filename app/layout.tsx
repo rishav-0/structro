@@ -20,11 +20,16 @@ const organizationSchema = {
   "@context": "https://schema.org",
   "@type": ["Organization", "LocalBusiness"],
   name: "Structro Infratech",
+  alternateName: "Structro Infra Tech",
   url: siteUrl.toString(),
   logo: new URL("/images/logo.svg", siteUrl).toString(),
-  image: new URL("/images/logo.svg", siteUrl).toString(),
+  image: new URL("/images/og-banner.jpg", siteUrl).toString(),
   email: "structro.infratech@gmail.com",
   telephone: "+91-9101515491",
+  foundingDate: "2000",
+  numberOfEmployees: { "@type": "QuantitativeValue", minValue: 50, maxValue: 200 },
+  priceRange: "$$$$",
+  description: "Guwahati's leading steel engineering firm specializing in bridge construction, PEB buildings, industrial sheds, and heavy steel structures across Northeast India. ISO 9001:2015 certified with 200+ completed projects.",
   address: [
     {
       "@type": "PostalAddress",
@@ -43,10 +48,33 @@ const organizationSchema = {
       addressCountry: "IN",
     },
   ],
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 26.1576365,
+    longitude: 91.7756357,
+  },
   areaServed: [
     { "@type": "AdministrativeArea", name: "Assam" },
     { "@type": "AdministrativeArea", name: "Northeast India" },
+    { "@type": "AdministrativeArea", name: "Meghalaya" },
+    { "@type": "AdministrativeArea", name: "Arunachal Pradesh" },
+    { "@type": "AdministrativeArea", name: "Nagaland" },
+    { "@type": "AdministrativeArea", name: "Manipur" },
+    { "@type": "AdministrativeArea", name: "Mizoram" },
+    { "@type": "AdministrativeArea", name: "Tripura" },
+    { "@type": "AdministrativeArea", name: "Sikkim" },
   ],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Steel Engineering Services",
+    itemListElement: [
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Bridge Engineering", description: "Railway, highway, and pedestrian bridge construction across Northeast India" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "PEB Buildings", description: "Pre-Engineered Buildings for industrial, commercial, and warehouse applications" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Steel Structures", description: "Industrial sheds, warehouses, factory buildings, and heavy structural steel works" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Engineering Design Services", description: "Structural drawings, BOQ estimation, 3D modeling, and load analysis" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Special Metal Structures", description: "Stainless steel and Inconel fabrication for pharmaceutical and defence applications" } },
+    ],
+  },
   contactPoint: [
     {
       "@type": "ContactPoint",
@@ -54,33 +82,76 @@ const organizationSchema = {
       telephone: "+91-9101515491",
       email: "structro.infratech@gmail.com",
       areaServed: "IN",
-      availableLanguage: ["en", "hi"],
+      availableLanguage: ["en", "hi", "as"],
+    },
+    {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      telephone: "+91-8638987442",
+      areaServed: "IN",
+      availableLanguage: ["en", "hi", "as"],
     },
   ],
+  sameAs: [
+    "https://www.indiamart.com/structro-infra-tech/",
+    "https://jsdl.in/DT-997A7SFQVYJ",
+  ],
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    opens: "09:00",
+    closes: "18:00",
+  },
+}
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Structro Infratech",
+  url: siteUrl.toString(),
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: `${siteUrl.toString()}/blogs?category={search_term_string}`,
+    },
+    "query-input": "required name=search_term_string",
+  },
 }
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
-  title: 'Structro Infratech | Steel Engineering Company Guwahati',
-  description: 'Structro Infratech — Guwahati\'s leading steel engineering firm. PEB buildings, bridge construction & industrial structures across Northeast India. ISO 9001:2015 certified.',
+  title: {
+    default: 'Structro Infratech | Steel Engineering Company Guwahati, Assam',
+    template: '%s | Structro Infratech',
+  },
+  description: 'Structro Infratech — Guwahati\'s leading steel engineering firm. PEB buildings, bridge construction & industrial structures across Northeast India. ISO 9001:2015 certified. 200+ projects completed.',
   keywords: [
     'Steel Engineering Company Guwahati',
     'Bridge Construction Assam',
     'PEB Manufacturers Guwahati',
     'Structro Infra Tech',
+    'Structro Infratech',
     'Pre-Engineered Buildings',
+    'Pre-Engineered Buildings Assam',
     'Industrial Sheds Assam',
-    'Bridge Engineering',
-    'Steel Structure Company',
-    'Infrastructure Guwahati'
+    'Bridge Engineering Northeast India',
+    'Steel Structure Company Guwahati',
+    'Infrastructure Company Guwahati',
+    'Steel Fabrication Assam',
+    'PEB Buildings Northeast India',
+    'Railway Bridge Construction Assam',
+    'Warehouse Construction Guwahati',
   ],
-  authors: [{ name: 'Structro Infratech' }],
+  authors: [{ name: 'Structro Infratech', url: siteUrl.toString() }],
+  creator: 'Structro Infratech',
+  publisher: 'Structro Infratech',
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: 'Structro Infratech | Steel Engineering Company Guwahati',
-    description: 'Leading steel engineering company in Northeast India. Specializing in bridge construction, PEB buildings, and industrial infrastructure. ISO 9001:2015 certified.',
+    description: 'Leading steel engineering company in Northeast India. Specializing in bridge construction, PEB buildings, and industrial infrastructure. ISO 9001:2015 certified. 200+ projects.',
     type: 'website',
     locale: 'en_IN',
     alternateLocale: 'en_US',
@@ -92,8 +163,15 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: 'Structro Infratech — Steel Engineering Company Guwahati',
+        type: 'image/png',
       },
     ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Structro Infratech | Steel Engineering Company Guwahati',
+    description: 'Leading steel engineering company in Northeast India. Bridge construction, PEB buildings, industrial structures. ISO 9001:2015 certified.',
+    images: ['/images/og-banner.jpg'],
   },
   robots: {
     index: true,
@@ -109,11 +187,7 @@ export const metadata: Metadata = {
   verification: {
     google: 'rQBn6ofh0gjSygDAeBi4dPa54TfWeAb0Q0c6g_e2OSQ',
   },
-  icons: {
-    icon: '/images/logo.svg',
-    shortcut: '/images/logo.svg',
-    apple: '/images/logo.svg',
-  },
+  category: 'Construction',
 }
 
 export default function RootLayout({
@@ -131,6 +205,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
         <ClientLayout header={<Header />} footer={<Footer />}>
           {children}
