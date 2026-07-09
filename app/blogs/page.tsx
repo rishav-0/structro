@@ -261,7 +261,7 @@ export default async function BlogsPage({
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="https://wa.me/919678027684?text=Hi%2C%20I%20have%20a%20project%20enquiry%20for%20Structro%20Infratech"
+                href="https://wa.me/919101515491?text=Hi%2C%20I%20have%20a%20project%20enquiry%20for%20Structro%20Infratech"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white font-bold px-8 py-4 rounded-sm transition-colors duration-200 text-lg"

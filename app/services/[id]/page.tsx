@@ -47,7 +47,7 @@ const serviceMetaMap: Record<string, { title: string; description: string; keywo
   bridge: {
     title: "Bridge Engineering Services | Railway, Highway & FOB Bridges | Structro Infratech Assam",
     description:
-      "Structro Infratech designs and builds railway bridges, road over bridges, foot over bridges, arch and suspension bridges across Northeast India. ISO certified. Call +91-9678027684.",
+      "Structro Infratech designs and builds railway bridges, road over bridges, foot over bridges, arch and suspension bridges across Northeast India. ISO certified. Call +91-9101515491.",
     keywords: [
       "Railway Bridge Construction Assam",
       "Road Over Bridge Guwahati",
@@ -553,9 +553,9 @@ export default async function ServicePage({ params }: { params: Promise<{ id: st
               </Button>
             </Link>
             <div className="flex flex-col gap-2">
-              <a href="tel:+919678027684">
+              <a href="tel:+919101515491">
                 <Button variant="white-outline" size="xl" className="w-full">
-                  CALL: +91 96780 27684
+                  CALL: +91 91015 15491
                 </Button>
               </a>
             </div>

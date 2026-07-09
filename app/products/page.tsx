@@ -45,7 +45,7 @@ function getWhatsAppUrl(productTitle: string): string {
   const msg = encodeURIComponent(
     `Hi, I'm interested in ${productTitle}. Please share details and pricing.`
   );
-  return `https://wa.me/919678027684?text=${msg}`;
+  return `https://wa.me/919101515491?text=${msg}`;
 }
 
 export default async function ProductsPage() {

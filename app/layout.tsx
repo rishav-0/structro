@@ -24,7 +24,7 @@ const organizationSchema = {
   logo: new URL("/images/logo.svg", siteUrl).toString(),
   image: new URL("/images/logo.svg", siteUrl).toString(),
   email: "structro.infratech@gmail.com",
-  telephone: "+91-9678027684",
+  telephone: "+91-9101515491",
   address: [
     {
       "@type": "PostalAddress",
@@ -51,7 +51,7 @@ const organizationSchema = {
     {
       "@type": "ContactPoint",
       contactType: "sales",
-      telephone: "+91-9678027684",
+      telephone: "+91-9101515491",
       email: "structro.infratech@gmail.com",
       areaServed: "IN",
       availableLanguage: ["en", "hi"],

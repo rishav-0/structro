@@ -61,9 +61,13 @@ export default async function Footer() {
             
             {/* Contact Info */}
             <div className="space-y-3">
-              <div className="flex items-center gap-2 text-gray-300 text-sm">
-                <Phone size={16} className="text-accent" />
-                <a href="tel:+919678027684" className="hover:text-primary transition-colors font-medium">+91-9678027684</a>
+              <div className="flex items-start gap-2 text-gray-300 text-sm">
+                <Phone size={16} className="text-accent mt-1" />
+                <div className="flex flex-col gap-1">
+                  <a href="tel:+919101515491" className="hover:text-primary transition-colors font-medium">+91-9101515491</a>
+                  <a href="tel:+918638987442" className="hover:text-primary transition-colors font-medium">+91-8638987442</a>
+                  <a href="tel:+918638489767" className="hover:text-primary transition-colors font-medium">+91-8638489767</a>
+                </div>
               </div>
               <div className="flex items-center gap-2 text-gray-300 text-sm">
                 <Mail size={16} className="text-accent" />

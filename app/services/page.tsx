@@ -198,9 +198,9 @@ export default async function ServicesPage() {
               </Button>
             </Link>
             <div className="flex flex-col sm:flex-row gap-4">
-              <a href="tel:+919678027684">
+              <a href="tel:+919101515491">
                 <Button variant="gold" size="lg">
-                  Call: +91 96780 27684
+                  Call: +91 91015 15491
                 </Button>
               </a>
             </div>

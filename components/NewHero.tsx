@@ -225,7 +225,7 @@ const CinematicModernHero = () => {
             className="mt-10 flex items-center gap-6 md:gap-8 text-zinc-400 text-xs md:text-sm font-medium border-t border-white/5 pt-8 w-fit flex-wrap"
           >
             <a
-              href="tel:+919678027684"
+              href="tel:+919101515491"
               className="flex items-center gap-2.5 hover:text-red-500 transition-colors duration-300 group"
             >
               <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-red-950/30 group-hover:border-red-500/30 transition-all duration-300">
@@ -233,7 +233,7 @@ const CinematicModernHero = () => {
               </div>
               <div className="flex flex-col">
                 <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider leading-none mb-1">Call Technical Desk</span>
-                <span className="text-zinc-300 font-semibold group-hover:text-white transition-colors duration-300">+91 96780 27684</span>
+                <span className="text-zinc-300 font-semibold group-hover:text-white transition-colors duration-300">+91 91015 15491</span>
               </div>
             </a>
 

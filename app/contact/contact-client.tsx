@@ -76,8 +76,8 @@ export function ContactClient() {
               {
                 icon: <Phone className="w-6 h-6 text-primary" />,
                 title: "Phone",
-                details: ["+91-9678027684"],
-                link: "tel:+919678027684"
+                details: ["+91-9101515491", "+91-8638987442", "+91-8638489767"],
+                link: "tel:+919101515491"
               },
               {
                 icon: <Mail className="w-6 h-6 text-primary" />,
@@ -267,7 +267,7 @@ export function ContactClient() {
                     {!isSubmitting && <Send className="ml-2 w-4 h-4" />}
                   </Button>
                   <a
-                    href="https://wa.me/919678027684?text=Hi%2C%20I%20have%20a%20project%20enquiry%20for%20Structro%20Infratech"
+                    href="https://wa.me/919101515491?text=Hi%2C%20I%20have%20a%20project%20enquiry%20for%20Structro%20Infratech"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white font-bold px-6 py-3 rounded-sm transition-colors duration-200 w-full sm:w-auto"
@@ -328,10 +328,10 @@ export function ContactClient() {
               <p className="text-primary-foreground/80 mb-6 font-medium">
                 Call us now to discuss your project requirements with our technical team.
               </p>
-              <a href="tel:+919678027684">
+              <a href="tel:+919101515491">
                 <Button variant="red" size="lg" className="w-full">
                   <Phone className="mr-2 w-4 h-4" />
-                  Call +91-9678027684
+                  Call +91-9101515491
                 </Button>
               </a>
             </div>
@@ -354,7 +354,7 @@ export function ContactClient() {
               </div>
               <div className="bg-gray-200 rounded-lg h-100 overflow-hidden">
                 <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4509.166628943781!2d91.7755516!3d26.1569559!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a59003ad2c8c3%3A0x45df74d231f0e84c!2sStructro%20Infra%20Tech!5e1!3m2!1sen!2sin!4v1776015415897!5m2!1sen!2sin" 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4098.794563896167!2d91.7756357!3d26.1576365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a59003ad2c8c3%3A0x45df74d231f0e84c!2sStructro%20Infra%20Tech!5e1!3m2!1sen!2sin!4v1783584956023!5m2!1sen!2sin" 
                   width="100%" 
                   height="100%" 
                   style={{ border: 0 }} 
