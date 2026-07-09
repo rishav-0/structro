@@ -106,10 +106,8 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  // TODO: Replace the string below with your real Google Search Console verification code
-  // Steps: search.google.com/search-console → Add property → HTML tag → copy content= value
   verification: {
-    google: 'google-site-verification-code', // ← REPLACE with real code before going live
+    google: 'rQBn6ofh0gjSygDAeBi4dPa54TfWeAb0Q0c6g_e2OSQ',
   },
   icons: {
     icon: '/images/logo.svg',
