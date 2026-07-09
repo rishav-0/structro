@@ -4,6 +4,7 @@ const nextConfig = {
     scrollRestoration: true,
   },
   images: {
+    dangerouslyAllowSVG: true,
     remotePatterns: [
       {
         protocol: 'https',

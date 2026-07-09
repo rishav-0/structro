@@ -46,6 +46,7 @@ const Navbar = () => {
             fill
             className={`object-contain transition-all duration-300 transform group-hover:scale-105 ${scrolled || isOpen ? "invert-0" : "invert"}`}
             priority
+            unoptimized
           />
         </Link>
 

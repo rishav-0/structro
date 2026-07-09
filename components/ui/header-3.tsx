@@ -77,6 +77,7 @@ export function Header() {
 								className={cn("object-contain transition-opacity duration-300", 
 									isTransparent ? "opacity-100 invert" : "opacity-0"
 								)}
+								unoptimized
 							/>
 							<Image 
 								src="/images/logo.svg" 
@@ -85,6 +86,7 @@ export function Header() {
 								className={cn("object-contain transition-opacity duration-300", 
 									isTransparent ? "opacity-0" : "opacity-100"
 								)}
+								unoptimized
 							/>
 						</div>
 					</Link>
