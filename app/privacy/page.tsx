@@ -207,12 +207,20 @@ export default function PrivacyPolicyPage() {
               <p className="text-xs text-white/80 leading-relaxed mb-4">
                 For queries regarding intellectual design rights, NDAs, and corporate data, reach our compliance team.
               </p>
-              <a
-                href="mailto:structro.infratech@gmail.com"
-                className="text-xs  font-bold hover:underline"
-              >
-                structro.infratech@gmail.com
-              </a>
+              <div className="flex flex-col gap-1">
+                <a
+                  href="mailto:info@structroinfratech.com"
+                  className="text-xs font-bold hover:underline"
+                >
+                  info@structroinfratech.com
+                </a>
+                <a
+                  href="mailto:sales@structroinfratech.com"
+                  className="text-xs font-bold hover:underline"
+                >
+                  sales@structroinfratech.com
+                </a>
+              </div>
             </div>
           </div>
 

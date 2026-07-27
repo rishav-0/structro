@@ -173,12 +173,20 @@ export default function TermsOfServicePage() {
               <p className="text-xs text-white/80 leading-relaxed mb-4">
                 For structural drawing validations, calculations, or engineering work orders, contact our Guwahati office.
               </p>
-              <a
-                href="mailto:structro.infratech@gmail.com"
-                className="text-xs  font-bold hover:underline"
-              >
-                structro.infratech@gmail.com
-              </a>
+              <div className="flex flex-col gap-1">
+                <a
+                  href="mailto:info@structroinfratech.com"
+                  className="text-xs font-bold hover:underline"
+                >
+                  info@structroinfratech.com
+                </a>
+                <a
+                  href="mailto:sales@structroinfratech.com"
+                  className="text-xs font-bold hover:underline"
+                >
+                  sales@structroinfratech.com
+                </a>
+              </div>
             </div>
           </div>
 

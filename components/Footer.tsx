@@ -69,9 +69,12 @@ export default async function Footer() {
                   <a href="tel:+918638489767" className="hover:text-primary transition-colors font-medium">+91-8638489767</a>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-gray-300 text-sm">
-                <Mail size={16} className="text-accent" />
-                <a href="mailto:structro.infratech@gmail.com" className="hover:text-primary transition-colors font-medium">structro.infratech@gmail.com</a>
+              <div className="flex items-start gap-2 text-gray-300 text-sm">
+                <Mail size={16} className="text-accent mt-1" />
+                <div className="flex flex-col gap-1">
+                  <a href="mailto:info@structroinfratech.com" className="hover:text-primary transition-colors font-medium">info@structroinfratech.com</a>
+                  <a href="mailto:sales@structroinfratech.com" className="hover:text-primary transition-colors font-medium">sales@structroinfratech.com</a>
+                </div>
               </div>
             </div>
             

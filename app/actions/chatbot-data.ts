@@ -292,7 +292,7 @@ function buildCompanyInfo(): ChatbotCompany {
     ],
     contact: {
       phones: ["+91-9101515491", "+91-8638987442", "+91-8638489767"],
-      email: "structro.infratech@gmail.com",
+      email: "info@structroinfratech.com, sales@structroinfratech.com",
       headOffice:
         "1st Floor, Silver Square, Christian Basti, G.S Road, Guwahati, Assam - 781005",
       workshop: "Guwahati-Accoland-Rani Rd, South Rani, Guwahati-31",

@@ -263,7 +263,7 @@ function generateResponse(query: string, _results: SearchableItem[], chatbotData
       return `Hello! 👋 Welcome to **${name}**.\n\nI can help you with:\n• Our **services** (bridges, PEB, steel, design)\n• Our **products** (portable homes, sheds, containers)\n• **Project portfolio** & experience\n• **Contact details** & office location\n• **Company info** & certifications\n\nWhat would you like to know?`;
 
     case "thanks":
-      return `You're welcome! 😊 Feel free to ask anything else.\n\n📞 **Call:** ${contact?.phones?.[0] || "+91-9101515491"}\n📧 **Email:** ${contact?.email || "structro.infratech@gmail.com"}`;
+      return `You're welcome! 😊 Feel free to ask anything else.\n\n📞 **Call:** ${contact?.phones?.[0] || "+91-9101515491"}\n📧 **Email:** ${contact?.email || "info@structroinfratech.com, sales@structroinfratech.com"}`;
 
     case "contact": {
       if (!contact) return "Please visit our [Contact Page](/contact) for details.";
@@ -271,7 +271,7 @@ function generateResponse(query: string, _results: SearchableItem[], chatbotData
     }
 
     case "pricing":
-      return `💰 **Pricing Information**\n\nOur pricing depends on the project scope, materials, and site conditions. We offer **competitive rates** with no hidden costs.\n\n**To get a free quote:**\n📞 Call: ${contact?.phones?.[0] || "+91-9101515491"}\n📧 Email: ${contact?.email || "structro.infratech@gmail.com"}\n💬 WhatsApp: ${contact?.whatsapp || "+91-9101515491"}\n\nOr visit our [Contact Page](/contact) to submit an enquiry. We typically respond within 24 hours.`;
+      return `💰 **Pricing Information**\n\nOur pricing depends on the project scope, materials, and site conditions. We offer **competitive rates** with no hidden costs.\n\n**To get a free quote:**\n📞 Call: ${contact?.phones?.[0] || "+91-9101515491"}\n📧 Email: ${contact?.email || "info@structroinfratech.com, sales@structroinfratech.com"}\n💬 WhatsApp: ${contact?.whatsapp || "+91-9101515491"}\n\nOr visit our [Contact Page](/contact) to submit an enquiry. We typically respond within 24 hours.`;
 
     case "process": {
       const steps = processItems.filter(i => i.id.startsWith("process-"));

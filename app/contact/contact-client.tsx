@@ -82,8 +82,8 @@ export function ContactClient() {
               {
                 icon: <Mail className="w-6 h-6 text-primary" />,
                 title: "Email",
-                details: ["structro.infratech@gmail.com"],
-                link: "mailto:structro.infratech@gmail.com"
+                details: ["info@structroinfratech.com", "sales@structroinfratech.com"],
+                link: "mailto:info@structroinfratech.com"
               },
               {
                 icon: <MapPin className="w-6 h-6 text-primary" />,
@@ -104,13 +104,14 @@ export function ContactClient() {
                 </div>
                 <h3 className="font-bold text-gray-900 mb-3">{item.title}</h3>
                 <div className="space-y-1">
-                  {item.details.map((detail, dIndex) => (
-                    item.link && item.link !== "#" ? (
+                  {item.details.map((detail, dIndex) => {
+                    const hrefLink = item.title === "Email" ? `mailto:${detail}` : item.link;
+                    return hrefLink && hrefLink !== "#" ? (
                       <a 
                         key={dIndex} 
-                        href={item.link} 
-                        target={item.link.startsWith("http") ? "_blank" : undefined}
-                        rel={item.link.startsWith("http") ? "noopener noreferrer" : undefined}
+                        href={hrefLink} 
+                        target={hrefLink.startsWith("http") ? "_blank" : undefined}
+                        rel={hrefLink.startsWith("http") ? "noopener noreferrer" : undefined}
                         className="text-gray-600 text-sm hover:text-primary block font-medium"
                       >
                         {detail}
@@ -119,8 +120,8 @@ export function ContactClient() {
                       <span key={dIndex} className="text-gray-600 text-sm block">
                         {detail}
                       </span>
-                    )
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             ))}

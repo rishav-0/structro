@@ -239,18 +239,16 @@ const CinematicModernHero = () => {
 
             <div className="w-px h-8 bg-zinc-800/60 hidden sm:block" />
 
-            <a
-              href="mailto:structro.infratech@gmail.com"
-              className="flex items-center gap-2.5 hover:text-red-500 transition-colors duration-300 group"
-            >
+            <div className="flex items-center gap-2.5 group">
               <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-red-950/30 group-hover:border-red-500/30 transition-all duration-300">
                 <Mail className="w-3.5 h-3.5 text-zinc-400 group-hover:text-red-500 transition-colors duration-300" />
               </div>
               <div className="flex flex-col">
                 <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider leading-none mb-1">Email Inquiries</span>
-                <span className="text-zinc-300 font-semibold group-hover:text-white transition-colors duration-300">structro.infratech@gmail.com</span>
+                <a href="mailto:info@structroinfratech.com" className="text-zinc-300 font-semibold hover:text-white transition-colors duration-300">info@structroinfratech.com</a>
+                <a href="mailto:sales@structroinfratech.com" className="text-zinc-300 font-semibold hover:text-white transition-colors duration-300">sales@structroinfratech.com</a>
               </div>
-            </a>
+            </div>
           </motion.div>
         </div>
 
