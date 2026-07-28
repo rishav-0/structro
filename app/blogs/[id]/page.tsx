@@ -46,7 +46,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const post = await getPost(id);
   
   if (!post) {
-    return { title: 'Post Not Found | Structro Infratech' };
+    return {
+      title: 'Post Not Found | Structro Infratech',
+      alternates: {
+        canonical: `/blogs/${id}`,
+      },
+    };
   }
   
   const excerpt = post.content.substring(0, 160);
@@ -55,6 +60,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     description: excerpt,
     openGraph: {
       images: post.featuredImage ? [post.featuredImage] : [],
+    },
+    alternates: {
+      canonical: `/blogs/${id}`,
     },
   };
 }

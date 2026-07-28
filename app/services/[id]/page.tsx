@@ -156,6 +156,9 @@ export async function generateMetadata({
       title: meta.title,
       description: meta.description,
       keywords: meta.keywords,
+      alternates: {
+        canonical: `/services/${id}`,
+      },
     };
   }
   // Fallback for unknown service IDs
@@ -163,6 +166,9 @@ export async function generateMetadata({
     title: "Services | Structro Infratech — Steel Engineering Company Guwahati",
     description:
       "Explore Structro Infratech's engineering services across Northeast India. ISO 9001:2015 certified.",
+    alternates: {
+      canonical: `/services/${id}`,
+    },
   };
 }
 

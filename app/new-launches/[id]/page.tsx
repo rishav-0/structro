@@ -46,12 +46,20 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const launch = await getLaunch(id);
   
   if (!launch) {
-    return { title: 'Project Not Found | Structro Infratech' };
+    return {
+      title: 'Project Not Found | Structro Infratech',
+      alternates: {
+        canonical: `/new-launches/${id}`,
+      },
+    };
   }
   
   return {
     title: `${launch.title} | Structro Infratech`,
     description: launch.description,
+    alternates: {
+      canonical: `/new-launches/${id}`,
+    },
   };
 }
 

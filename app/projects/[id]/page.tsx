@@ -76,7 +76,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   
   if (!project) {
     console.log("generateMetadata: project not found, returning fallback");
-    return { title: 'Project Not Found | Structro Infratech' };
+    return {
+      title: 'Project Not Found | Structro Infratech',
+      alternates: {
+        canonical: `/projects/${id}`,
+      },
+    };
   }
   
   const projectTitle = project.title || project.alt || (typeof project.id === 'string' && project.id.length > 5 ? 'Project Details' : `Project ${project.id}`);
@@ -85,6 +90,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   return {
     title: `${projectTitle} | Structro Infratech`,
     description: project.summary || buildProjectNarrative(project),
+    alternates: {
+      canonical: `/projects/${id}`,
+    },
   };
 }
 

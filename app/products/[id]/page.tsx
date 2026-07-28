@@ -49,12 +49,20 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const product = await getProduct(id);
   
   if (!product) {
-    return { title: 'Product Not Found | Structro Infratech' };
+    return {
+      title: 'Product Not Found | Structro Infratech',
+      alternates: {
+        canonical: `/products/${id}`,
+      },
+    };
   }
   
   return {
     title: `${product.title} | Structro Infratech`,
     description: product.description,
+    alternates: {
+      canonical: `/products/${id}`,
+    },
   };
 }
 
