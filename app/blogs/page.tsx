@@ -10,19 +10,19 @@ import Link from "next/link";
 export const revalidate = 60; // ISR: revalidate every 60s as safety net (admin changes trigger immediate revalidation via tags)
 
 export const metadata: Metadata = {
-  title: 'Blog | Structro Infratech - Engineering Insights & Updates',
-  description: 'Read the latest articles on bridge engineering, steel structures, PEB buildings, and infrastructure projects from Structro Infratech, Guwahati.',
-  keywords: ['Blog', 'Engineering', 'Bridge Construction', 'Steel Structures', 'Infrastructure', 'News', 'PEB Buildings Blog'],
+  title: 'Engineering Blog | Steel Fabrication & Construction Updates Guwahati',
+  description: 'Read updates, guides, and engineering insights on steel fabrication, PEB buildings, steel bridge construction, and heavy steel structure erection across Northeast India.',
+  keywords: ['Engineering Blog', 'Steel Fabrication Guwahati', 'PEB Buildings Blog', 'Bridge Construction Assam', 'Heavy Steel Structures', 'Infrastructure Projects Northeast India', 'Metal Fabrication', 'Structural Engineering'],
   alternates: { canonical: '/blogs' },
   openGraph: {
-    title: 'Engineering Blog | Structro Infratech',
-    description: 'Latest articles on bridge engineering, steel structures, PEB buildings, and infrastructure projects.',
+    title: 'Engineering Blog | Steel Fabrication & Construction Updates Guwahati',
+    description: 'Insights and guides on steel fabrication, PEB buildings, and heavy steel bridge construction from Guwahati, Assam.',
     url: '/blogs',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Blog | Structro Infratech',
-    description: 'Engineering insights on bridge construction, PEB buildings, and steel structures in Northeast India.',
+    title: 'Engineering Blog | Steel Fabrication & Construction Updates Guwahati',
+    description: 'Insights and guides on steel fabrication, PEB buildings, and heavy steel bridge construction from Guwahati, Assam.',
   },
 }
 

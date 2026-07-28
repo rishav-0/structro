@@ -19,26 +19,28 @@ type Product = {
 };
 
 export const metadata: Metadata = {
-  title: "Steel Products | Movable Sheds, Portable PEB Houses & Industrial Tanks | Structro Guwahati",
+  title: "Industrial Steel Products | Portable PEB & Custom Fabrication Guwahati",
   description:
-    "Explore Structro Infratech's industrial product range, including portable PEB homes, movable sheds, industrial storage tanks, and readymade steel staircases. Available across Northeast India.",
+    "Explore our premium range of industrial steel products, including portable PEB houses, movable sheds, industrial tanks, MS/SS works, and custom steel fabrication products in Guwahati, Assam.",
   keywords: [
-    "Structro products",
     "Portable PEB houses",
     "Movable sheds Assam",
     "Industrial Storage Tanks Guwahati",
-    "Steel staircases Assam",
+    "Custom Steel Fabrication",
+    "MS Fabrication products",
+    "SS Tank Fabrication",
+    "Steel Building Contractor",
   ],
   alternates: { canonical: '/products' },
   openGraph: {
-    title: 'Steel Products | Structro Infratech Guwahati',
-    description: 'Portable PEB homes, movable sheds, industrial storage tanks, and readymade steel staircases.',
+    title: 'Industrial Steel Products | Portable PEB & Custom Fabrication Guwahati',
+    description: 'Portable PEB homes, movable sheds, industrial storage tanks, and custom structural steel products in Guwahati, Assam.',
     url: '/products',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Steel Products | Structro Infratech',
-    description: 'Industrial product range — portable PEB homes, movable sheds, storage tanks.',
+    title: 'Industrial Steel Products | Portable PEB & Custom Fabrication Guwahati',
+    description: 'Portable PEB homes, movable sheds, industrial storage tanks, and custom structural steel products in Guwahati, Assam.',
   },
 };
 

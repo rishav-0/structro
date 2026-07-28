@@ -2,19 +2,19 @@ import type { Metadata } from 'next';
 import { ContactClient } from "./contact-client";
 
 export const metadata: Metadata = {
-  title: 'Contact Us | Structro Infratech - Get a Quote for Steel Engineering',
-  description: 'Contact Structro Infratech for steel engineering, bridge construction, and PEB building projects in Guwahati, Assam. Request a technical consultation today. Call +91-9101515491.',
-  keywords: ['Contact Structro', 'Get Quote', 'Bridge Construction Guwahati', 'PEB Buildings Assam', 'Steel Engineering Contact', 'Steel Engineering Quote Guwahati'],
+  title: 'Contact Us | Structro Infratech — Steel Fabrication & Erection Quote Guwahati',
+  description: 'Contact Structro Infratech for structural steel fabrication, metal works, PEB building, industrial shed, and bridge construction projects in Guwahati, Assam and Northeast India. Call +91-9101515491.',
+  keywords: ['Contact Structro', 'Steel Fabrication Quote Guwahati', 'PEB building Assam quote', 'Metal works Guwahati', 'Welding services Assam', 'Turnkey Engineering Projects Guwahati', 'Bridge Construction Guwahati', 'PEB Buildings Assam'],
   alternates: { canonical: '/contact' },
   openGraph: {
-    title: 'Contact Structro Infratech — Get a Technical Quote',
-    description: 'Contact us for bridge construction, PEB buildings, and steel engineering projects. Call +91-9101515491.',
+    title: 'Contact Structro Infratech — Steel Fabrication & Erection Quote Guwahati',
+    description: 'Get a technical quote for structural steel fabrication, PEB buildings, and bridge construction in Northeast India. Call +91-9101515491.',
     url: '/contact',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Contact Structro Infratech | Steel Engineering Guwahati',
-    description: 'Request a technical consultation for your infrastructure project. Call +91-9101515491.',
+    title: 'Contact Structro Infratech — Steel Fabrication & Erection Quote Guwahati',
+    description: 'Get a technical quote for structural steel fabrication, PEB buildings, and bridge construction in Northeast India. Call +91-9101515491.',
   },
 }
 

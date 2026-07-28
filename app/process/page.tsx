@@ -3,19 +3,19 @@ import ProcessClient from './process-client';
 
 
 export const metadata: Metadata = {
-  title: 'Our Process | Structro Infratech — Engineering Workflow',
-  description: 'Discover Structro Infratech\'s disciplined engineering workflow, from initial site analysis to final handoff. Our 5-phase construction process ensures precision and quality.',
-  keywords: ['Construction Process', 'Engineering Workflow', 'Steel Structure Process', 'PEB Construction Steps', 'Bridge Engineering Process'],
+  title: 'Steel Erection & Fabrication Process | Structro Infratech Guwahati',
+  description: 'Discover our step-by-step structural steel fabrication, erection, and engineering workflow. Our disciplined process ensures quality and safety from design to final execution.',
+  keywords: ['Steel Erection Process', 'Steel Fabrication steps', 'Structural Erection Guwahati', 'PEB Construction process', 'Bridge Engineering workflow', 'Industrial Construction Process'],
   alternates: { canonical: '/process' },
   openGraph: {
-    title: 'Our Process | Structro Infratech',
-    description: 'Disciplined 5-phase engineering workflow — from site analysis to final handoff.',
+    title: 'Steel Erection & Fabrication Process | Structro Infratech Guwahati',
+    description: 'Disciplined structural steel fabrication and erection process from design to final handoff.',
     url: '/process',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Engineering Process | Structro Infratech',
-    description: '5-phase construction process ensuring precision and quality for every project.',
+    title: 'Steel Erection & Fabrication Process | Structro Infratech Guwahati',
+    description: 'Disciplined structural steel fabrication and erection process from design to final handoff.',
   },
 };
 

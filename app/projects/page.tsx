@@ -6,19 +6,19 @@ import { Suspense } from 'react';
 export const revalidate = 60; // ISR: revalidate every 60s as safety net (admin changes trigger immediate revalidation via tags)
 
 export const metadata: Metadata = {
-  title: 'Project Portfolio | Bridges, PEB & Steel Structures | Structro Infratech Guwahati',
-  description: 'View Structro Infratech\'s portfolio of completed and ongoing projects across Assam and Northeast India. Railway bridges, PEB buildings, and industrial sheds.',
-  keywords: ['Projects Gallery', 'Completed Projects', 'Ongoing Projects', 'Bridge Construction Guwahati', 'Steel PEB Shed Assam', 'Infrastructure Projects Northeast India'],
+  title: 'Project Portfolio | Steel Structure & Bridge Construction Projects Guwahati',
+  description: 'Explore our extensive portfolio of completed steel bridge construction, Pre-Engineered Buildings (PEB), industrial sheds, and heavy steel structure fabrication projects across Guwahati, Assam and Northeast India.',
+  keywords: ['Completed Projects', 'Bridge Construction Guwahati', 'Steel PEB Shed Assam', 'Infrastructure Projects Northeast India', 'Heavy Steel Structure Fabrication', 'Industrial Shed Construction', 'Warehouse Construction Assam'],
   alternates: { canonical: '/projects' },
   openGraph: {
-    title: 'Project Portfolio | Structro Infratech',
-    description: 'View our portfolio of 200+ completed projects — bridges, PEB buildings, and industrial structures across Northeast India.',
+    title: 'Project Portfolio | Steel Structure & Bridge Construction Projects Guwahati',
+    description: 'Explore our extensive portfolio of completed steel bridges, PEBs, industrial sheds, and heavy structures across Northeast India.',
     url: '/projects',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Project Portfolio | Structro Infratech Guwahati',
-    description: 'Railway bridges, PEB buildings, and industrial sheds across Assam and Northeast India.',
+    title: 'Project Portfolio | Steel Structure & Bridge Construction Projects Guwahati',
+    description: 'Explore our extensive portfolio of completed steel bridges, PEBs, industrial sheds, and heavy structures across Northeast India.',
   },
 }
 

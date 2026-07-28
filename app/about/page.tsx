@@ -7,19 +7,19 @@ import { CheckCircle2, Target, ShieldCheck, Factory, Settings, Flame, Activity }
 import { StatsCounter } from "@/components/StatsCounter";
 
 export const metadata: Metadata = {
-  title: 'About Us | Structro Infratech — Steel Engineering Since 2000',
-  description: 'Learn about Structro Infratech — Northeast India\'s premier steel engineering firm with 55,000 sq.ft in-house fabrication, 200+ completed projects, and ISO 9001:2015 certification.',
-  keywords: ['About Structro', 'Steel Engineering Guwahati', 'Assam Construction Company', 'Northeast India Infrastructure', 'ISO Certified Steel Contractor'],
+  title: 'About Us | Structro Infratech — Best Steel Engineering & Fabrication Guwahati',
+  description: 'Get to know Structro Infratech, Northeast India\'s premier structural steel fabrication and erection contractor. Operating a 55,000 sq.ft facility in Guwahati, Assam since 2000, we specialize in PEB buildings, bridge construction, MS/SS works, and custom industrial engineering.',
+  keywords: ['About Structro', 'Steel Engineering Guwahati', 'Assam Construction Company', 'Northeast India Infrastructure', 'ISO Certified Steel Contractor', 'Structural Steel Fabrication', 'Steel Erection Assam', 'MS Fabrication Guwahati', 'PEB Buildings Northeast'],
   alternates: { canonical: '/about' },
   openGraph: {
-    title: 'About Us | Structro Infratech',
-    description: 'Northeast India\'s premier steel engineering firm. 200+ projects, 55,000 sq.ft fabrication facility, ISO 9001:2015 certified.',
+    title: 'About Us | Structro Infratech — Best Steel Engineering & Fabrication Guwahati',
+    description: 'Northeast India\'s premier steel engineering & fabrication firm. 200+ projects completed across Assam and Northeast India.',
     url: '/about',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About Structro Infratech — Steel Engineering Since 2000',
-    description: 'Northeast India\'s premier steel engineering firm. 200+ projects, ISO 9001:2015 certified.',
+    title: 'About Us | Structro Infratech — Best Steel Engineering & Fabrication Guwahati',
+    description: 'Northeast India\'s premier steel engineering & fabrication firm. 200+ projects completed across Assam and Northeast India.',
   },
 }
 

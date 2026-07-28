@@ -20,19 +20,19 @@ const serviceScaleSignals: Record<string, string> = {
 };
 
 export const metadata: Metadata = {
-  title: 'Services | Structro Infratech — Bridge, PEB & Steel Contractors Guwahati',
-  description: 'Structro Infratech offers bridge engineering, PEB buildings, steel structures, design services and special metal fabrication across Northeast India. ISO 9001:2015 certified.',
-  keywords: ['Steel Engineering Services Guwahati', 'Bridge Construction Assam', 'PEB Buildings Northeast India', 'Steel Structures Contractor', 'Design Services Guwahati'],
+  title: 'Services | Steel Fabrication, Erection & Engineering Services Guwahati',
+  description: 'Explore our specialized services including steel bridge construction, Pre-Engineered Buildings (PEB) fabrication, heavy steel structures, MS/SS works, and structural engineering across Guwahati, Assam, and Northeast India.',
+  keywords: ['Steel Engineering Services Guwahati', 'Bridge Construction Assam', 'PEB Buildings Northeast India', 'Steel Structures Contractor', 'Design Services Guwahati', 'Steel Fabrication', 'Structural Erection', 'MS Fabrication', 'SS Fabrication', 'Welding Services'],
   alternates: { canonical: '/services' },
   openGraph: {
-    title: 'Services | Structro Infratech — Bridge, PEB & Steel',
-    description: 'Bridge engineering, PEB buildings, steel structures, design services and special metal fabrication across Northeast India.',
+    title: 'Services | Steel Fabrication, Erection & Engineering Services Guwahati',
+    description: 'Specialized steel engineering services: bridge construction, PEB buildings, heavy structures, and MS/SS fabrication in Northeast India.',
     url: '/services',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Steel Engineering Services | Structro Infratech Guwahati',
-    description: 'Bridge engineering, PEB buildings, steel structures across Northeast India. ISO 9001:2015 certified.',
+    title: 'Services | Steel Fabrication, Erection & Engineering Services Guwahati',
+    description: 'Specialized steel engineering services: bridge construction, PEB buildings, heavy structures, and MS/SS fabrication in Northeast India.',
   },
 }
 
