@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import type { Metadata } from "next";
 import { getPublicCollectionData } from "@/lib/public-db-server";
+import { getSiteUrl } from "@/lib/site";
 import Image from "next/image";
 import { ImageGallery } from "@/components/image-gallery";
 import { BackButton } from "@/components/ui/back-button";
@@ -367,8 +368,60 @@ export default async function ServicePage({ params }: { params: Promise<{ id: st
 
   if (!service) return notFound();
 
+  const siteUrlStr = getSiteUrl().toString().replace(/\/$/, "");
+
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: service.title,
+    description: service.description,
+    provider: {
+      "@type": "Organization",
+      name: "Structro Infratech",
+      url: siteUrlStr,
+    },
+    areaServed: [
+      { "@type": "AdministrativeArea", name: "Assam" },
+      { "@type": "AdministrativeArea", name: "Northeast India" },
+    ],
+    image: service.image ? new URL(service.image, siteUrlStr).toString() : undefined,
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: siteUrlStr,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Services",
+        item: `${siteUrlStr}/services`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: service.title,
+        item: `${siteUrlStr}/services/${id}`,
+      },
+    ],
+  };
+
   return (
     <div className="bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       {/* Hero Section */}
       <section className="border-b border-gray-200 bg-white pt-24 md:pt-28">
         <Container>
@@ -458,10 +511,12 @@ export default async function ServicePage({ params }: { params: Promise<{ id: st
                   >
                     <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100 border-b border-gray-200/50">
                       {showImage ? (
-                        <img
-                          src={item.image}
+                        <Image
+                          src={item.image!}
                           alt={item.title}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          sizes="(max-width: 768px) 100vw, 300px"
                         />
                       ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-[#0c1b2a] via-[#142c44] to-[#0c1b2a] flex flex-col items-center justify-center gap-2 overflow-hidden">

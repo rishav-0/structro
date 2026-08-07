@@ -96,6 +96,8 @@ const organizationSchema = {
   sameAs: [
     "https://www.indiamart.com/structro-infra-tech/",
     "https://jsdl.in/DT-997A7SFQVYJ",
+    "https://www.linkedin.com/company/structro-infratech",
+    "https://www.facebook.com/structroinfratech",
   ],
   openingHoursSpecification: {
     "@type": "OpeningHoursSpecification",

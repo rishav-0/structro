@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { adminDb } from "@/lib/firebase-admin";
+import { getPublicCollectionData } from "@/lib/public-db-server";
+import { getSiteUrl } from "@/lib/site";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
@@ -17,26 +18,20 @@ interface NewLaunch {
   title: string;
   description: string;
   longDescription?: string;
-  image: string;
-  type: string;
-  region: string;
+  type?: string;
+  region?: string;
   features?: string[];
+  image: string;
+  specs?: string;
+  badge?: string;
   specifications?: LaunchSpecification[];
-  status?: "active" | "inactive";
 }
 
-async function getLaunch(id: string): Promise<NewLaunch | null> {
+async function getLaunch(id: string) {
   try {
-    const snapshot = await adminDb.collection("new-launches").get();
-    const launches = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as NewLaunch));
-    const launch = launches.find((l) => {
-      const dbId = String(l.id).trim().toLowerCase();
-      const searchId = id.trim().toLowerCase();
-      return dbId === searchId;
-    });
-    return launch && launch.status !== "inactive" ? launch : null;
-  } catch (e) {
-    console.error("Error fetching launch project:", e);
+    const launches = await getPublicCollectionData<NewLaunch>("new-launches");
+    return launches.find(l => l.id === id);
+  } catch {
     return null;
   }
 }
@@ -44,19 +39,42 @@ async function getLaunch(id: string): Promise<NewLaunch | null> {
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const launch = await getLaunch(id);
+  const siteUrlStr = getSiteUrl().toString().replace(/\/$/, "");
   
   if (!launch) {
     return {
-      title: 'Project Not Found | Structro Infratech',
+      title: 'New Launch Not Found | Structro Infratech',
       alternates: {
         canonical: `/new-launches/${id}`,
       },
     };
   }
   
+  const launchTitle = `${launch.title} | Structro Infratech New Launch`;
+  const launchDesc = launch.description || `Explore ${launch.title} newly launched by Structro Infratech in Guwahati, Assam.`;
+  const launchImage = launch.image ? new URL(launch.image, siteUrlStr).toString() : new URL("/images/og-banner.jpg", siteUrlStr).toString();
+
   return {
-    title: `${launch.title} | Structro Infratech`,
-    description: launch.description,
+    title: launchTitle,
+    description: launchDesc,
+    openGraph: {
+      title: launchTitle,
+      description: launchDesc,
+      type: 'article',
+      url: `${siteUrlStr}/new-launches/${id}`,
+      images: [
+        {
+          url: launchImage,
+          alt: launch.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: launchTitle,
+      description: launchDesc,
+      images: [launchImage],
+    },
     alternates: {
       canonical: `/new-launches/${id}`,
     },
@@ -71,8 +89,56 @@ export default async function NewLaunchPage({ params }: { params: Promise<{ id: 
     notFound();
   }
 
+  const siteUrlStr = getSiteUrl().toString().replace(/\/$/, "");
+
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: launch.title,
+    description: launch.description,
+    image: launch.image ? new URL(launch.image, siteUrlStr).toString() : undefined,
+    category: "New Product Launch",
+    brand: {
+      "@type": "Brand",
+      name: "Structro Infratech",
+    },
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: siteUrlStr,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "New Launches",
+        item: `${siteUrlStr}/new-launches`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: launch.title,
+        item: `${siteUrlStr}/new-launches/${id}`,
+      },
+    ],
+  };
+
   return (
     <div className="bg-white min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <div className="border-b border-gray-200 bg-gray-50 py-16 md:py-24">
         <Container>
           <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getPublicCollectionData } from "@/lib/public-db-server";
+import { getSiteUrl } from "@/lib/site";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
@@ -47,6 +48,7 @@ async function getProduct(id: string): Promise<Product | null> {
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const product = await getProduct(id);
+  const siteUrlStr = getSiteUrl().toString().replace(/\/$/, "");
   
   if (!product) {
     return {
@@ -57,9 +59,31 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     };
   }
   
+  const productTitle = `${product.title} | Structro Infratech`;
+  const productDesc = product.description || `High-quality industrial steel product ${product.title} engineered by Structro Infratech in Guwahati, Assam.`;
+  const productImage = product.image ? new URL(product.image, siteUrlStr).toString() : new URL("/images/og-banner.jpg", siteUrlStr).toString();
+
   return {
-    title: `${product.title} | Structro Infratech`,
-    description: product.description,
+    title: productTitle,
+    description: productDesc,
+    openGraph: {
+      title: productTitle,
+      description: productDesc,
+      type: 'article',
+      url: `${siteUrlStr}/products/${id}`,
+      images: [
+        {
+          url: productImage,
+          alt: product.imageAlt || product.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: productTitle,
+      description: productDesc,
+      images: [productImage],
+    },
     alternates: {
       canonical: `/products/${id}`,
     },
@@ -72,8 +96,65 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
 
   if (!product) return notFound();
 
+  const siteUrlStr = getSiteUrl().toString().replace(/\/$/, "");
+
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    description: product.description,
+    image: product.image ? new URL(product.image, siteUrlStr).toString() : undefined,
+    category: "Industrial Steel Products",
+    brand: {
+      "@type": "Brand",
+      name: "Structro Infratech",
+    },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "INR",
+      availability: "https://schema.org/InStock",
+      seller: {
+        "@type": "Organization",
+        name: "Structro Infratech",
+      },
+    },
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: siteUrlStr,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Products",
+        item: `${siteUrlStr}/products`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: product.title,
+        item: `${siteUrlStr}/products/${id}`,
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-white pb-20 text-gray-900">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       {/* 1. Industrial Hero Section */}
       <section className="border-b border-gray-200 bg-gray-50 py-12 pt-32 md:py-16 md:pt-36">
         <Container>

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { getPublicCollectionData } from "@/lib/public-db-server";
+import { getSiteUrl } from "@/lib/site";
 import { ArrowUpRight, ArrowLeft, User, Calendar, Clock, Tag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -41,9 +42,18 @@ async function getRelatedPosts(currentId: string) {
   }
 }
 
+function cleanMarkdown(text: string): string {
+  return text
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // replace markdown links with text
+    .replace(/[#*`_~]/g, '') // remove markdown symbols
+    .replace(/\s+/g, ' ') // normalize whitespace
+    .trim();
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const post = await getPost(id);
+  const siteUrlStr = getSiteUrl().toString().replace(/\/$/, "");
   
   if (!post) {
     return {
@@ -54,12 +64,31 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     };
   }
   
-  const excerpt = post.content.substring(0, 160);
+  const rawExcerpt = cleanMarkdown(post.content);
+  const excerpt = rawExcerpt.length > 160 ? `${rawExcerpt.substring(0, 157)}...` : rawExcerpt;
+  const postTitle = `${post.title} | Structro Infratech Engineering Blog`;
+  const postImage = post.featuredImage ? new URL(post.featuredImage, siteUrlStr).toString() : new URL("/images/og-banner.jpg", siteUrlStr).toString();
+
   return {
-    title: `${post.title} | Structro Blog`,
+    title: postTitle,
     description: excerpt,
     openGraph: {
-      images: post.featuredImage ? [post.featuredImage] : [],
+      title: postTitle,
+      description: excerpt,
+      type: 'article',
+      url: `${siteUrlStr}/blogs/${id}`,
+      images: [
+        {
+          url: postImage,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: postTitle,
+      description: excerpt,
+      images: [postImage],
     },
     alternates: {
       canonical: `/blogs/${id}`,
@@ -127,9 +156,70 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
           day: "numeric" 
         })
       : "";
+  const siteUrlStr = getSiteUrl().toString().replace(/\/$/, "");
+  const rawExcerpt = cleanMarkdown(post.content);
+
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: rawExcerpt.length > 160 ? `${rawExcerpt.substring(0, 157)}...` : rawExcerpt,
+    image: post.featuredImage ? new URL(post.featuredImage, siteUrlStr).toString() : undefined,
+    datePublished: post.publishDate || (post.createdAt ? new Date(post.createdAt).toISOString() : undefined),
+    author: {
+      "@type": "Person",
+      name: post.author || "Structro Infratech Team",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Structro Infratech",
+      url: siteUrlStr,
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteUrlStr}/images/logo.svg`,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${siteUrlStr}/blogs/${id}`,
+    },
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: siteUrlStr,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Engineering Blog",
+        item: `${siteUrlStr}/blogs`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: post.title,
+        item: `${siteUrlStr}/blogs/${id}`,
+      },
+    ],
+  };
 
   return (
     <div className="bg-white min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       {/* Header Section */}
       <div className="pt-24 md:pt-32 pb-12 bg-gray-50/50 border-b border-gray-100">
         <Container>

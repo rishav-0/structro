@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getPublicCollectionData } from "@/lib/public-db-server";
+import { getSiteUrl } from "@/lib/site";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
@@ -17,52 +18,52 @@ interface GalleryImage {
 
 interface Project {
   id: string | number;
-  title: string;
-  location: string;
+  title?: string;
+  summary?: string;
   category?: string;
-  serviceId?: string;
-  src: string;
-  alt: string;
-  images?: GalleryImage[];
-  isVideo?: boolean;
   client?: string;
+  location?: string;
+  year?: string | number;
+  image?: string;
+  src?: string;
+  images?: GalleryImage[];
+  serviceId?: string;
+  alt?: string;
+  tonnage?: string;
   scope?: string;
-  quantity?: string;
+  period?: string;
   materialGrade?: string;
   spanLength?: string;
   dimensions?: string;
   projectQuantity?: string;
   surfacePreparation?: string;
   spanQuantity?: string;
-  period?: string;
-  summary?: string;
   visible?: boolean;
 }
 
-function buildProjectNarrative(project: Project) {
-  const details = [
-    project.client ? `for ${project.client}` : null,
-    project.location ? `at ${project.location}` : null,
-    project.period ? `during ${project.period}` : null,
-  ].filter(Boolean);
+function buildProjectNarrative(project: Project): string {
+  const parts: string[] = [];
+  if (project.client) parts.push(`Executed for ${project.client}`);
+  if (project.location) parts.push(`located in ${project.location}`);
+  if (project.tonnage) parts.push(`involving ${project.tonnage} of steel fabrication`);
+  if (project.year) parts.push(`completed in ${project.year}`);
 
-  const opening = project.scope || "This project combined structural planning, fabrication, and execution support.";
-  const context = details.length > 0 ? `${opening} The work was delivered ${details.join(" ")}.` : opening;
+  if (parts.length === 0) {
+    return "A major structural steel engineering project executed with precision fabrication and site installation by Structro Infratech in Guwahati, Assam.";
+  }
 
-  return context;
+  return `${parts.join(", ")}. Engineered and erected to high industrial standards by Structro Infratech.`;
 }
 
 async function getProject(id: string): Promise<Project | null> {
-  console.log("getProject called with id:", id);
   try {
-    const dbProjects = (await getPublicCollectionData("projects")) as Project[];
-    const found = dbProjects.find((projectItem) => {
-      const dbId = String(projectItem.id).trim().toLowerCase();
-      const searchId = id.trim().toLowerCase();
+    const dbProjects = await getPublicCollectionData<Project>("projects");
+    const searchId = id.trim().toLowerCase();
+    const found = dbProjects.find((p) => {
+      const dbId = String(p.id).trim().toLowerCase();
       return dbId === searchId;
-    }) || null;
-    console.log("getProject found project title:", found ? found.title : "null");
-    return found;
+    });
+    return found || null;
   } catch (e) {
     console.error("Error fetching project:", e);
     return null;
@@ -71,11 +72,10 @@ async function getProject(id: string): Promise<Project | null> {
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  console.log("generateMetadata called with id:", id);
   const project = await getProject(id);
+  const siteUrlStr = getSiteUrl().toString().replace(/\/$/, "");
   
   if (!project) {
-    console.log("generateMetadata: project not found, returning fallback");
     return {
       title: 'Project Not Found | Structro Infratech',
       alternates: {
@@ -84,12 +84,32 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     };
   }
   
-  const projectTitle = project.title || project.alt || (typeof project.id === 'string' && project.id.length > 5 ? 'Project Details' : `Project ${project.id}`);
-  console.log("generateMetadata returning title:", `${projectTitle} | Structro Infratech`);
+  const projectTitleName = project.title || project.alt || (typeof project.id === 'string' && project.id.length > 5 ? 'Project Details' : `Project ${project.id}`);
+  const projectTitle = `${projectTitleName} | Structro Infratech`;
+  const projectDesc = project.summary || buildProjectNarrative(project);
+  const productImage = (project.image || project.src) ? new URL(project.image || project.src!, siteUrlStr).toString() : new URL("/images/og-banner.jpg", siteUrlStr).toString();
   
   return {
-    title: `${projectTitle} | Structro Infratech`,
-    description: project.summary || buildProjectNarrative(project),
+    title: projectTitle,
+    description: projectDesc,
+    openGraph: {
+      title: projectTitle,
+      description: projectDesc,
+      type: 'article',
+      url: `${siteUrlStr}/projects/${id}`,
+      images: [
+        {
+          url: productImage,
+          alt: project.alt || projectTitleName,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: projectTitle,
+      description: projectDesc,
+      images: [productImage],
+    },
     alternates: {
       canonical: `/projects/${id}`,
     },
@@ -101,6 +121,51 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
   const project = await getProject(id);
   
   if (!project || project.visible === false) return notFound();
+  
+  const siteUrlStr = getSiteUrl().toString().replace(/\/$/, "");
+  const projectTitleName = project.title || project.alt || (typeof project.id === 'string' && project.id.length > 5 ? 'Project Details' : `Project ${project.id}`);
+
+  const projectSchema = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: projectTitleName,
+    description: project.summary || buildProjectNarrative(project),
+    image: (project.image || project.src) ? new URL(project.image || project.src!, siteUrlStr).toString() : undefined,
+    author: {
+      "@type": "Organization",
+      name: "Structro Infratech",
+      url: siteUrlStr,
+    },
+    locationCreated: project.location ? {
+      "@type": "Place",
+      name: project.location,
+    } : undefined,
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: siteUrlStr,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Projects",
+        item: `${siteUrlStr}/projects`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: projectTitleName,
+        item: `${siteUrlStr}/projects/${id}`,
+      },
+    ],
+  };
   
   let serviceTitle = "";
   if (project.serviceId) {
@@ -121,11 +186,19 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
 
   return (
     <div className="bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <article className="border-b border-gray-200 bg-gray-50 pt-28 pb-12 md:pt-32 md:pb-16">
         <Container>
           <BackButton fallbackUrl="/projects" text="Back to Projects" className="mb-4" />
           <ImageGallery
-            mainImage={project.src}
+            mainImage={project.image || project.src || "/images/og-banner.jpg"}
             mainAlt={project.alt || "Project Image"}
             images={project.images}
             priority

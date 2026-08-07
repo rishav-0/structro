@@ -11,11 +11,13 @@ export const publicTopLevelRoutes = [
   "/blogs",
   "/careers",
   "/contact",
+  "/privacy",
   "/process",
   "/products",
   "/projects",
   "/services",
   "/stakeholder/contractor",
   "/stakeholder/vendor",
+  "/terms",
   "/login",
 ];
