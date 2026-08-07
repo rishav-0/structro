@@ -209,6 +209,7 @@ export default async function Footer() {
           <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6 text-xs text-gray-500">
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+            <Link href="/404" className="hover:text-white transition-colors">404 Error Page</Link>
             <span className="hidden md:inline text-gray-700">|</span>
             <p className="text-gray-600 text-[10px] uppercase tracking-widest">
               Designed and Developed by <a href="https://cinzmedia.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors font-semibold">Cinzmedia</a>
